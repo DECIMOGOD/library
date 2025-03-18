@@ -1,0 +1,102 @@
+/* Color Variables */
+:root {
+    --primary-blue: #2c3e50;     /* Dark blue for main background */
+    --secondary-blue: #3498db;   /* Bright blue for highlights */
+    --light-blue: #ebf5fb;       /* Very light blue for backgrounds */
+    --hover-blue: #34495e;       /* Slightly lighter dark blue for hover */
+}
+
+body {
+    background-color: var(--light-blue);
+}
+
+.navbar-custom {
+    background-color: var(--primary-blue) !important;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    color: white !important;
+    display: flex;
+    align-items: center;
+}
+
+.navbar-brand img {
+    max-height: 40px;
+    margin-right: 15px;
+}
+
+.navbar-nav .nav-link {
+    color: white !important;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus {
+    color: var(--secondary-blue) !important;
+}
+
+.navbar-nav .nav-link::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    bottom: 0;
+    left: 50%;
+    background-color: var(--secondary-blue);
+    transition: all 0.3s ease;
+}
+
+.navbar-nav .nav-link:hover::after {
+    width: 100%;
+    left: 0;
+}
+
+.dropdown-menu {
+    background-color: var(--primary-blue);
+    border: none;
+}
+
+.dropdown-menu a {
+    color: white !important;
+    transition: background-color 0.3s ease;
+}
+
+.dropdown-menu a:hover {
+    background-color: var(--secondary-blue);
+}
+
+.logout-btn {
+    background-color: #e74c3c;
+    color: white !important;
+    border: none;
+    border-radius: 5px;
+    padding: 6px 12px;
+    margin-left: 15px;
+    transition: background-color 0.3s ease;
+}
+
+.logout-btn:hover {
+    background-color: #c0392b;
+}
+
+.navbar-toggler {
+    border-color: var(--secondary-blue);
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='rgba(52, 152, 219, 1)' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+@media (max-width: 991px) {
+    .navbar-collapse {
+        max-height: 80vh;
+        overflow-y: auto;
+        background-color: var(--primary-blue);
+    }
+
+    .navbar-nav {
+        padding: 15px;
+    }
+}
