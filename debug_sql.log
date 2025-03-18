@@ -1,0 +1,240 @@
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.RegDate DESC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 AND YEAR(b.RegDate) >= 2020 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 AND c.CategoryName = :genre ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, a.AuthorName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblauthors a ON b.AuthorId = a.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, p.PublisherName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblpublishers p ON b.AuthorId = p.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, p.PublisherName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblpublishers p ON b.AuthorId = p.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, p.PublisherName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblpublishers p ON b.AuthorId = p.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, p.PublisherName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblpublishers p ON b.AuthorId = p.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, p.PublisherName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblpublishers p ON b.AuthorId = p.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
+SELECT b.id, b.BookName, b.RegDate, 
+                   b.bookImage AS BookImage, p.PublisherName, c.CategoryName 
+            FROM tblbooks b
+            JOIN tblpublishers p ON b.AuthorId = p.id
+            JOIN tblcategory c ON b.CatId = c.id
+            WHERE 1=1 ORDER BY b.BookName ASC
