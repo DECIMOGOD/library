@@ -1,0 +1,1155 @@
+﻿@import url('https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700;900&display=swap');
+
+/* Forceful gap removal */
+html, body {
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow-x: hidden;
+}
+
+/* =============================================================
+   GENERAL STYLES
+ ============================================================ */
+
+body {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 28px;
+    padding-top: 80px; /* Add padding to compensate for fixed header */
+}
+
+.set-radius-zero {
+    border-radius: 0px;
+    -moz-border-radius: 0px;
+    -webkit-border-radius: 0px;
+}
+
+.content-wrapper {
+    margin-top: 0; /* Removed top margin */
+    min-height: 800px;
+    padding-bottom: 90px;
+}
+
+.header-line {
+    font-weight: 900;
+    padding-bottom: 25px;
+    border-bottom: 1px solid #eeeeee;
+    text-transform: uppercase;
+}
+
+.pad-botm {
+    padding-bottom: 30px;
+}
+
+/* =============================================================
+   DASHBOARD STYLES
+ ============================================================ */
+
+.img-comments {
+    border: 3px double #e1e1e1;
+    height: 60px;
+}
+
+.chat-widget-main {
+    max-height: 330px;
+    overflow: auto;
+}
+
+.slide-bdr {
+    border: 5px solid #9170E4;
+}
+
+.chat-widget-left:after {
+    top: 100%;
+    left: 10%;
+    border: solid transparent;
+    content: " ";
+    position: absolute;
+    border-top-color: #F70E62;
+    border-width: 15px;
+    margin-left: -15px;
+}
+
+.chat-widget-left {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid #F70E62;
+    font-size: 12px;
+}
+
+.chat-widget-right:after {
+    top: 100%;
+    right: 10%;
+    border: solid transparent;
+    content: " ";
+    position: absolute;
+    border-top-color: #5AA8CC;
+    border-width: 15px;
+    margin-left: -15px;
+}
+
+.chat-widget-right {
+    width: 100%;
+    height: auto;
+    padding: 15px;
+    border-radius: 5px;
+    position: relative;
+    border: 1px solid #5AA8CC;
+    font-size: 12px;
+}
+
+.chat-widget-name-left {
+    color: #808080;
+    margin-top: 30px;
+    margin-left: 60px;
+    text-align: left;
+}
+
+.img-left-chat {
+    border: 3px double #e1e1e1;
+    float: left;
+    margin-right: 30px;
+}
+
+.img-right-chat {
+    border: 3px double #e1e1e1;
+    float: right;
+    margin-left: 30px;
+}
+
+.chat-widget-main img-right {
+    border: 3px double #e1e1e1;
+    float: left;
+}
+
+.chat-widget-name-left h4 {
+    font-weight: normal;
+    font-size: 11px;
+}
+
+.chat-widget-name-left h5 {
+    font-weight: normal;
+    font-size: 10px;
+}
+
+.chat-widget-name-right h4 {
+    font-weight: normal;
+    font-size: 11px;
+}
+
+.chat-widget-name-right h5 {
+    font-weight: normal;
+    font-size: 10px;
+}
+
+.chat-widget-name-right {
+    color: #808080;
+    margin-top: 40px;
+    margin-right: 60px;
+    text-align: right;
+}
+
+.recent-users-sec img {
+    max-height: 80px;
+    margin: 15px;
+}
+
+.back-widget-set {
+    background-color: transparent;
+}
+
+/* =============================================================
+   FOOTER SECTION STYLES
+ ============================================================ */
+
+.footer-section {
+    background-color: #3858ff;
+    padding: 20px 0;
+    text-align: left;
+    color: #ffffff;
+    font-weight: bold;
+    padding-left: 70px;
+}
+
+.footer-section a,
+.footer-section a:hover {
+    color: #000;
+}
+
+/* =============================================================
+   CAROUSEL SECTION STYLES
+ ============================================================ */
+#carousel-example {
+    margin-top: 60px !important; /* Ensure carousel starts below fixed header */
+    padding: 0 !important;
+    position: relative;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+}
+
+.navbar + #carousel-example {
+    margin-top: 80px !important; /* Additional fix for navbar spacing */
+}
+
+.carousel-inner {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.carousel-inner .item {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.carousel-inner .item img {
+    width: 100%;
+    height: auto;
+    border-radius: 0;
+    margin: 0;
+    padding: 0;
+    display: block;
+}
+
+.carousel-control {
+    width: 5%;
+    opacity: 0.8;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.carousel-indicators {
+    bottom: 10px;
+}
+
+.carousel-indicators li {
+    background-color: white;
+    border: 1px solid black;
+}
+
+.carousel-indicators .active {
+    background-color: black;
+}
+
+/* Remove extra spacing from Bootstrap grid */
+.container,
+.row,
+.col-md-10,
+.col-md-offset-1 {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* General Section Styling */
+.section-container {
+    text-align: center;
+    padding: 50px;
+    background-color: #ffffff;
+    margin: 30px auto;
+    max-width: 1100px;
+}
+
+.section-container h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: #1E3A8A;
+    margin-bottom: 10px;
+}
+
+.section-container p {
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #4B5563;
+    line-height: 1.6;
+    letter-spacing: 0.5px;
+    max-width: 800px;
+    margin: 0 auto 20px;
+}
+
+/* Call to Action Section */
+.cta-container {
+    text-align: center;
+    padding: 50px;
+    background-color: #ffffff;
+    color: #003366;
+    border-radius: 10px;
+    margin: 30px 0;
+}
+
+.cta-container h3 {
+    font-size: 28px;
+    margin-bottom: 10px;
+}
+
+/* CTA Buttons */
+.cta-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    flex-wrap: wrap;
+}
+
+.cta-buttons a {
+    font-size: 18px;
+    color: #003366;
+    text-decoration: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: 2px solid #003366;
+    transition: 0.3s;
+}
+
+.cta-buttons a:hover {
+    background-color: #ffcc00;
+    color: #003366;
+}
+
+/* Featured Books Section */
+.featured-books-container {
+    position: relative;
+    padding: 40px;
+    text-align: center;
+    border-radius: 10px;
+    overflow: hidden;
+    background-color: #ffffff;
+}
+
+.featured-books-container h3 {
+    font-size: 28px;
+    font-weight: bold;
+    color: #003366;
+    margin-bottom: 20px;
+}
+
+/* Book Cards */
+.book-list {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 20px;
+}
+
+.book-item {
+    width: 220px;
+    text-align: center;
+    background: white;
+    padding: 15px;
+    border-radius: 10px;
+    border: 2px solid #003366;
+    transition: 0.3s;
+}
+
+.book-item:hover {
+    transform: translateY(-8px);
+    border-color: #ffcc00;
+}
+
+.book-item img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.book-item h4 {
+    font-size: 18px;
+    color: #003366;
+    margin-top: 10px;
+}
+
+.book-item p {
+    font-size: 14px;
+    color: #777;
+}
+
+/* Content Wrapper */
+.content-wrapper {
+    min-height: 800px;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    body {
+        padding-top: 120px; /* Adjust for mobile header height */
+    }
+
+    #carousel-example {
+        margin-top: 120px !important; /* Adjust for mobile header */
+        margin: 0 !important;
+        padding: 0 !important;
+    }
+
+    .carousel-inner .item img {
+        height: 300px;
+        margin: 0;
+        padding: 0;
+    }
+}
+/* Main Book Catalog Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    background-color: #f5f7fa;
+    color: #333;
+    padding-top: 80px; /* Added to accommodate the fixed header */
+}
+
+/* Remove the original header styles since we're using the library header */
+/* .header, .header-content, .logo, .search-bar, .search-icon, .login-btn styles removed */
+
+/* Main Content Styles - adjusted for fixed header */
+.main-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+/* Add a search bar in the main content since we removed the one from the header */
+.content-search-bar {
+    position: relative;
+    max-width: 600px;
+    margin: 0 auto 2rem auto;
+    margin-top: 80px;
+}
+
+.content-search-bar input {
+    width: 100%;
+    padding: 0.7rem 1rem;
+    border-radius: 30px;
+    border: 1px solid #ddd;
+    outline: none;
+    font-size: 1rem;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.content-search-icon {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #555;
+}
+
+/* Filter Styles */
+.filters {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.filter-title {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+    color: #1e3c72; /* Matched to blue theme */
+}
+
+.filter-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+.filter-select {
+    padding: 0.5rem 1rem;
+    border: 1px solid #e1e5eb;
+    border-radius: 4px;
+    background-color: white;
+    min-width: 150px;
+    cursor: pointer;
+}
+
+/* Book Grid Styles */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 2rem;
+}
+
+.book-card {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s, box-shadow 0.3s;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.08);
+    cursor: pointer;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.12);
+}
+
+.book-cover {
+    height: 250px;
+    background-color: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.book-cover img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.book-info {
+    padding: 1rem;
+}
+
+.book-title {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: #333;
+}
+
+.book-author {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 0.5rem;
+}
+
+.book-rating {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.rating-stars {
+    color: #ffc107;
+    margin-right: 0.5rem;
+}
+
+.book-genre {
+    font-size: 0.8rem;
+    color: #1e3c72; /* Matched to blue theme */
+    background-color: #e6eefb;
+    padding: 0.2rem 0.5rem;
+    border-radius: 12px;
+    display: inline-block;
+}
+
+/* Pagination Styles */
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 3rem;
+}
+
+.page-btn {
+    background: white;
+    border: 1px solid #ddd;
+    padding: 0.5rem 1rem;
+    margin: 0 0.25rem;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.page-btn.active {
+    background-color: #1e3c72; /* Matched to blue theme */
+    color: white;
+    border-color: #1e3c72;
+}
+
+.page-btn:hover:not(.active) {
+    background-color: #f0f0f0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+        gap: 1.5rem;
+    }
+    
+    .filter-options {
+        flex-direction: column;
+    }
+    
+    /* Additional padding for mobile to account for the taller header */
+    body {
+        padding-top: 120px;
+    }
+}
+.col-md-12{
+    margin-top: 80px;
+}
+/* LOGIN PAGE SPECIFIC STYLES */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+.login-page-background {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1a237e, #2196f3);
+    min-height: 100vh;
+}
+
+body {
+    font-family: 'Poppins', 'Open Sans', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 50px 0;
+}
+
+.back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.back-link a {
+    color: #ffffff;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.back-link a:hover {
+    color: #e3f2fd;
+    text-decoration: underline;
+}
+
+.back-link a i {
+    margin-right: 8px;
+}
+
+.login-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Logo container styles */
+.logo-container {
+    text-align: center;
+    padding: 25px 0 10px;
+    position: relative;
+}
+
+.login-logo {
+    max-width: 150px;
+    height: auto;
+    display: inline-block;
+}
+
+.login-header {
+    text-align: center;
+    padding: 15px 20px 25px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.login-header h2 {
+    margin: 0 0 10px;
+    font-family:monospace;
+    font-weight: 700;
+    font-size: 24px;
+    color: #333333;
+    letter-spacing: 0.5px;
+}
+
+.login-header h4 {
+    margin: 0;
+    font-weight: 400;
+    color: #666666;
+    letter-spacing: 0.3px;
+}
+
+.login-form {
+    padding: 30px;
+}
+
+.form-group {
+    margin-bottom: 25px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555555;
+    letter-spacing: 0.2px;
+}
+
+.form-group label i {
+    margin-right: 8px;
+    color: #1565c0;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 8px rgba(25, 118, 210, 0.2);
+    outline: none;
+}
+
+.login-footer {
+    margin-top: 30px;
+}
+
+.login-btn {
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.5px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+    background-color: #1565c0;
+}
+
+.login-links {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.login-links a {
+    color: #1976d2;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.login-links a:hover {
+    color: #1565c0;
+    text-decoration: underline;
+}
+
+.login-links .divider {
+    margin: 0 10px;
+    color: #dddddd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .login-container {
+        margin: 0 15px;
+    }
+    
+    .back-link {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .back-link a {
+        justify-content: center;
+    }
+    
+    .login-logo {
+        max-width: 10px;
+    }
+}
+/* Unique class for the signup page */
+.signup-page-background {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1a237e, #2196f3);
+    min-height: 100vh;
+    font-family: 'Poppins', 'Open Sans', sans-serif;
+}
+
+.signup-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 50px 0;
+}
+
+.signup-back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.signup-back-link a {
+    color: #ffffff;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.signup-back-link a:hover {
+    color: #e3f2fd;
+    text-decoration: underline;
+}
+
+.signup-back-link a i {
+    margin-right: 8px;
+}
+
+.signup-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Logo container styles */
+.signup-logo-container {
+    text-align: center;
+    padding: 25px 0 10px;
+    position: relative;
+}
+
+.signup-logo {
+    max-width: 150px;
+    height: auto;
+    display: inline-block;
+}
+
+.signup-header {
+    text-align: center;
+    padding: 15px 20px 25px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.signup-header h2 {
+    margin: 0 0 10px;
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 24px;
+    color: #333333;
+    letter-spacing: 0.5px;
+}
+
+.signup-header h4 {
+    margin: 0;
+    font-weight: 400;
+    color: #666666;
+    letter-spacing: 0.3px;
+}
+
+.signup-form {
+    padding: 30px;
+}
+
+.signup-form-group {
+    margin-bottom: 25px;
+}
+
+.signup-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555555;
+    letter-spacing: 0.2px;
+}
+
+.signup-form-group label i {
+    margin-right: 8px;
+    color: #1565c0;
+}
+
+.signup-form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.signup-form-control:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 8px rgba(25, 118, 210, 0.2);
+    outline: none;
+}
+
+.signup-footer {
+    margin-top: 30px;
+}
+
+.signup-btn {
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.5px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.signup-btn:hover {
+    background-color: #1565c0;
+}
+
+.signup-links {
+    text-align: center;
+    margin-top: 20px;
+    font-size: 14px;
+}
+
+.signup-links a {
+    color: #1976d2;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+.signup-links a:hover {
+    color: #1565c0;
+    text-decoration: underline;
+}
+
+.signup-links .divider {
+    margin: 0 10px;
+    color: #dddddd;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .signup-container {
+        margin: 0 15px;
+    }
+    
+    .signup-back-link {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .signup-back-link a {
+        justify-content: center;
+    }
+    
+    .signup-logo {
+        max-width: 100px;
+    }
+}
+/* Unique class for the admin login page */
+.admin-login-page-background {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #1a237e, #2196f3);
+    min-height: 100vh;
+    font-family: 'Poppins', 'Open Sans', sans-serif;
+}
+
+.admin-login-wrapper {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    padding: 50px 0;
+}
+
+.admin-login-back-link {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.admin-login-back-link a {
+    color: #ffffff;
+    font-size: 16px;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    display: flex;
+    align-items: center;
+    font-weight: 500;
+}
+
+.admin-login-back-link a:hover {
+    color: #e3f2fd;
+    text-decoration: underline;
+}
+
+.admin-login-back-link a i {
+    margin-right: 8px;
+}
+
+.admin-login-container {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+    max-width: 500px;
+    margin: 0 auto;
+    overflow: hidden;
+    position: relative;
+}
+
+/* Logo container styles */
+.admin-login-logo-container {
+    text-align: center;
+    padding: 25px 0 10px;
+    position: relative;
+}
+
+.admin-login-logo {
+    max-width: 150px;
+    height: auto;
+    display: inline-block;
+}
+
+.admin-login-header {
+    text-align: center;
+    padding: 15px 20px 25px;
+    border-bottom: 1px solid #eeeeee;
+}
+
+.admin-login-header h2 {
+    margin: 0 0 10px;
+    font-family: monospace;
+    font-weight: 700;
+    font-size: 24px;
+    color: #333333;
+    letter-spacing: 0.5px;
+}
+
+.admin-login-header h4 {
+    margin: 0;
+    font-weight: 400;
+    color: #666666;
+    letter-spacing: 0.3px;
+}
+
+.admin-login-form {
+    padding: 30px;
+}
+
+.admin-login-form-group {
+    margin-bottom: 25px;
+}
+
+.admin-login-form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #555555;
+    letter-spacing: 0.2px;
+}
+
+.admin-login-form-group label i {
+    margin-right: 8px;
+    color: #1565c0;
+}
+
+.admin-login-form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #dddddd;
+    border-radius: 4px;
+    font-size: 14px;
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+}
+
+.admin-login-form-control:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 8px rgba(25, 118, 210, 0.2);
+    outline: none;
+}
+
+.admin-login-footer {
+    margin-top: 30px;
+}
+
+.admin-login-btn {
+    background-color: #1976d2;
+    color: white;
+    border: none;
+    padding: 12px 30px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    font-family: 'Poppins', sans-serif;
+    letter-spacing: 0.5px;
+    width: 100%;
+    transition: background-color 0.3s ease;
+}
+
+.admin-login-btn:hover {
+    background-color: #1565c0;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .admin-login-container {
+        margin: 0 15px;
+    }
+    
+    .admin-login-back-link {
+        position: relative;
+        top: auto;
+        left: auto;
+        margin-bottom: 20px;
+        text-align: center;
+    }
+    
+    .admin-login-back-link a {
+        justify-content: center;
+    }
+    
+    .admin-login-logo {
+        max-width: 100px;
+    }
+}
+
