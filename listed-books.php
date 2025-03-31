@@ -47,65 +47,69 @@ if (!isset($_SESSION['login']) || strlen($_SESSION['login']) == 0) {
                         </div>
                         <div class="panel-body">
                             <?php
+                           try {
                             // SQL query to fetch book details
-                            $sql = "SELECT tblbooks.BookName, tblcategory.CategoryName, tblauthors.AuthorName, tblbooks.ISBNNumber, tblbooks.BookPrice, tblbooks.id as bookid, tblbooks.bookImage, tblbooks.isIssued, tblbooks.bookQty,  
-                                    COUNT(tblissuedbookdetails.id) AS issuedBooks,
-                                    COUNT(tblissuedbookdetails.RetrunStatus) AS returnedbook
-                                    FROM tblbooks
-                                    LEFT JOIN tblissuedbookdetails ON tblissuedbookdetails.BookId = tblbooks.id
-                                    LEFT JOIN tblauthors ON tblauthors.id = tblbooks.AuthorId
-                                    LEFT JOIN tblcategory ON tblcategory.id = tblbooks.CatId
-                                    GROUP BY tblbooks.id";
+                            $sql = "SELECT tblbooks.BookName, tblcategory.CategoryName, tblbooks.publisher AS PublisherName, tblbooks.ISBNNumber, tblbooks.id as bookid, tblbooks.bookImage, tblbooks.isIssued, tblbooks.bookQty,  
+        COUNT(tblissuedbookdetails.id) AS issuedBooks,
+        COUNT(tblissuedbookdetails.ReturnStatus) AS returnedbook
+        FROM tblbooks
+        LEFT JOIN tblissuedbookdetails ON tblissuedbookdetails.BookId = tblbooks.id
+        LEFT JOIN tblcategory ON tblcategory.id = tblbooks.CatId
+        GROUP BY tblbooks.id";
                             $query = $dbh->prepare($sql); // Prepare the SQL statement
                             $query->execute(); // Execute the query
                             $results = $query->fetchAll(PDO::FETCH_OBJ); // Fetch results as objects
                             $cnt = 1; // Counter for books
+                        } catch (PDOException $e) {
+                            echo "Error: " . $e->getMessage(); // Display error message
+                            exit();
+                        }
 
-                            if ($query->rowCount() > 0) { // Check if there are any results
-                                foreach ($results as $result) { // Loop through each book
-                            ?>
-                                    <div class="col-md-4" style="height:350px;">
-                                        <table class="table table-bordered">
-                                            <tr>
-                                                <td rowspan="2">
-                                                    <img src="admin/bookimg/<?php echo htmlentities($result->bookImage); ?>" width="120" alt="Book Image">
-                                                </td>
-                                                <th>Book Name</th>
-                                                <td><?php echo htmlentities($result->BookName); ?></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Author</th>
-                                                <td><?php echo htmlentities($result->AuthorName); ?></td>
-                                            </tr>
-                                            <tr>
-                                                <th>ISBN Number</th>
-                                                <td colspan="2"><?php echo htmlentities($result->ISBNNumber); ?></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Book Quantity</th>
-                                                <td colspan="2"><?php echo htmlentities($result->bookQty); ?></td>
-                                            </tr>
-                                            <tr>
-                                                <th>Available Book Quantity</th>
-                                                <td colspan="2">
-                                                    <?php
-                                                    // Calculate available books
-                                                    if ($result->issuedBooks == 0) {
-                                                        echo htmlentities($result->bookQty);
-                                                    } else {
-                                                        echo htmlentities($result->bookQty - ($result->issuedBooks - $result->returnedbook));
-                                                    }
-                                                    ?>
-                                                </td>
-                                            </tr>
-                                        </table>
-                                    </div>
+                        if ($query->rowCount() > 0) { // Check if there are any results
+                            foreach ($results as $result) { // Loop through each book
+                        ?>
+                                        <div class="col-md-4" style="height:350px;">
+                                            <table class="table table-bordered">
+                                                <tr>
+                                                    <td rowspan="2">
+                                                        <img src="shared/bookimg/<?php echo htmlentities($result->bookImage); ?>" width="120" alt="Book Image">
+                                                    </td>
+                                                    <th>Book Name</th>
+                                                    <td><?php echo htmlentities($result->BookName); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Publisher</th>
+                                                    <td><?php echo htmlentities($result->PublisherName); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>ISBN Number</th>
+                                                    <td colspan="2"><?php echo htmlentities($result->ISBNNumber); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Book Quantity</th>
+                                                    <td colspan="2"><?php echo htmlentities($result->bookQty); ?></td>
+                                                </tr>
+                                                <tr>
+                                                    <th>Available Book Quantity</th>
+                                                    <td colspan="2">
+                                                        <?php
+                                                        // Calculate available books
+                                                        if ($result->issuedBooks == 0) {
+                                                            echo htmlentities($result->bookQty);
+                                                        } else {
+                                                            echo htmlentities($result->bookQty - ($result->issuedBooks - $result->returnedbook));
+                                                        }
+                                                        ?>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
                             <?php
-                                    $cnt = $cnt + 1; // Increment counter
+                                        $cnt = $cnt + 1; // Increment counter
+                                    }
+                                } else {
+                                    echo "<div class='col-md-12'><p>No books found.</p></div>"; // Display message if no books are found
                                 }
-                            } else {
-                                echo "<div class='col-md-12'><p>No books found.</p></div>"; // Display message if no books are found
-                            }
                             ?>
                         </div>
                     </div>
