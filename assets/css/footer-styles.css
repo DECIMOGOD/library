@@ -7,6 +7,7 @@
     --accent-color: #FFD700;
     --text-light: #f0f0f0;
     --text-dark: #333;
+    --third-color: #00116a;
 }
 
 /* Reset and Base Styles */
@@ -23,7 +24,7 @@ body {
 
 /* Footer Base Styles */
 .library-footer {
-    background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    background: linear-gradient(177deg, var(--primary-color), var(--third-color));
     color: var(--text-light);
     padding: 4rem 0 2rem;
     position: relative;
