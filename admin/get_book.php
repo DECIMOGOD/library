@@ -1,66 +1,116 @@
 <?php 
 require_once("includes/config.php");
+
 if(!empty($_POST["bookid"])) {
-  $bookid=$_POST["bookid"];
-//    $sql ="SELECT tblissuedbookdetails.id FROM tblbooks
-// join tblissuedbookdetails on tblissuedbookdetails.BookId=tblbooks.id
-//      WHERE (tblbooks.ISBNNumber=:bookid || tblbooks.BookName like '%$bookid%') and (tblissuedbookdetails.ReturnStatus is null || tblissuedbookdetails.ReturnStatus='')";
-// $query= $dbh -> prepare($sql);
-// $query-> bindParam(':bookid', $bookid, PDO::PARAM_STR);
-// $query-> execute();
-// $results = $query -> fetchAll(PDO::FETCH_OBJ);
-// $issuedbook=$query -> rowCount(); 
-
-
- 
-    $sql ="SELECT tblbooks.BookName as BookName,tblcategory.CategoryName,tblauthors.AuthorName,tblbooks.ISBNNumber,tblbooks.BookPrice,tblbooks.id as bookid,tblbooks.bookImage,tblbooks.isIssued,tblbooks.bookQty,  
-               COUNT(tblissuedbookdetails.id) AS issuedBooks,
-   COUNT(tblissuedbookdetails.ReturnStatus) AS returnedbook
-
-        FROM tblbooks
-        LEFT JOIN tblissuedbookdetails ON tblissuedbookdetails.BookId = tblbooks.id
-        LEFT JOIN tblauthors ON tblauthors.id = tblbooks.AuthorId
-        Left join tblcategory on tblcategory.id=tblbooks.CatId
-     WHERE (tblbooks.ISBNNumber=:bookid || tblbooks.BookName like '%$bookid%') group by BookName";
-$query= $dbh -> prepare($sql);
-$query-> bindParam(':bookid', $bookid, PDO::PARAM_STR);
-$query-> execute();
-$results = $query -> fetchAll(PDO::FETCH_OBJ);
-$cnt=1;
-if($query -> rowCount() > 0){
-?>
-<table border="1">
-
-  <tr>
-<?php foreach ($results as $result) {?>
-    <th style="padding-left:5%; width: 10%;">
-<img src="bookimg/<?php echo htmlentities($result->bookImage); ?>" width="120"><br />
-      <?php echo htmlentities($result->BookName); ?><br />
-    <?php echo htmlentities($result->AuthorName); ?><br />
-  Book Qunatity:  <?php echo htmlentities($bqty=$result->bookQty); ?><br />
-  Available Book Qunatity:  <?php  echo htmlentities($aqty=$result->bookQty-($result->issuedBooks-$result->returnedbook));
-?><br />
-    <?php if($aqty=='0'): ?>
-<p style="color:red;">Book not available for issue.</p>
-<?php else:?>
-<input type="radio" name="bookid" value="<?php echo htmlentities($result->bookid); ?>" required>
-<input type="hidden" name="aqty" value="<?php echo htmlentities($aqty); ?>" required>
-<?php endif;?>
-  </th>
-    <?php  echo "<script>$('#submit').prop('disabled',false);</script>";
-}
-?>
-  </tr>
-
-</table>
-</div>
-</div>
-
-<?php  
-}else{?>
-<p>Record not found. Please try again.</p>
-<?php
- echo "<script>$('#submit').prop('disabled',true);</script>";
-}
+    $bookid = $_POST["bookid"];
+  
+    $sql = "SELECT b.id, b.BookName, b.ISBNNumber, b.bookImage, b.bookQty, 
+                   c.CategoryName, p.PublisherName,
+                   (SELECT COUNT(*) FROM tblissuedbookdetails 
+                    WHERE BookId = b.id AND ReturnStatus = 0) AS issuedCount
+            FROM tblbooks b
+            LEFT JOIN tblcategory c ON c.id = b.CatId
+            LEFT JOIN tblpublishers p ON p.id = b.PublisherID
+            WHERE (b.ISBNNumber = :bookid OR b.BookName LIKE :bookname)
+            ORDER BY b.BookName";
+           
+    $query = $dbh->prepare($sql);
+    $booknameParam = "%$bookid%";
+    $query->bindParam(':bookid', $bookid, PDO::PARAM_STR);
+    $query->bindParam(':bookname', $booknameParam, PDO::PARAM_STR);
+    $query->execute();
+    $results = $query->fetchAll(PDO::FETCH_OBJ);
+    
+    if($query->rowCount() > 0) {
+        echo '<div class="row" style="margin-top:20px;">';
+        foreach ($results as $result) {
+            $availableQty = $result->bookQty - $result->issuedCount;
+            $isAvailable = $availableQty > 0;
+            
+            echo '<div class="col-md-4">
+                    <div class="panel panel-'.($isAvailable ? 'success' : 'danger').' book-card">
+                        <div class="panel-heading">
+                            '.htmlentities($result->BookName).'
+                        </div>
+                        <div class="panel-body">
+                            <div class="text-center">
+                                <img src="../shared/bookimg/'.htmlentities($result->bookImage).'" 
+                                     class="img-thumbnail" 
+                                     style="max-height:180px;margin-bottom:15px;">
+                            </div>
+                            <table class="table table-condensed">
+                                <tr>
+                                    <th>ISBN</th>
+                                    <td>'.htmlentities($result->ISBNNumber).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Category</th>
+                                    <td>'.htmlentities($result->CategoryName).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Publisher</th>
+                                    <td>'.htmlentities($result->PublisherName).'</td>
+                                </tr>
+                                <tr>
+                                    <th>Total Copies</th>
+                                    <td>'.htmlentities($result->bookQty).'</td>
+                                </tr>
+                                <tr class="'.($isAvailable ? 'success' : 'danger').'">
+                                    <th>Available</th>
+                                    <td><strong>'.$availableQty.'</strong></td>
+                                </tr>
+                            </table>';
+            
+            if ($isAvailable) {
+                echo '<button type="button" class="btn btn-success btn-block select-book"
+                        data-bookid="'.$result->id.'"
+                        data-isbn="'.htmlentities($result->ISBNNumber).'"
+                        data-bookname="'.htmlentities($result->BookName).'">
+                        <i class="fa fa-check"></i> Select
+                    </button>';
+            } else {
+                echo '<button type="button" class="btn btn-danger btn-block" disabled>
+                        <i class="fa fa-times"></i> Unavailable
+                    </button>';
+            }
+            
+            echo '</div></div></div>';
+        }
+        echo '</div>';
+        
+        echo '<script>
+                $(".select-book").click(function() {
+                    var bookid = $(this).data("bookid");
+                    var isbn = $(this).data("isbn");
+                    var bookname = $(this).data("bookname");
+                    
+                    // Update form fields
+                    $("#bookid").val(isbn);
+                    $("#bookid_display").val(bookname + " (" + isbn + ")");
+                    
+                    // Show selection confirmation
+                    $("#book-selection").html(\'<div class="alert alert-success">\'
+                        + \'<i class="fa fa-check-circle"></i> Selected: <strong>\'
+                        + bookname + \'</strong> (ISBN: \' + isbn + \')\'
+                        + \'</div>\');
+                    
+                    // Enable submit button
+                    $("#submit").prop("disabled", false);
+                    
+                    // Scroll to selection confirmation
+                    $("html, body").animate({
+                        scrollTop: $("#book-selection").offset().top - 100
+                    }, 500);
+                });
+              </script>';
+    } else {
+        echo '<div class="alert alert-warning">
+                <i class="fa fa-exclamation-triangle"></i> No books found matching: '.htmlentities($bookid).'
+              </div>';
+        echo '<script>
+                $("#book-selection").html("");
+                $("#submit").prop("disabled", true);
+              </script>';
+    }
 }
 ?>

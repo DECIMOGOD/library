@@ -89,10 +89,16 @@ if ($query->rowCount() > 0) {
 <?php 
         $cnt++;
     }
-} else {
-    echo "<tr><td colspan='6' class='text-center'>No issued books found</td></tr>";
-}
-?>
+} else { ?>
+    <tr>
+        <td class="text-center">#</td>
+        <td class="text-center">No issued books found</td>
+        <td class="text-center">-</td>
+        <td class="text-center">-</td>
+        <td class="text-center">-</td>
+        <td class="text-center">-</td>
+    </tr>
+<?php } ?>
                                     </tbody>
                                 </table>
                             </div>
@@ -102,7 +108,7 @@ if ($query->rowCount() > 0) {
             </div>
         </div>
     </div>
-<?php include('includes/footer.php'); ?>
+
     <script src="assets/js/jquery-1.10.2.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/dataTables/jquery.dataTables.js"></script>

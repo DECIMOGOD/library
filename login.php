@@ -29,6 +29,7 @@ if (isset($_POST['login'])) {
             $_SESSION['stdid'] = $result->id;
             if ($result->Status == 1) {
                 $_SESSION['login'] = $_POST['lrn'];
+                $_SESSION['LRN'] = $result->LRN; // Set LRN session variable
                 echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
             } else {
                 echo "<script>alert('Your Account Has been blocked. Please contact admin');</script>";

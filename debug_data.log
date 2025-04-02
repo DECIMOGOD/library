@@ -1794,3 +1794,957 @@ Array
 
 )
 
+Array
+(
+    [0] => Array
+        (
+            [id] => 16
+            [BookName] => 123123123
+            [RegDate] => 2025-03-09 19:06:49
+            [BookImage] => /library/shared/bookImg/df1328ba92b7565c3813be56213facd5.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [1] => Array
+        (
+            [id] => 11
+            [BookName] => ASP.NET Core 5 for Beginners
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/b1b6788016bbfab12cfd2722604badc9.jpg
+            [CategoryName] => Programming
+            [AuthorName] => Kyle Hill
+        )
+
+    [2] => Array
+        (
+            [id] => 10
+            [BookName] => C++: The Complete Reference, 4th Edition
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/36af5de9012bf8c804e499dc3c3b33a5.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Herbert Schildt
+        )
+
+    [3] => Array
+        (
+            [id] => 5
+            [BookName] => Murach's MySQL
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/5939d64655b4d2ae443830d73abc35b6.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [4] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [5] => Array
+        (
+            [id] => 3
+            [BookName] => physics
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/dd8267b57e0e4feee5911cb1e1a03a79.jpg
+            [CategoryName] => Science
+            [AuthorName] => HC Verma
+        )
+
+    [6] => Array
+        (
+            [id] => 13
+            [BookName] => Python All-in-One for Dummies
+            [RegDate] => 2025-01-17 22:23:48
+            [BookImage] => /library/shared/bookImg/f4ba4705a075527dd6ff5bd83a7d7562.jpg
+            [CategoryName] => Programming
+            [AuthorName] => John Shovic
+        )
+
+    [7] => Array
+        (
+            [id] => 12
+            [BookName] => Python Packages
+            [RegDate] => 2025-01-07 14:56:50
+            [BookImage] => /library/shared/bookImg/ba719639def504c64ebac89cdd0d0a85.jpg
+            [CategoryName] => Programming
+            [AuthorName] =>  Tiffany Timbers
+        )
+
+    [8] => Array
+        (
+            [id] => 8
+            [BookName] => Rich Dad Poor Dad: What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/52411b2bd2a6b2e0df3eb10943a5b640.jpg
+            [CategoryName] => General
+            [AuthorName] => Robert T. Kiyosak
+        )
+
+    [9] => Array
+        (
+            [id] => 15
+            [BookName] => Test
+            [RegDate] => 2025-03-09 11:53:47
+            [BookImage] => /library/shared/bookImg/aaa6596f190451b0cbc7e1b3ff642ee8.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [10] => Array
+        (
+            [id] => 9
+            [BookName] => The Girl Who Drank the Moon
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/f05cd198ac9335245e1fdffa793207a7.jpg
+            [CategoryName] => General
+            [AuthorName] => Kelly Barnhill
+        )
+
+    [11] => Array
+        (
+            [id] => 6
+            [BookName] => WordPress for Beginners 2022: A Visual Step-by-Step Guide to Mastering WordPress
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/144ab706ba1cb9f6c23fd6ae9c0502b3.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Dr. Andy Williams
+        )
+
+    [12] => Array
+        (
+            [id] => 7
+            [BookName] => WordPress Mastery Guide:
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/90083a56014186e88ffca10286172e64.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Kyle Hill
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 16
+            [BookName] => 123123123
+            [RegDate] => 2025-03-09 19:06:49
+            [BookImage] => /library/shared/bookImg/df1328ba92b7565c3813be56213facd5.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [1] => Array
+        (
+            [id] => 11
+            [BookName] => ASP.NET Core 5 for Beginners
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/b1b6788016bbfab12cfd2722604badc9.jpg
+            [CategoryName] => Programming
+            [AuthorName] => Kyle Hill
+        )
+
+    [2] => Array
+        (
+            [id] => 10
+            [BookName] => C++: The Complete Reference, 4th Edition
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/36af5de9012bf8c804e499dc3c3b33a5.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Herbert Schildt
+        )
+
+    [3] => Array
+        (
+            [id] => 5
+            [BookName] => Murach's MySQL
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/5939d64655b4d2ae443830d73abc35b6.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [4] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [5] => Array
+        (
+            [id] => 3
+            [BookName] => physics
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/dd8267b57e0e4feee5911cb1e1a03a79.jpg
+            [CategoryName] => Science
+            [AuthorName] => HC Verma
+        )
+
+    [6] => Array
+        (
+            [id] => 13
+            [BookName] => Python All-in-One for Dummies
+            [RegDate] => 2025-01-17 22:23:48
+            [BookImage] => /library/shared/bookImg/f4ba4705a075527dd6ff5bd83a7d7562.jpg
+            [CategoryName] => Programming
+            [AuthorName] => John Shovic
+        )
+
+    [7] => Array
+        (
+            [id] => 12
+            [BookName] => Python Packages
+            [RegDate] => 2025-01-07 14:56:50
+            [BookImage] => /library/shared/bookImg/ba719639def504c64ebac89cdd0d0a85.jpg
+            [CategoryName] => Programming
+            [AuthorName] =>  Tiffany Timbers
+        )
+
+    [8] => Array
+        (
+            [id] => 8
+            [BookName] => Rich Dad Poor Dad: What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/52411b2bd2a6b2e0df3eb10943a5b640.jpg
+            [CategoryName] => General
+            [AuthorName] => Robert T. Kiyosak
+        )
+
+    [9] => Array
+        (
+            [id] => 15
+            [BookName] => Test
+            [RegDate] => 2025-03-09 11:53:47
+            [BookImage] => /library/shared/bookImg/aaa6596f190451b0cbc7e1b3ff642ee8.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [10] => Array
+        (
+            [id] => 9
+            [BookName] => The Girl Who Drank the Moon
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/f05cd198ac9335245e1fdffa793207a7.jpg
+            [CategoryName] => General
+            [AuthorName] => Kelly Barnhill
+        )
+
+    [11] => Array
+        (
+            [id] => 6
+            [BookName] => WordPress for Beginners 2022: A Visual Step-by-Step Guide to Mastering WordPress
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/144ab706ba1cb9f6c23fd6ae9c0502b3.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Dr. Andy Williams
+        )
+
+    [12] => Array
+        (
+            [id] => 7
+            [BookName] => WordPress Mastery Guide:
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/90083a56014186e88ffca10286172e64.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Kyle Hill
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 16
+            [BookName] => 123123123
+            [RegDate] => 2025-03-09 19:06:49
+            [BookImage] => /library/shared/bookImg/df1328ba92b7565c3813be56213facd5.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [1] => Array
+        (
+            [id] => 11
+            [BookName] => ASP.NET Core 5 for Beginners
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/b1b6788016bbfab12cfd2722604badc9.jpg
+            [CategoryName] => Programming
+            [AuthorName] => Kyle Hill
+        )
+
+    [2] => Array
+        (
+            [id] => 10
+            [BookName] => C++: The Complete Reference, 4th Edition
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/36af5de9012bf8c804e499dc3c3b33a5.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Herbert Schildt
+        )
+
+    [3] => Array
+        (
+            [id] => 5
+            [BookName] => Murach's MySQL
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/5939d64655b4d2ae443830d73abc35b6.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [4] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [5] => Array
+        (
+            [id] => 3
+            [BookName] => physics
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/dd8267b57e0e4feee5911cb1e1a03a79.jpg
+            [CategoryName] => Science
+            [AuthorName] => HC Verma
+        )
+
+    [6] => Array
+        (
+            [id] => 13
+            [BookName] => Python All-in-One for Dummies
+            [RegDate] => 2025-01-17 22:23:48
+            [BookImage] => /library/shared/bookImg/f4ba4705a075527dd6ff5bd83a7d7562.jpg
+            [CategoryName] => Programming
+            [AuthorName] => John Shovic
+        )
+
+    [7] => Array
+        (
+            [id] => 12
+            [BookName] => Python Packages
+            [RegDate] => 2025-01-07 14:56:50
+            [BookImage] => /library/shared/bookImg/ba719639def504c64ebac89cdd0d0a85.jpg
+            [CategoryName] => Programming
+            [AuthorName] =>  Tiffany Timbers
+        )
+
+    [8] => Array
+        (
+            [id] => 8
+            [BookName] => Rich Dad Poor Dad: What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/52411b2bd2a6b2e0df3eb10943a5b640.jpg
+            [CategoryName] => General
+            [AuthorName] => Robert T. Kiyosak
+        )
+
+    [9] => Array
+        (
+            [id] => 15
+            [BookName] => Test
+            [RegDate] => 2025-03-09 11:53:47
+            [BookImage] => /library/shared/bookImg/aaa6596f190451b0cbc7e1b3ff642ee8.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [10] => Array
+        (
+            [id] => 9
+            [BookName] => The Girl Who Drank the Moon
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/f05cd198ac9335245e1fdffa793207a7.jpg
+            [CategoryName] => General
+            [AuthorName] => Kelly Barnhill
+        )
+
+    [11] => Array
+        (
+            [id] => 6
+            [BookName] => WordPress for Beginners 2022: A Visual Step-by-Step Guide to Mastering WordPress
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/144ab706ba1cb9f6c23fd6ae9c0502b3.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Dr. Andy Williams
+        )
+
+    [12] => Array
+        (
+            [id] => 7
+            [BookName] => WordPress Mastery Guide:
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/90083a56014186e88ffca10286172e64.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Kyle Hill
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 5
+            [BookName] => Murach's MySQL
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/5939d64655b4d2ae443830d73abc35b6.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 5
+            [BookName] => Murach's MySQL
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/5939d64655b4d2ae443830d73abc35b6.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 16
+            [BookName] => 123123123
+            [RegDate] => 2025-03-09 19:06:49
+            [BookImage] => /library/shared/bookImg/df1328ba92b7565c3813be56213facd5.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [1] => Array
+        (
+            [id] => 11
+            [BookName] => ASP.NET Core 5 for Beginners
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/b1b6788016bbfab12cfd2722604badc9.jpg
+            [CategoryName] => Programming
+            [AuthorName] => Kyle Hill
+        )
+
+    [2] => Array
+        (
+            [id] => 10
+            [BookName] => C++: The Complete Reference, 4th Edition
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/36af5de9012bf8c804e499dc3c3b33a5.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Herbert Schildt
+        )
+
+    [3] => Array
+        (
+            [id] => 5
+            [BookName] => Murach's MySQL
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/5939d64655b4d2ae443830d73abc35b6.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [4] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [5] => Array
+        (
+            [id] => 3
+            [BookName] => physics
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/dd8267b57e0e4feee5911cb1e1a03a79.jpg
+            [CategoryName] => Science
+            [AuthorName] => HC Verma
+        )
+
+    [6] => Array
+        (
+            [id] => 13
+            [BookName] => Python All-in-One for Dummies
+            [RegDate] => 2025-01-17 22:23:48
+            [BookImage] => /library/shared/bookImg/f4ba4705a075527dd6ff5bd83a7d7562.jpg
+            [CategoryName] => Programming
+            [AuthorName] => John Shovic
+        )
+
+    [7] => Array
+        (
+            [id] => 12
+            [BookName] => Python Packages
+            [RegDate] => 2025-01-07 14:56:50
+            [BookImage] => /library/shared/bookImg/ba719639def504c64ebac89cdd0d0a85.jpg
+            [CategoryName] => Programming
+            [AuthorName] =>  Tiffany Timbers
+        )
+
+    [8] => Array
+        (
+            [id] => 8
+            [BookName] => Rich Dad Poor Dad: What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/52411b2bd2a6b2e0df3eb10943a5b640.jpg
+            [CategoryName] => General
+            [AuthorName] => Robert T. Kiyosak
+        )
+
+    [9] => Array
+        (
+            [id] => 15
+            [BookName] => Test
+            [RegDate] => 2025-03-09 11:53:47
+            [BookImage] => /library/shared/bookImg/aaa6596f190451b0cbc7e1b3ff642ee8.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [10] => Array
+        (
+            [id] => 9
+            [BookName] => The Girl Who Drank the Moon
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/f05cd198ac9335245e1fdffa793207a7.jpg
+            [CategoryName] => General
+            [AuthorName] => Kelly Barnhill
+        )
+
+    [11] => Array
+        (
+            [id] => 6
+            [BookName] => WordPress for Beginners 2022: A Visual Step-by-Step Guide to Mastering WordPress
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/144ab706ba1cb9f6c23fd6ae9c0502b3.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Dr. Andy Williams
+        )
+
+    [12] => Array
+        (
+            [id] => 7
+            [BookName] => WordPress Mastery Guide:
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/90083a56014186e88ffca10286172e64.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Kyle Hill
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 11
+            [BookName] => ASP.NET Core 5 for Beginners
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/b1b6788016bbfab12cfd2722604badc9.jpg
+            [CategoryName] => Programming
+            [AuthorName] => Kyle Hill
+        )
+
+    [1] => Array
+        (
+            [id] => 10
+            [BookName] => C++: The Complete Reference, 4th Edition
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/36af5de9012bf8c804e499dc3c3b33a5.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Herbert Schildt
+        )
+
+    [2] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [3] => Array
+        (
+            [id] => 3
+            [BookName] => physics
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/dd8267b57e0e4feee5911cb1e1a03a79.jpg
+            [CategoryName] => Science
+            [AuthorName] => HC Verma
+        )
+
+    [4] => Array
+        (
+            [id] => 13
+            [BookName] => Python All-in-One for Dummies
+            [RegDate] => 2025-01-17 22:23:48
+            [BookImage] => /library/shared/bookImg/f4ba4705a075527dd6ff5bd83a7d7562.jpg
+            [CategoryName] => Programming
+            [AuthorName] => John Shovic
+        )
+
+    [5] => Array
+        (
+            [id] => 12
+            [BookName] => Python Packages
+            [RegDate] => 2025-01-07 14:56:50
+            [BookImage] => /library/shared/bookImg/ba719639def504c64ebac89cdd0d0a85.jpg
+            [CategoryName] => Programming
+            [AuthorName] =>  Tiffany Timbers
+        )
+
+    [6] => Array
+        (
+            [id] => 8
+            [BookName] => Rich Dad Poor Dad: What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/52411b2bd2a6b2e0df3eb10943a5b640.jpg
+            [CategoryName] => General
+            [AuthorName] => Robert T. Kiyosak
+        )
+
+    [7] => Array
+        (
+            [id] => 6
+            [BookName] => WordPress for Beginners 2022: A Visual Step-by-Step Guide to Mastering WordPress
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/144ab706ba1cb9f6c23fd6ae9c0502b3.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Dr. Andy Williams
+        )
+
+    [8] => Array
+        (
+            [id] => 7
+            [BookName] => WordPress Mastery Guide:
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/90083a56014186e88ffca10286172e64.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Kyle Hill
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 16
+            [BookName] => 123123123
+            [RegDate] => 2025-03-09 19:06:49
+            [BookImage] => /library/shared/bookImg/df1328ba92b7565c3813be56213facd5.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [1] => Array
+        (
+            [id] => 11
+            [BookName] => ASP.NET Core 5 for Beginners
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/b1b6788016bbfab12cfd2722604badc9.jpg
+            [CategoryName] => Programming
+            [AuthorName] => Kyle Hill
+        )
+
+    [2] => Array
+        (
+            [id] => 10
+            [BookName] => C++: The Complete Reference, 4th Edition
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/36af5de9012bf8c804e499dc3c3b33a5.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Herbert Schildt
+        )
+
+    [3] => Array
+        (
+            [id] => 5
+            [BookName] => Murach's MySQL
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/5939d64655b4d2ae443830d73abc35b6.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [4] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [5] => Array
+        (
+            [id] => 3
+            [BookName] => physics
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/dd8267b57e0e4feee5911cb1e1a03a79.jpg
+            [CategoryName] => Science
+            [AuthorName] => HC Verma
+        )
+
+    [6] => Array
+        (
+            [id] => 13
+            [BookName] => Python All-in-One for Dummies
+            [RegDate] => 2025-01-17 22:23:48
+            [BookImage] => /library/shared/bookImg/f4ba4705a075527dd6ff5bd83a7d7562.jpg
+            [CategoryName] => Programming
+            [AuthorName] => John Shovic
+        )
+
+    [7] => Array
+        (
+            [id] => 12
+            [BookName] => Python Packages
+            [RegDate] => 2025-01-07 14:56:50
+            [BookImage] => /library/shared/bookImg/ba719639def504c64ebac89cdd0d0a85.jpg
+            [CategoryName] => Programming
+            [AuthorName] =>  Tiffany Timbers
+        )
+
+    [8] => Array
+        (
+            [id] => 8
+            [BookName] => Rich Dad Poor Dad: What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/52411b2bd2a6b2e0df3eb10943a5b640.jpg
+            [CategoryName] => General
+            [AuthorName] => Robert T. Kiyosak
+        )
+
+    [9] => Array
+        (
+            [id] => 15
+            [BookName] => Test
+            [RegDate] => 2025-03-09 11:53:47
+            [BookImage] => /library/shared/bookImg/aaa6596f190451b0cbc7e1b3ff642ee8.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [10] => Array
+        (
+            [id] => 9
+            [BookName] => The Girl Who Drank the Moon
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/f05cd198ac9335245e1fdffa793207a7.jpg
+            [CategoryName] => General
+            [AuthorName] => Kelly Barnhill
+        )
+
+    [11] => Array
+        (
+            [id] => 6
+            [BookName] => WordPress for Beginners 2022: A Visual Step-by-Step Guide to Mastering WordPress
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/144ab706ba1cb9f6c23fd6ae9c0502b3.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Dr. Andy Williams
+        )
+
+    [12] => Array
+        (
+            [id] => 7
+            [BookName] => WordPress Mastery Guide:
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/90083a56014186e88ffca10286172e64.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Kyle Hill
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+)
+
+Array
+(
+    [0] => Array
+        (
+            [id] => 16
+            [BookName] => 123123123
+            [RegDate] => 2025-03-09 19:06:49
+            [BookImage] => /library/shared/bookImg/df1328ba92b7565c3813be56213facd5.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [1] => Array
+        (
+            [id] => 11
+            [BookName] => ASP.NET Core 5 for Beginners
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/b1b6788016bbfab12cfd2722604badc9.jpg
+            [CategoryName] => Programming
+            [AuthorName] => Kyle Hill
+        )
+
+    [2] => Array
+        (
+            [id] => 10
+            [BookName] => C++: The Complete Reference, 4th Edition
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/36af5de9012bf8c804e499dc3c3b33a5.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Herbert Schildt
+        )
+
+    [3] => Array
+        (
+            [id] => 5
+            [BookName] => Murach's MySQL
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/5939d64655b4d2ae443830d73abc35b6.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [4] => Array
+        (
+            [id] => 1
+            [BookName] => PHP And MySql programming
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/1efecc0ca822e40b7b673c0d79ae943f.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Anuj kumar
+        )
+
+    [5] => Array
+        (
+            [id] => 3
+            [BookName] => physics
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/dd8267b57e0e4feee5911cb1e1a03a79.jpg
+            [CategoryName] => Science
+            [AuthorName] => HC Verma
+        )
+
+    [6] => Array
+        (
+            [id] => 13
+            [BookName] => Python All-in-One for Dummies
+            [RegDate] => 2025-01-17 22:23:48
+            [BookImage] => /library/shared/bookImg/f4ba4705a075527dd6ff5bd83a7d7562.jpg
+            [CategoryName] => Programming
+            [AuthorName] => John Shovic
+        )
+
+    [7] => Array
+        (
+            [id] => 12
+            [BookName] => Python Packages
+            [RegDate] => 2025-01-07 14:56:50
+            [BookImage] => /library/shared/bookImg/ba719639def504c64ebac89cdd0d0a85.jpg
+            [CategoryName] => Programming
+            [AuthorName] =>  Tiffany Timbers
+        )
+
+    [8] => Array
+        (
+            [id] => 8
+            [BookName] => Rich Dad Poor Dad: What the Rich Teach Their Kids About Money That the Poor and Middle Class Do Not
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/52411b2bd2a6b2e0df3eb10943a5b640.jpg
+            [CategoryName] => General
+            [AuthorName] => Robert T. Kiyosak
+        )
+
+    [9] => Array
+        (
+            [id] => 15
+            [BookName] => Test
+            [RegDate] => 2025-03-09 11:53:47
+            [BookImage] => /library/shared/bookImg/aaa6596f190451b0cbc7e1b3ff642ee8.png
+            [CategoryName] => Romantic
+            [AuthorName] => Anuj kumar
+        )
+
+    [10] => Array
+        (
+            [id] => 9
+            [BookName] => The Girl Who Drank the Moon
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/f05cd198ac9335245e1fdffa793207a7.jpg
+            [CategoryName] => General
+            [AuthorName] => Kelly Barnhill
+        )
+
+    [11] => Array
+        (
+            [id] => 6
+            [BookName] => WordPress for Beginners 2022: A Visual Step-by-Step Guide to Mastering WordPress
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/144ab706ba1cb9f6c23fd6ae9c0502b3.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Dr. Andy Williams
+        )
+
+    [12] => Array
+        (
+            [id] => 7
+            [BookName] => WordPress Mastery Guide:
+            [RegDate] => 2024-01-02 09:23:03
+            [BookImage] => /library/shared/bookImg/90083a56014186e88ffca10286172e64.jpg
+            [CategoryName] => Technology
+            [AuthorName] => Kyle Hill
+        )
+
+)
+

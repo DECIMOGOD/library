@@ -1,131 +1,114 @@
 <?php
-// Enable error reporting for debugging
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+session_start();
+include('includes/config.php');
+header('Content-Type: application/json');
 
-// Database connection
-$host = 'localhost';
-$dbname = 'library';
-$username = 'root'; // Replace with your database username
-$password = ''; // Replace with your database password
+// Check if user is logged in
+if (!isset($_SESSION['login'])) {
+    http_response_code(401);
+    echo json_encode(['error' => 'Unauthorized']);
+    exit();
+}
 
 try {
-    // Connect to the database
-    $conn = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
-    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-    // Log incoming query parameters for debugging
-    file_put_contents('debug_params.log', print_r($_GET, true) . PHP_EOL, FILE_APPEND);
-
-    // Get query parameters
+    // Get and sanitize parameters
+    $search = $_GET['search'] ?? '';
+    $page = max(1, (int)($_GET['page'] ?? 1));
+    $perPage = min(max(5, (int)($_GET['per_page'] ?? 12)), 50);
+    $offset = ($page - 1) * $perPage;
     $genre = $_GET['genre'] ?? '';
     $year = $_GET['year'] ?? '';
-    $sort = $_GET['sort'] ?? '';
-    $search = $_GET['search'] ?? '';
 
-    // Base query - Updated to use tblpublishers instead of tblauthors
-    $sql = "SELECT b.id, b.BookName, b.RegDate, 
-                   b.bookImage AS BookImage, p.PublisherName, c.CategoryName 
+    // Base query with SQL_CALC_FOUND_ROWS for pagination
+    $sql = "SELECT SQL_CALC_FOUND_ROWS 
+            b.id, b.BookName, b.ISBNNumber, b.bookImage, b.bookQty, b.RegDate,
+            p.PublisherName, c.CategoryName
             FROM tblbooks b
-            JOIN tblpublishers p ON b.AuthorId = p.id
-            JOIN tblcategory c ON b.CatId = c.id
+            LEFT JOIN tblpublishers p ON b.PublisherId = p.id
+            LEFT JOIN tblcategory c ON b.CatId = c.id
             WHERE 1=1";
 
-    // Apply filters
+    $params = [];
+    $types = [];
+
+    // Add search conditions
+    if (!empty($search)) {
+        $sql .= " AND (b.BookName LIKE :search 
+                  OR b.ISBNNumber LIKE :search
+                  OR p.PublisherName LIKE :search
+                  OR c.CategoryName LIKE :search)";
+        $params[':search'] = "%$search%";
+        $types[':search'] = PDO::PARAM_STR;
+    }
+
+    // Add genre filter
     if (!empty($genre)) {
         $sql .= " AND c.CategoryName = :genre";
+        $params[':genre'] = $genre;
+        $types[':genre'] = PDO::PARAM_STR;
     }
+
+    // Add year filter
     if (!empty($year)) {
-        if ($year === '2020') {
-            $sql .= " AND YEAR(b.RegDate) >= 2020";
-        } elseif ($year === '2010') {
-            $sql .= " AND YEAR(b.RegDate) BETWEEN 2010 AND 2019";
-        } elseif ($year === '2000') {
-            $sql .= " AND YEAR(b.RegDate) BETWEEN 2000 AND 2009";
-        } elseif ($year === '1990') {
-            $sql .= " AND YEAR(b.RegDate) BETWEEN 1990 AND 1999";
-        } elseif ($year === 'older') {
-            $sql .= " AND YEAR(b.RegDate) < 1990";
-        }
-    }
-    if (!empty($search)) {
-        $sql .= " AND (b.BookName LIKE :search OR p.PublisherName LIKE :search OR c.CategoryName LIKE :search)";
-    }
-
-    // Apply sorting - Removed price sorting option
-    if (!empty($sort)) {
-        if ($sort === 'newest') {
-            $sql .= " ORDER BY b.RegDate DESC";
-        } elseif ($sort === 'title') {
-            $sql .= " ORDER BY b.BookName ASC";
-        }
-    } else {
-        // Default sorting if none specified
-        $sql .= " ORDER BY b.BookName ASC";
-    }
-
-    // Log the final SQL query for debugging
-    file_put_contents('debug_sql.log', $sql . PHP_EOL, FILE_APPEND);
-
-    // Prepare and execute the query
-    $stmt = $conn->prepare($sql);
-
-    // Bind parameters if they exist
-    if (!empty($genre)) {
-        $stmt->bindParam(':genre', $genre, PDO::PARAM_STR);
-    }
-    if (!empty($search)) {
-        $searchTerm = "%$search%";
-        $stmt->bindParam(':search', $searchTerm, PDO::PARAM_STR);
-    }
-
-    $stmt->execute();
-    $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-    // Check if no books were found
-    if (empty($books)) {
-        throw new Exception('No books found matching the criteria.');
-    }
-
-    // Add the correct image path to each book record
-    foreach ($books as &$book) {
-        // Check if BookImage field exists and is not empty
-        if (isset($book['BookImage']) && !empty($book['BookImage'])) {
-            // Update to use the shared folder path
-            $book['BookImage'] = '/library/shared/bookImg/' . $book['BookImage'];
-        } else {
-            // Set a default image if none exists
-            $book['BookImage'] = '/library/shared/bookImg/placeholder-book.jpg';
-        }
+        $yearCondition = match($year) {
+            '2020' => "YEAR(b.RegDate) >= 2020",
+            '2010' => "YEAR(b.RegDate) BETWEEN 2010 AND 2019",
+            '2000' => "YEAR(b.RegDate) BETWEEN 2000 AND 2009",
+            '1990' => "YEAR(b.RegDate) BETWEEN 1990 AND 1999",
+            'older' => "YEAR(b.RegDate) < 1990",
+            default => ""
+        };
         
-        // Rename PublisherName to AuthorName for backward compatibility with frontend
-        if (isset($book['PublisherName'])) {
-            $book['AuthorName'] = $book['PublisherName'];
-            unset($book['PublisherName']); // Remove the original field
+        if ($yearCondition) {
+            $sql .= " AND $yearCondition";
         }
     }
-    unset($book); // Break the reference to the last element
 
-    // Debug output of the data
-    file_put_contents('debug_data.log', print_r($books, true) . PHP_EOL, FILE_APPEND);
+    // Add sorting and pagination
+    $sql .= " ORDER BY b.BookName ASC LIMIT :offset, :per_page";
+    $params[':offset'] = $offset;
+    $types[':offset'] = PDO::PARAM_INT;
+    $params[':per_page'] = $perPage;
+    $types[':per_page'] = PDO::PARAM_INT;
+
+    // Prepare and execute query
+    $query = $dbh->prepare($sql);
+    
+    foreach ($params as $key => $value) {
+        $query->bindValue($key, $value, $types[$key] ?? PDO::PARAM_STR);
+    }
+
+    $query->execute();
+    $books = $query->fetchAll(PDO::FETCH_ASSOC);
+
+    // Get total count
+    $total = $dbh->query("SELECT FOUND_ROWS()")->fetchColumn();
+    $totalPages = ceil($total / $perPage);
+
+    // Process image paths
+    foreach ($books as &$book) {
+        $book['bookImage'] = !empty($book['bookImage']) 
+            ? 'shared/bookimg/' . $book['bookImage']
+            : 'shared/bookimg/placeholder.jpg';
+    }
 
     // Return JSON response
-    header('Content-Type: application/json');
-    echo json_encode($books);
+    echo json_encode([
+        'success' => true,
+        'data' => $books,
+        'pagination' => [
+            'total' => (int)$total,
+            'current_page' => $page,
+            'per_page' => $perPage,
+            'total_pages' => $totalPages
+        ]
+    ]);
+
 } catch (PDOException $e) {
-    // Log database errors for debugging
-    file_put_contents('error.log', date('Y-m-d H:i:s') . ' - ' . $e->getMessage() . "\n", FILE_APPEND);
-    
-    // Return error as JSON
-    header('Content-Type: application/json');
-    echo json_encode(['error' => 'Database error: ' . $e->getMessage()]);
-} catch (Exception $e) {
-    // Log general errors for debugging
-    file_put_contents('error.log', date('Y-m-d H:i:s') . ' - ' . $e->getMessage() . "\n", FILE_APPEND);
-    
-    // Return error as JSON
-    header('Content-Type: application/json');
-    echo json_encode(['error' => $e->getMessage()]);
+    http_response_code(500);
+    echo json_encode([
+        'success' => false,
+        'error' => 'Database error: ' . $e->getMessage()
+    ]);
 }
 ?>
