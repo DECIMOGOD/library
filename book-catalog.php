@@ -1,354 +1,230 @@
-<?php
-session_start();
-include('includes/config.php');
-
-if (!isset($_SESSION['login'])) {
-    header('location:index.php');
-    exit();
-}
-
-$role = $_SESSION['role'] ?? 'student';
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <title>Online Library Management System | Book Catalog</title>
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <link href="assets/css/style.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Library Book Catalog</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .book-card {
-            border: 1px solid #e1e1e1;
-            border-radius: 5px;
-            padding: 15px;
-            margin-bottom: 20px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
             height: 100%;
-            transition: all 0.3s ease;
         }
         .book-card:hover {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        .book-image {
-            max-height: 180px;
-            width: auto;
-            margin: 0 auto;
-            display: block;
+        .book-cover {
+            height: 300px;
+            overflow: hidden;
         }
-        .filters {
-            background: #f8f9fa;
-            padding: 15px;
-            border-radius: 5px;
-            margin-bottom: 20px;
+        .book-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto 30px;
         }
         #loadingIndicator {
-            display: none;
-            text-align: center;
-            padding: 20px;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 1000;
         }
-        .spinner {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #3498db;
-            border-radius: 50%;
-            width: 30px;
-            height: 30px;
-            animation: spin 1s linear infinite;
-            margin: 0 auto;
-        }
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        .pagination .page-item.active .page-link {
-            background-color: #007bff;
-            border-color: #007bff;
+        .error-alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            max-width: 400px;
         }
     </style>
 </head>
 <body>
-    <?php include('includes/header.php'); ?>
-    
-    <div class="content-wrapper">
-        <div class="container">
-            <div class="row pad-botm">
-                <div class="col-md-12">
-                    <h4 class="header-line">Book Catalog</h4>
-                </div>
+    <?php include 'includes/header.php'; ?>
+
+    <div class="container py-5">
+        <div class="search-box input-group mb-4">
+            <input type="text" id="searchInput" class="form-control" placeholder="Search books...">
+            <button class="btn btn-primary" id="searchButton">Search</button>
+        </div>
+
+        <div class="row mb-4">
+            <div class="col-md-3">
+                <select class="form-select" id="genreFilter">
+                    <option value="">All Genres</option>
+                    <option value="Technology">Technology</option>
+                    <option value="Science">Science</option>
+                    <option value="Programming">Programming</option>
+                </select>
             </div>
-
-            <!-- Search and Filters -->
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="filters">
-                        <div class="row">
-                            <div class="col-md-8">
-                                <div class="input-group mb-3">
-                                    <input type="text" id="searchInput" class="form-control" 
-                                           placeholder="Search by book, author, ISBN...">
-                                    <div class="input-group-append">
-                                        <button class="btn btn-primary" id="searchBtn" type="button">
-                                            <i class="fa fa-search"></i> Search
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-md-4">
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <select class="form-control" id="genreFilter">
-                                            <option value="">All Genres</option>
-                                            <?php
-                                            $genres = $dbh->query("SELECT DISTINCT CategoryName FROM tblcategory")->fetchAll();
-                                            foreach ($genres as $genre) {
-                                                echo '<option value="'.htmlspecialchars($genre['CategoryName']).'">'.htmlspecialchars($genre['CategoryName']).'</option>';
-                                            }
-                                            ?>
-                                        </select>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <select class="form-control" id="yearFilter">
-                                            <option value="">All Years</option>
-                                            <option value="2020">2020+</option>
-                                            <option value="2010">2010-2019</option>
-                                            <option value="2000">2000-2009</option>
-                                            <option value="1990">1990-1999</option>
-                                            <option value="older">Before 1990</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <div class="col-md-3">
+                <select class="form-select" id="yearFilter">
+                    <option value="">All Years</option>
+                    <option value="2020">2020+</option>
+                    <option value="2010">2010-2019</option>
+                </select>
             </div>
-
-            <!-- Loading Indicator -->
-            <div id="loadingIndicator">
-                <div class="spinner"></div>
-                <p>Loading books...</p>
+            <div class="col-md-3">
+                <select class="form-select" id="sortFilter">
+                    <option value="">Default Sort</option>
+                    <option value="newest">Newest First</option>
+                    <option value="title">Title A-Z</option>
+                </select>
             </div>
+            <div class="col-md-3">
+                <button class="btn btn-outline-secondary w-100" id="resetFilters">Reset Filters</button>
+            </div>
+        </div>
 
-            <!-- Error Message -->
-            <div id="errorMessage" class="alert alert-danger" style="display:none;"></div>
+        <div id="bookGrid" class="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4"></div>
 
-            <!-- Book Grid -->
-            <div class="row" id="bookGrid"></div>
+        <div id="noResults" class="text-center py-5" style="display: none;">
+            <h4>No books found matching your criteria</h4>
+            <button class="btn btn-primary mt-3" id="resetSearch">Reset Search</button>
+        </div>
 
-            <!-- Pagination -->
+        <div class="d-flex justify-content-center mt-5">
             <nav aria-label="Page navigation">
-                <ul class="pagination justify-content-center" id="pagination"></ul>
+                <ul class="pagination" id="pagination">
+                    <!-- Pagination will be inserted here by JavaScript -->
+                </ul>
             </nav>
         </div>
     </div>
 
-    <script src="assets/js/jquery-1.10.2.js"></script>
-    <script src="assets/js/bootstrap.js"></script>
+    <!-- Loading Indicator -->
+    <div id="loadingIndicator" class="spinner-border text-primary" style="display: none;"></div>
+
+    <!-- Error Alert -->
+    <div id="errorAlert" class="alert alert-danger error-alert" style="display: none;">
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        <strong>Error:</strong> <span id="errorMessage"></span>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        $(document).ready(function() {
-            let currentPage = 1;
-            const booksPerPage = 12;
-            let isLoading = false;
-
-            // Initial load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize
             loadBooks();
-
-            // Search button click
-            $('#searchBtn').click(function() {
-                currentPage = 1;
-                loadBooks();
+            
+            // Event listeners
+            document.getElementById('searchButton').addEventListener('click', loadBooks);
+            document.getElementById('resetFilters').addEventListener('click', resetFilters);
+            document.getElementById('resetSearch').addEventListener('click', resetFilters);
+            
+            // Debounced search input
+            let searchTimer;
+            document.getElementById('searchInput').addEventListener('input', function() {
+                clearTimeout(searchTimer);
+                searchTimer = setTimeout(loadBooks, 500);
             });
-
-            // Enter key in search
-            $('#searchInput').keypress(function(e) {
-                if (e.which === 13) {
-                    currentPage = 1;
-                    loadBooks();
-                }
-            });
-
+            
             // Filter changes
-            $('#genreFilter, #yearFilter').change(function() {
-                currentPage = 1;
-                loadBooks();
-            });
-
-            // Load books function
-            function loadBooks() {
-                if (isLoading) return;
-                
-                isLoading = true;
-                showLoading(true);
-                hideError();
-
-                const search = $('#searchInput').val().trim();
-                const genre = $('#genreFilter').val();
-                const year = $('#yearFilter').val();
-
-                $.ajax({
-                    url: 'fetch-books.php',
-                    method: 'GET',
-                    data: {
-                        search: search,
-                        genre: genre,
-                        year: year,
-                        page: currentPage,
-                        per_page: booksPerPage
-                    },
-                    dataType: 'json',
-                    success: function(data) {
-                        if (data.success) {
-                            displayBooks(data);
-                            updatePagination(data.pagination);
-                        } else {
-                            showError(data.error || 'Failed to load books');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        showError('Error loading books: ' + error);
-                        console.error('AJAX Error:', status, error);
-                    },
-                    complete: function() {
-                        isLoading = false;
-                        showLoading(false);
-                    }
-                });
-            }
-
-            // Display books
-            function displayBooks(data) {
-                const bookGrid = $('#bookGrid');
-                bookGrid.empty();
-
-                if (!data.data || data.data.length === 0) {
-                    bookGrid.html('<div class="col-md-12"><div class="alert alert-info">No books found matching your criteria.</div></div>');
-                    return;
-                }
-
-                data.data.forEach(book => {
-                    const bookCard = `
-                        <div class="col-md-4 mb-4">
-                            <div class="book-card">
-                                <div class="text-center">
-                                    <img src="${book.bookImage}" class="book-image img-fluid" 
-                                         onerror="this.src='shared/bookimg/placeholder.jpg'">
-                                </div>
-                                <h4>${escapeHtml(book.BookName)}</h4>
-                                <p><strong>Publisher:</strong> ${escapeHtml(book.PublisherName)}</p>
-                                <p><strong>Category:</strong> ${escapeHtml(book.CategoryName)}</p>
-                                <p><strong>ISBN:</strong> ${escapeHtml(book.ISBNNumber)}</p>
-                                <p><strong>Available:</strong> ${book.bookQty}</p>
-                                ${role === 'librarian' ? 
-                                    `<a href="issue-book.php?bookid=${book.id}" class="btn btn-primary btn-sm btn-block">
-                                        <i class="fa fa-book"></i> Issue This Book
-                                    </a>` : ''}
-                            </div>
-                        </div>
-                    `;
-                    bookGrid.append(bookCard);
-                });
-            }
-
-            // Update pagination
-            function updatePagination(pagination) {
-                const paginationEl = $('#pagination');
-                paginationEl.empty();
-
-                if (pagination.total_pages <= 1) return;
-
-                // Previous button
-                const prevLi = $(`<li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
-                    <a class="page-link" href="#" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>`);
-                prevLi.click(e => {
-                    e.preventDefault();
-                    if (currentPage > 1) changePage(currentPage - 1);
-                });
-                paginationEl.append(prevLi);
-
-                // Page numbers
-                const maxVisible = 5;
-                let start = Math.max(1, currentPage - Math.floor(maxVisible / 2));
-                let end = Math.min(pagination.total_pages, start + maxVisible - 1);
-
-                if (end - start + 1 < maxVisible) {
-                    start = Math.max(1, end - maxVisible + 1);
-                }
-
-                if (start > 1) {
-                    paginationEl.append(createPageItem(1));
-                    if (start > 2) {
-                        paginationEl.append('<li class="page-item disabled"><span class="page-link">...</span></li>');
-                    }
-                }
-
-                for (let i = start; i <= end; i++) {
-                    paginationEl.append(createPageItem(i));
-                }
-
-                if (end < pagination.total_pages) {
-                    if (end < pagination.total_pages - 1) {
-                        paginationEl.append('<li class="page-item disabled"><span class="page-link">...</span></li>');
-                    }
-                    paginationEl.append(createPageItem(pagination.total_pages));
-                }
-
-                // Next button
-                const nextLi = $(`<li class="page-item ${currentPage === pagination.total_pages ? 'disabled' : ''}">
-                    <a class="page-link" href="#" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>`);
-                nextLi.click(e => {
-                    e.preventDefault();
-                    if (currentPage < pagination.total_pages) changePage(currentPage + 1);
-                });
-                paginationEl.append(nextLi);
-            }
-
-            function createPageItem(pageNum) {
-                const isActive = pageNum === currentPage;
-                return $(`<li class="page-item ${isActive ? 'active' : ''}">
-                    <a class="page-link" href="#">${pageNum}</a>
-                </li>`).click(e => {
-                    e.preventDefault();
-                    changePage(pageNum);
-                });
-            }
-
-            function changePage(newPage) {
-                currentPage = newPage;
-                loadBooks();
-                $('html, body').animate({ scrollTop: 0 }, 'fast');
-            }
-
-            function showLoading(show) {
-                $('#loadingIndicator').toggle(show);
-            }
-
-            function showError(message) {
-                $('#errorMessage').text(message).show();
-            }
-
-            function hideError() {
-                $('#errorMessage').hide();
-            }
-
-            function escapeHtml(unsafe) {
-                return unsafe?.toString()
-                    .replace(/&/g, "&amp;")
-                    .replace(/</g, "&lt;")
-                    .replace(/>/g, "&gt;")
-                    .replace(/"/g, "&quot;")
-                    .replace(/'/g, "&#039;") || '';
-            }
-
-            // PHP role variable to JS
-            const role = '<?php echo $role; ?>';
+            document.getElementById('genreFilter').addEventListener('change', loadBooks);
+            document.getElementById('yearFilter').addEventListener('change', loadBooks);
+            document.getElementById('sortFilter').addEventListener('change', loadBooks);
         });
+
+        function loadBooks() {
+            const loading = document.getElementById('loadingIndicator');
+            const errorAlert = document.getElementById('errorAlert');
+            const bookGrid = document.getElementById('bookGrid');
+            const noResults = document.getElementById('noResults');
+            
+            // Show loading, hide others
+            loading.style.display = 'block';
+            errorAlert.style.display = 'none';
+            bookGrid.innerHTML = '';
+            noResults.style.display = 'none';
+            
+            // Get filters
+            const params = new URLSearchParams({
+                genre: document.getElementById('genreFilter').value,
+                year: document.getElementById('yearFilter').value,
+                sort: document.getElementById('sortFilter').value,
+                search: document.getElementById('searchInput').value
+            });
+            
+            fetch(`fetch-books.php?${params}`)
+                .then(async response => {
+                    // Check if response is JSON
+                    const contentType = response.headers.get('content-type');
+                    if (!contentType || !contentType.includes('application/json')) {
+                        const text = await response.text();
+                        throw new Error(`Invalid response: ${text.substring(0, 100)}`);
+                    }
+                    
+                    if (!response.ok) {
+                        const error = await response.json();
+                        throw new Error(error.message || 'Request failed');
+                    }
+                    
+                    return response.json();
+                })
+                .then(data => {
+                    if (!data.success) {
+                        throw new Error(data.error || 'Unknown error occurred');
+                    }
+                    
+                    if (data.data.length === 0) {
+                        noResults.style.display = 'block';
+                        return;
+                    }
+                    
+                    renderBooks(data.data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    document.getElementById('errorMessage').textContent = 
+                        error.message || 'Failed to load books';
+                    errorAlert.style.display = 'block';
+                })
+                .finally(() => {
+                    loading.style.display = 'none';
+                });
+        }
+
+        function renderBooks(books) {
+            const bookGrid = document.getElementById('bookGrid');
+            
+            books.forEach(book => {
+                const col = document.createElement('div');
+                col.className = 'col';
+                
+                col.innerHTML = `
+                    <div class="card book-card h-100">
+                        <div class="book-cover">
+                            <img src="${book.BookImage}" class="card-img-top" alt="${book.BookName}"
+                                 onerror="this.src='assets/images/default-book.jpg'">
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">${book.BookName}</h5>
+                            <p class="card-text text-muted">${book.AuthorName}</p>
+                            <span class="badge bg-primary">${book.CategoryName}</span>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <small class="text-muted">Added: ${book.RegDate}</small>
+                        </div>
+                    </div>
+                `;
+                
+                bookGrid.appendChild(col);
+            });
+        }
+
+        function resetFilters() {
+            document.getElementById('genreFilter').value = '';
+            document.getElementById('yearFilter').value = '';
+            document.getElementById('sortFilter').value = '';
+            document.getElementById('searchInput').value = '';
+            loadBooks();
+        }
     </script>
+    
+    <?php include 'includes/footer.php'; ?>
 </body>
 </html>

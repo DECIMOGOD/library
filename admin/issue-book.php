@@ -8,8 +8,7 @@ include('includes/config.php');
 if(strlen($_SESSION['alogin'])==0) {   
     header('location:index.php');
 }
-else{ 
-
+else0 {}
 if(isset($_POST['issue']))
 {
     $lrn=strtoupper($_POST['lrn']);

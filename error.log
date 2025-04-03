@@ -29,3 +29,4 @@
 2025-03-31 07:52:04 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.AuthorId' in 'on clause'
 2025-03-31 07:52:05 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.AuthorId' in 'on clause'
 2025-03-31 07:52:06 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.AuthorId' in 'on clause'
+2025-04-02 05:07:19 - SQLSTATE[42S22]: Column not found: 1054 Unknown column 'b.AuthorId' in 'on clause'
