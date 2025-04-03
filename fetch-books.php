@@ -1,127 +1,75 @@
 <?php
-// Strict error reporting
-declare(strict_types=1);
-ini_set('display_errors', '1');
-ini_set('display_startup_errors', '1');
-error_reporting(E_ALL);
+include 'includes/config.php';
 
-// Set JSON header first
 header('Content-Type: application/json');
 
-// Database configuration
-$config = [
-    'host' => 'localhost',
-    'dbname' => 'library',
-    'username' => 'root',
-    'password' => ''
-];
-
 try {
-    // Establish database connection
-    $dsn = "mysql:host={$config['host']};dbname={$config['dbname']};charset=utf8mb4";
-    $conn = new PDO($dsn, $config['username'], $config['password'], [
-        PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
-        PDO::ATTR_EMULATE_PREPARES => false,
-        PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC
-    ]);
+    // Get parameters from request
+    $search = isset($_GET['search']) ? trim($_GET['search']) : '';
+    $category = isset($_GET['category']) ? (int)$_GET['category'] : 0;
+    $sort = isset($_GET['sort']) ? $_GET['sort'] : 'name_asc';
 
-    // Sanitize and validate input parameters
-    $filters = [
-        'genre' => $_GET['genre'] ?? '',
-        'year' => $_GET['year'] ?? '',
-        'sort' => $_GET['sort'] ?? '',
-        'search' => $_GET['search'] ?? ''
-    ];
+    // Base query
+    $query = "SELECT 
+                b.id, 
+                b.BookName, 
+                b.ISBNNumber, 
+                b.BookPrice, 
+                b.bookImage, 
+                b.bookQty, 
+                c.CategoryName 
+              FROM tblbooks b
+              LEFT JOIN tblcategory c ON b.CatId = c.id
+              WHERE 1=1";
 
-    // Base query with correct table joins
-    $sql = "SELECT 
-                b.id,
-                b.BookName,
-                DATE_FORMAT(b.RegDate, '%Y-%m-%d') AS RegDate,
-                b.bookImage,
-                a.AuthorName,
-                c.CategoryName
-            FROM tblbooks b
-            INNER JOIN tblauthors a ON b.AuthorId = a.id
-            INNER JOIN tblcategory c ON b.CatId = c.id
-            WHERE 1=1";
-
-    $params = [];
-
-    // Apply filters
-    if (!empty($filters['genre'])) {
-        $sql .= " AND c.CategoryName = :genre";
-        $params[':genre'] = $filters['genre'];
+    // Add search condition if provided
+    if (!empty($search)) {
+        $query .= " AND (b.BookName LIKE :search OR b.ISBNNumber LIKE :search)";
     }
 
-    if (!empty($filters['year'])) {
-        $year = (int)$filters['year'];
-        $currentYear = (int)date('Y');
-        
-        if ($filters['year'] === '2020') {
-            $sql .= " AND YEAR(b.RegDate) >= 2020";
-        } elseif ($filters['year'] === '2010') {
-            $sql .= " AND YEAR(b.RegDate) BETWEEN 2010 AND 2019";
-        } // ... other year cases
+    // Add category filter if selected
+    if ($category > 0) {
+        $query .= " AND b.CatId = :category";
     }
 
-    if (!empty($filters['search'])) {
-        $sql .= " AND (b.BookName LIKE :search OR a.AuthorName LIKE :search)";
-        $params[':search'] = "%{$filters['search']}%";
-    }
-
-    // Apply sorting
-    switch ($filters['sort']) {
-        case 'newest':
-            $sql .= " ORDER BY b.RegDate DESC";
+    // Add sorting
+    switch ($sort) {
+        case 'price_asc':
+            $query .= " ORDER BY b.BookPrice ASC";
             break;
-        case 'title':
-            $sql .= " ORDER BY b.BookName ASC";
+        case 'price_desc':
+            $query .= " ORDER BY b.BookPrice DESC";
+            break;
+        default:
+            $query .= " ORDER BY b.BookName ASC";
             break;
     }
 
-    // Prepare and execute query
-    $stmt = $conn->prepare($sql);
-    $stmt->execute($params);
-    $books = $stmt->fetchAll();
+    // Prepare and execute the query
+    $stmt = $dbh->prepare($query);
 
-    // Process results
-    $response = [
-        'success' => true,
-        'data' => array_map(function($book) {
-            return [
-                'id' => $book['id'],
-                'BookName' => $book['BookName'],
-                'RegDate' => $book['RegDate'],
-                'BookImage' => $book['bookImage'] 
-                    ? 'uploads/books/' . $book['bookImage']
-                    : 'assets/images/default-book.jpg',
-                'AuthorName' => $book['AuthorName'],
-                'CategoryName' => $book['CategoryName']
-            ];
-        }, $books)
-    ];
+    if (!empty($search)) {
+        $searchParam = "%$search%";
+        $stmt->bindParam(':search', $searchParam);
+    }
 
-    echo json_encode($response);
-    exit;
+    if ($category > 0) {
+        $stmt->bindParam(':category', $category, PDO::PARAM_INT);
+    }
+
+    $stmt->execute();
+    $books = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    // Output the results
+    echo json_encode($books);
 
 } catch (PDOException $e) {
-    // Database-specific errors
+    // Handle database errors
     http_response_code(500);
     echo json_encode([
-        'success' => false,
-        'error' => 'Database Error',
-        'message' => $e->getMessage(),
-        'code' => $e->getCode()
-    ]);
-    exit;
-} catch (Exception $e) {
-    // General errors
-    http_response_code(500);
-    echo json_encode([
-        'success' => false,
-        'error' => 'Application Error',
+        'error' => 'Database error',
         'message' => $e->getMessage()
     ]);
-    exit;
+    exit();
 }
+?>
