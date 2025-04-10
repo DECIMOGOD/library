@@ -7,18 +7,18 @@ include('includes/config.php');
 
 if(strlen($_SESSION['alogin'])==0) {   
     header('location:index.php');
+    exit();
 }
-else0 {}
-if(isset($_POST['issue']))
-{
-    $lrn=strtoupper($_POST['lrn']);
-    $bookid=$_POST['bookid']; 
-    $aremark=$_POST['aremark']; 
-    $isissued=1;
-    $aqty=$_POST['aqty'];
 
-    if($aqty > 0){
-        $sql="INSERT INTO tblissuedbookdetails(LRN, BookId, remark) VALUES(:lrn, :bookid, :aremark)";
+if(isset($_POST['issue'])) {
+    $lrn = strtoupper($_POST['lrn']);
+    $bookid = $_POST['bookid']; 
+    $aremark = $_POST['aremark']; 
+    $isissued = 1;
+    $aqty = $_POST['aqty'];
+
+    if($aqty > 0) {
+        $sql = "INSERT INTO tblissuedbookdetails(LRN, BookId, remark) VALUES(:lrn, :bookid, :aremark)";
         $query = $dbh->prepare($sql);
         $query->bindParam(':lrn', $lrn, PDO::PARAM_STR);
         $query->bindParam(':bookid', $bookid, PDO::PARAM_STR);
@@ -28,20 +28,23 @@ if(isset($_POST['issue']))
 
         if($lastInsertId) {
             // Update book quantity
-            $sql = "UPDATE tblbooks SET AvailableQty = AvailableQty - 1 WHERE (ISBNNumber=:bookid OR BookName=:bookid)";
+            $sql = "UPDATE tblbooks SET bookQty = bookQty - 1 WHERE (ISBNNumber=:bookid OR BookName=:bookid)";
             $query = $dbh->prepare($sql);
             $query->bindParam(':bookid', $bookid, PDO::PARAM_STR);
             $query->execute();
 
-            $_SESSION['msg']="Book issued successfully";
+            $_SESSION['msg'] = "Book issued successfully";
             header('location:manage-issued-books.php');
+            exit();
         } else {
-            $_SESSION['error']="Something went wrong. Please try again";
+            $_SESSION['error'] = "Something went wrong. Please try again";
             header('location:manage-issued-books.php');
+            exit();
         }
     } else {
-        $_SESSION['error']="Book Not available";
-        header('location:manage-issued-books.php');   
+        $_SESSION['error'] = "Book Not available";
+        header('location:manage-issued-books.php');
+        exit();   
     }
 }
 ?>
@@ -89,6 +92,18 @@ if(isset($_POST['issue']))
             error:function (){}
         });
     }
+
+    function validateForm() {
+        var lrn = document.getElementById("lrn").value;
+        var bookid = document.getElementById("bookid").value;
+        var aremark = document.getElementById("aremark").value;
+        
+        if(lrn == "" || bookid == "" || aremark == "") {
+            alert("Please fill all required fields");
+            return false;
+        }
+        return true;
+    }
     </script> 
 
     <style type="text/css">
@@ -106,6 +121,10 @@ if(isset($_POST['issue']))
         }
         #loaderIcon {
             display: none;
+        }
+        .required-field::after {
+            content: " *";
+            color: red;
         }
     </style>
 </head>
@@ -127,8 +146,8 @@ if(isset($_POST['issue']))
                         <div class="panel-body">
                             <form method="post" onsubmit="return validateForm()">
                                 <div class="form-group">
-                                    <label>LRN<span style="color:red;">*</span></label>
-                                    <input class="form-control" type="text" name="lrn" id="lrn" onBlur="getstudent()"autocomplete="off" required pattern="[0-9]*" maxlength="12"oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                    <label class="required-field">LRN</label>
+                                    <input class="form-control" type="text" name="lrn" id="lrn" onBlur="getstudent()" autocomplete="off" required pattern="[0-9]*" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
                                 </div>
 
                                 <div class="form-group">
@@ -136,7 +155,7 @@ if(isset($_POST['issue']))
                                 </div>
 
                                 <div class="form-group">
-                                    <label>ISBN Number or Book Title<span style="color:red;">*</span></label>
+                                    <label class="required-field">ISBN Number or Book Title</label>
                                     <input class="form-control" type="text" name="bookid" id="bookid" onBlur="getbook()" required />
                                 </div>
 
@@ -147,11 +166,8 @@ if(isset($_POST['issue']))
                                     <div id="get_book_name" class="book-details"></div>
                                 </div>
 
-                                <div id="book-results" class="book-details"></div>
-                                <div id="book-selection"></div>
-
                                 <div class="form-group">
-                                    <label>Remark<span style="color:red;">*</span></label>
+                                    <label class="required-field">Remark</label>
                                     <textarea class="form-control" name="aremark" id="aremark" required></textarea> 
                                 </div>
 

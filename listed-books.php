@@ -11,7 +11,7 @@ if (!isset($_SESSION['login'])) {
 // Search and pagination
 $search = $_GET['search'] ?? '';
 $page = $_GET['page'] ?? 1;
-$booksPerPage = 5;
+$booksPerPage = 8; // Changed from 5 to 8
 $offset = ($page - 1) * $booksPerPage;
 
 // Main query
