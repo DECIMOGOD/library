@@ -102,7 +102,7 @@ if(strlen($_SESSION['login'])==0) {
     </div>
     <!-- CONTENT-WRAPPER SECTION END -->
 
-    <?php include('includes/footer.php'); ?>
+   
     <!-- FOOTER SECTION END -->
 
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE LOADING TIME -->

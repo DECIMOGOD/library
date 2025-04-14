@@ -14,23 +14,54 @@ if(isset($_POST['issue'])) {
     $lrn = strtoupper($_POST['lrn']);
     $bookid = $_POST['bookid']; 
     $aremark = $_POST['aremark']; 
-    $isissued = 1;
     $aqty = $_POST['aqty'];
 
+    // Validate inputs
+    if(empty($lrn) || empty($bookid) || empty($aremark)) {
+        $_SESSION['error'] = "All fields are required";
+        header('location:issue-book.php');
+        exit();
+    }
+
     if($aqty > 0) {
+        // Check if student exists
+        $sql = "SELECT id FROM tblstudents WHERE LRN=:lrn";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':lrn', $lrn, PDO::PARAM_STR);
+        $query->execute();
+        
+        if($query->rowCount() == 0) {
+            $_SESSION['error'] = "Student with this LRN not found";
+            header('location:issue-book.php');
+            exit();
+        }
+
+        // Check if book exists
+        $sql = "SELECT id FROM tblbooks WHERE id=:bookid";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':bookid', $bookid, PDO::PARAM_INT);
+        $query->execute();
+        
+        if($query->rowCount() == 0) {
+            $_SESSION['error'] = "Book not found";
+            header('location:issue-book.php');
+            exit();
+        }
+
+        // Issue the book
         $sql = "INSERT INTO tblissuedbookdetails(LRN, BookId, remark) VALUES(:lrn, :bookid, :aremark)";
         $query = $dbh->prepare($sql);
         $query->bindParam(':lrn', $lrn, PDO::PARAM_STR);
-        $query->bindParam(':bookid', $bookid, PDO::PARAM_STR);
+        $query->bindParam(':bookid', $bookid, PDO::PARAM_INT);
         $query->bindParam(':aremark', $aremark, PDO::PARAM_STR);
         $query->execute();
         $lastInsertId = $dbh->lastInsertId();
 
         if($lastInsertId) {
             // Update book quantity
-            $sql = "UPDATE tblbooks SET bookQty = bookQty - 1 WHERE (ISBNNumber=:bookid OR BookName=:bookid)";
+            $sql = "UPDATE tblbooks SET bookQty = bookQty - 1 WHERE id=:bookid";
             $query = $dbh->prepare($sql);
-            $query->bindParam(':bookid', $bookid, PDO::PARAM_STR);
+            $query->bindParam(':bookid', $bookid, PDO::PARAM_INT);
             $query->execute();
 
             $_SESSION['msg'] = "Book issued successfully";
@@ -38,12 +69,12 @@ if(isset($_POST['issue'])) {
             exit();
         } else {
             $_SESSION['error'] = "Something went wrong. Please try again";
-            header('location:manage-issued-books.php');
+            header('location:issue-book.php');
             exit();
         }
     } else {
-        $_SESSION['error'] = "Book Not available";
-        header('location:manage-issued-books.php');
+        $_SESSION['error'] = "Book not available";
+        header('location:issue-book.php');
         exit();   
     }
 }
@@ -62,54 +93,7 @@ if(isset($_POST['issue'])) {
     <link href="assets/css/style.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     
-    <script>
-    // function for getting student name
-    function getstudent() {
-        $("#loaderIcon").show();
-        jQuery.ajax({
-            url: "get_student.php",
-            data:'lrn='+$("#lrn").val(),
-            type: "POST",
-            success:function(data){
-                $("#get_student_name").html(data);
-                $("#loaderIcon").hide();
-            },
-            error:function (){}
-        });
-    }
-
-    // function for book details
-    function getbook() {
-        $("#loaderIcon").show();
-        jQuery.ajax({
-            url: "get_book.php",
-            data:'bookid='+$("#bookid").val(),
-            type: "POST",
-            success:function(data){
-                $("#get_book_name").html(data);
-                $("#loaderIcon").hide();
-            },
-            error:function (){}
-        });
-    }
-
-    function validateForm() {
-        var lrn = document.getElementById("lrn").value;
-        var bookid = document.getElementById("bookid").value;
-        var aremark = document.getElementById("aremark").value;
-        
-        if(lrn == "" || bookid == "" || aremark == "") {
-            alert("Please fill all required fields");
-            return false;
-        }
-        return true;
-    }
-    </script> 
-
     <style type="text/css">
-        .others {
-            color:red;
-        }
         .book-details {
             margin-top: 20px;
             border-top: 1px solid #eee;
@@ -126,6 +110,30 @@ if(isset($_POST['issue'])) {
             content: " *";
             color: red;
         }
+        .book-selection-container {
+            margin: 20px 0;
+            padding: 15px;
+            border: 1px solid #eee;
+            border-radius: 4px;
+        }
+        .book-selection-item {
+            transition: all 0.3s ease;
+        }
+        .book-selection-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        .book-selection-item .thumbnail {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .book-selection-item .caption {
+            flex-grow: 1;
+        }
+        #get_book_name {
+            min-height: 200px;
+        }
     </style>
 </head>
 <body>
@@ -136,6 +144,12 @@ if(isset($_POST['issue'])) {
             <div class="row pad-botm">
                 <div class="col-md-12">
                     <h4 class="header-line">Issue a New Book</h4>
+                    <?php if(isset($_SESSION['error'])) { ?>
+                        <div class="alert alert-danger">
+                            <button type="button" class="close" data-dismiss="alert">×</button>
+                            <?php echo htmlentities($_SESSION['error']); unset($_SESSION['error']);?>
+                        </div>
+                    <?php } ?>
                 </div>
             </div>
 
@@ -151,12 +165,13 @@ if(isset($_POST['issue'])) {
                                 </div>
 
                                 <div class="form-group">
-                                    <span id="get_student_name" style="font-size:16px;"></span> 
+                                    <div id="get_student_name" style="font-size:16px;"></div>
                                 </div>
 
                                 <div class="form-group">
                                     <label class="required-field">ISBN Number or Book Title</label>
                                     <input class="form-control" type="text" name="bookid" id="bookid" onBlur="getbook()" required />
+                                    <small class="text-muted">Enter ISBN or part of the book title</small>
                                 </div>
 
                                 <div class="form-group">
@@ -168,7 +183,7 @@ if(isset($_POST['issue'])) {
 
                                 <div class="form-group">
                                     <label class="required-field">Remark</label>
-                                    <textarea class="form-control" name="aremark" id="aremark" required></textarea> 
+                                    <textarea class="form-control" name="aremark" id="aremark" required placeholder="Enter any remarks about this issuance"></textarea> 
                                 </div>
 
                                 <button type="submit" name="issue" id="submit" class="btn btn-info">Issue Book</button>
@@ -186,5 +201,92 @@ if(isset($_POST['issue'])) {
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/custom.js"></script>
 
+    <script>
+    // Function to handle book selection
+    $(document).on('click', '.book-selection-item', function() {
+        var bookid = $(this).data('bookid');
+        $("#loaderIcon").show();
+        $("#bookid").val(bookid);
+        
+        $.ajax({
+            url: "get_book.php",
+            type: "POST",
+            data: { getbook: bookid },
+            success: function(data) {
+                $("#get_book_name").html(data);
+                $("#loaderIcon").hide();
+            },
+            error: function() {
+                $("#loaderIcon").hide();
+                $("#get_book_name").html('<div class="alert alert-danger">Error loading book details</div>');
+            }
+        });
+    });
+
+    // Function to get student details
+    function getstudent() {
+        $("#loaderIcon").show();
+        $.ajax({
+            url: "get_book.php",
+            data: { lrn: $("#lrn").val() },
+            type: "POST",
+            success: function(data) {
+                $("#get_student_name").html(data);
+                $("#loaderIcon").hide();
+            },
+            error: function() {
+                $("#loaderIcon").hide();
+                $("#get_student_name").html('<div class="alert alert-danger">Error loading student data</div>');
+            }
+        });
+    }
+
+    // Function to search for books
+    function getbook() {
+        var bookid = $("#bookid").val();
+        if(bookid === "") return;
+        
+        $("#loaderIcon").show();
+        $("#get_book_name").html('');
+        
+        $.ajax({
+            url: "get_book.php",
+            data: { bookid: bookid },
+            type: "POST",
+            dataType: 'json',
+            success: function(response) {
+                if(response.status === 'single') {
+                    $("#bookid").val(bookid);
+                }
+                $("#get_book_name").html(response.html);
+                $("#loaderIcon").hide();
+            },
+            error: function() {
+                $("#loaderIcon").hide();
+                $("#get_book_name").html('<div class="alert alert-danger">Error loading book data</div>');
+            }
+        });
+    }
+
+    // Form validation
+    function validateForm() {
+        var lrn = $("#lrn").val();
+        var bookid = $("#bookid").val();
+        var aremark = $("#aremark").val();
+        
+        if(lrn == "" || bookid == "" || aremark == "") {
+            alert("Please fill all required fields");
+            return false;
+        }
+        
+        var aqty = $("#aqty").length ? $("#aqty").val() : 0;
+        if(aqty <= 0) {
+            alert("This book is not available for checkout");
+            return false;
+        }
+        
+        return true;
+    }
+    </script>
 </body>
 </html>
