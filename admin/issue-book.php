@@ -130,6 +130,30 @@ if(isset($_POST['issue'])) {
             min-height: 200px;
         }
     </style>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const bookIdInput = document.getElementById('bookid');
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter' && bookIdInput === document.activeElement) {
+                    event.preventDefault(); // Prevent form submission on Enter key
+                }
+            });
+
+            let barcode = '';
+            document.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    if (barcode) {
+                        bookIdInput.value = barcode;
+                        barcode = '';
+                        getbook(); // Trigger book details fetch
+                    }
+                } else {
+                    barcode += event.key;
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <?php include('includes/header.php');?>
@@ -166,7 +190,7 @@ if(isset($_POST['issue'])) {
                                 <div class="form-group">
                                     <label class="required-field">ISBN Number or Book Title</label>
                                     <input class="form-control" type="text" name="bookid" id="bookid" onBlur="getbook()" required />
-                                    <small class="text-muted">Enter ISBN or part of the book title</small>
+                                    <small class="text-muted">Scan the barcode or manually enter the ISBN or part of the book title.</small>
                                 </div>
 
                                 <div class="form-group">

@@ -136,6 +136,28 @@ if(isset($_POST['add'])) {
             color: #737373;
         }
     </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const isbnInput = document.getElementById('isbn');
+            document.addEventListener('keydown', function (event) {
+                if (event.key === 'Enter' && isbnInput === document.activeElement) {
+                    event.preventDefault(); // Prevent form submission on Enter key
+                }
+            });
+
+            let barcode = '';
+            document.addEventListener('keypress', function (event) {
+                if (event.key === 'Enter') {
+                    if (barcode) {
+                        isbnInput.value = barcode;
+                        barcode = '';
+                    }
+                } else {
+                    barcode += event.key;
+                }
+            });
+        });
+    </script>
 </head>
 <body>
     <!------MENU SECTION START-->
@@ -212,9 +234,9 @@ foreach($results as $result)
 <div class="col-md-6">  
 <div class="form-group">
 <label class="required-field">ISBN Number</label>
-<input class="form-control" type="text" name="isbn" id="isbn" required="required" autocomplete="off" onBlur="checkisbnAvailability()"  />
-<p class="help-block">An ISBN is an International Standard Book Number.ISBN Must be unique</p>
-         <span id="isbn-availability-status" style="font-size:12px;"></span>
+<input class="form-control" type="text" name="isbn" id="isbn" required="required" autocomplete="off" onBlur="checkisbnAvailability()" />
+<p class="help-block">Scan the barcode or manually enter the ISBN. ISBN must be unique.</p>
+<span id="isbn-availability-status" style="font-size:12px;"></span>
 </div></div>
 
 <div class="col-md-6">  
