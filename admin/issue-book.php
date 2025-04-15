@@ -16,7 +16,6 @@ if(isset($_POST['issue'])) {
     $aremark = $_POST['aremark']; 
     $aqty = $_POST['aqty'];
 
-    // Validate inputs
     if(empty($lrn) || empty($bookid) || empty($aremark)) {
         $_SESSION['error'] = "All fields are required";
         header('location:issue-book.php');
@@ -24,7 +23,6 @@ if(isset($_POST['issue'])) {
     }
 
     if($aqty > 0) {
-        // Check if student exists
         $sql = "SELECT id FROM tblstudents WHERE LRN=:lrn";
         $query = $dbh->prepare($sql);
         $query->bindParam(':lrn', $lrn, PDO::PARAM_STR);
@@ -36,7 +34,6 @@ if(isset($_POST['issue'])) {
             exit();
         }
 
-        // Check if book exists
         $sql = "SELECT id FROM tblbooks WHERE id=:bookid";
         $query = $dbh->prepare($sql);
         $query->bindParam(':bookid', $bookid, PDO::PARAM_INT);
@@ -48,7 +45,6 @@ if(isset($_POST['issue'])) {
             exit();
         }
 
-        // Issue the book
         $sql = "INSERT INTO tblissuedbookdetails(LRN, BookId, remark) VALUES(:lrn, :bookid, :aremark)";
         $query = $dbh->prepare($sql);
         $query->bindParam(':lrn', $lrn, PDO::PARAM_STR);
@@ -58,7 +54,6 @@ if(isset($_POST['issue'])) {
         $lastInsertId = $dbh->lastInsertId();
 
         if($lastInsertId) {
-            // Update book quantity
             $sql = "UPDATE tblbooks SET bookQty = bookQty - 1 WHERE id=:bookid";
             $query = $dbh->prepare($sql);
             $query->bindParam(':bookid', $bookid, PDO::PARAM_INT);
@@ -202,7 +197,6 @@ if(isset($_POST['issue'])) {
     <script src="assets/js/custom.js"></script>
 
     <script>
-    // Function to handle book selection
     $(document).on('click', '.book-selection-item', function() {
         var bookid = $(this).data('bookid');
         $("#loaderIcon").show();
@@ -223,7 +217,6 @@ if(isset($_POST['issue'])) {
         });
     });
 
-    // Function to get student details
     function getstudent() {
         $("#loaderIcon").show();
         $.ajax({
@@ -241,7 +234,6 @@ if(isset($_POST['issue'])) {
         });
     }
 
-    // Function to search for books
     function getbook() {
         var bookid = $("#bookid").val();
         if(bookid === "") return;
@@ -253,12 +245,8 @@ if(isset($_POST['issue'])) {
             url: "get_book.php",
             data: { bookid: bookid },
             type: "POST",
-            dataType: 'json',
-            success: function(response) {
-                if(response.status === 'single') {
-                    $("#bookid").val(bookid);
-                }
-                $("#get_book_name").html(response.html);
+            success: function(data) {
+                $("#get_book_name").html(data);
                 $("#loaderIcon").hide();
             },
             error: function() {
@@ -268,7 +256,6 @@ if(isset($_POST['issue'])) {
         });
     }
 
-    // Form validation
     function validateForm() {
         var lrn = $("#lrn").val();
         var bookid = $("#bookid").val();

@@ -100,10 +100,7 @@ if(strlen($_SESSION['login'])==0) {
             </div>    
         </div>
     </div>
-    <!-- CONTENT-WRAPPER SECTION END -->
-
-   
-    <!-- FOOTER SECTION END -->
+    
 
     <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE LOADING TIME -->
     <script src="assets/js/jquery-1.10.2.js"></script>
