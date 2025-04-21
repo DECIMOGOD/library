@@ -139,21 +139,22 @@ if(isset($_POST['add'])) {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const isbnInput = document.getElementById('isbn');
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter' && isbnInput === document.activeElement) {
-                    event.preventDefault(); // Prevent form submission on Enter key
-                }
-            });
-
             let barcode = '';
+            let isProcessingBarcode = false;
+
             document.addEventListener('keypress', function (event) {
-                if (event.key === 'Enter') {
-                    if (barcode) {
-                        isbnInput.value = barcode;
-                        barcode = '';
+                if (document.activeElement === isbnInput) { // Ensure only ISBN input processes the barcode
+                    if (event.key === 'Enter') {
+                        if (barcode && !isProcessingBarcode) {
+                            isProcessingBarcode = true;
+                            isbnInput.value = barcode;
+                            barcode = '';
+                            isProcessingBarcode = false;
+                        }
+                        event.preventDefault(); // Prevent form submission
+                    } else {
+                        barcode += event.key;
                     }
-                } else {
-                    barcode += event.key;
                 }
             });
         });

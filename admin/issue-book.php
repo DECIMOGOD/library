@@ -134,22 +134,23 @@ if(isset($_POST['issue'])) {
     <script>
         document.addEventListener('DOMContentLoaded', function () {
             const bookIdInput = document.getElementById('bookid');
-            document.addEventListener('keydown', function (event) {
-                if (event.key === 'Enter' && bookIdInput === document.activeElement) {
-                    event.preventDefault(); // Prevent form submission on Enter key
-                }
-            });
-
             let barcode = '';
+            let isProcessingBarcode = false;
+
             document.addEventListener('keypress', function (event) {
-                if (event.key === 'Enter') {
-                    if (barcode) {
-                        bookIdInput.value = barcode;
-                        barcode = '';
-                        getbook(); // Trigger book details fetch
+                if (document.activeElement === bookIdInput) { // Ensure only Book ID input processes the barcode
+                    if (event.key === 'Enter') {
+                        if (barcode && !isProcessingBarcode) {
+                            isProcessingBarcode = true;
+                            bookIdInput.value = barcode;
+                            barcode = '';
+                            getbook(); // Trigger book details fetch
+                            isProcessingBarcode = false;
+                        }
+                        event.preventDefault(); // Prevent form submission
+                    } else {
+                        barcode += event.key;
                     }
-                } else {
-                    barcode += event.key;
                 }
             });
         });
