@@ -333,3 +333,26 @@
       display: none;
     }
   }
+  .sort-options {
+    display: inline-block;
+    margin-right: 10px;
+}
+.sort-options label {
+    margin-right: 5px;
+    font-weight: normal;
+}
+#sort-select {
+    margin-left: 5px;
+    display: inline-block;
+    width: auto !important;
+}
+@media (max-width: 768px) {
+    .sort-options {
+        display: block;
+        margin: 10px 0;
+        float: none !important;
+    }
+    .sort-options select {
+        width: 100% !important;
+    }
+}

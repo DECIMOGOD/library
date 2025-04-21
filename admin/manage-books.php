@@ -273,40 +273,65 @@ define('PLACEHOLDER_IMAGE', BOOK_IMAGE_DIR . 'placeholder-book.jpg');
     <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <script>
-        $(document).ready(function() {
-            // Destroy existing DataTable if it exists
-            if ($.fn.DataTable.isDataTable('#dataTables-example')) {
-                $('#dataTables-example').DataTable().destroy();
+$(document).ready(function() {
+    // Destroy existing DataTable if it exists
+    if ($.fn.DataTable.isDataTable('#dataTables-example')) {
+        $('#dataTables-example').DataTable().destroy();
+    }
+
+    // Initialize DataTable with enhanced sorting options
+    var table = $('#dataTables-example').DataTable({
+        responsive: true,
+        "order": [[0, "desc"]], // Default sort by ID (latest first)
+        "columnDefs": [
+            { "orderable": false, "targets": [1, 7, 8] }, // Disable sorting for image, status, and actions columns
+            { "width": "5%", "targets": 0 },
+            { "width": "10%", "targets": 1 },
+            { "width": "20%", "targets": 2 },
+            { "width": "10%", "targets": [6, 7] },
+            { "width": "15%", "targets": 8 },
+            { "type": "string", "targets": 2 } // Ensure proper string sorting for book names
+        ],
+        "language": {
+            "lengthMenu": "Show _MENU_ books per page",
+            "zeroRecords": "No books found",
+            "info": "Showing _START_ to _END_ of _TOTAL_ books",
+            "infoEmpty": "No books available",
+            "infoFiltered": "(filtered from _MAX_ total books)",
+            "search": "Search books:",
+            "paginate": {
+                "first": "First",
+                "last": "Last",
+                "next": "Next",
+                "previous": "Previous"
             }
-            
-            // Initialize DataTable
-            $('#dataTables-example').DataTable({
-                responsive: true,
-                "order": [[0, "desc"]],
-                "columnDefs": [
-                    { "orderable": false, "targets": [1, 7, 8] },
-                    { "width": "5%", "targets": 0 },
-                    { "width": "10%", "targets": 1 },
-                    { "width": "20%", "targets": 2 },
-                    { "width": "10%", "targets": [6, 7] },
-                    { "width": "15%", "targets": 8 }
-                ],
-                "language": {
-                    "lengthMenu": "Show _MENU_ books per page",
-                    "zeroRecords": "No books found",
-                    "info": "Showing _START_ to _END_ of _TOTAL_ books",
-                    "infoEmpty": "No books available",
-                    "infoFiltered": "(filtered from _MAX_ total books)",
-                    "search": "Search books:",
-                    "paginate": {
-                        "first": "First",
-                        "last": "Last",
-                        "next": "Next",
-                        "previous": "Previous"
-                    }
-                }
-            });
-        });
-    </script>
+        },
+        "dom": '<"top"lf>rt<"bottom"ip><"clear">',
+        "initComplete": function(settings, json) {
+            // Add custom sorting controls
+            var container = $('.dataTables_length').parent();
+            $('<div class="sort-options pull-right" style="margin-left: 20px;">' +
+              '<label>Sort by: </label>' +
+              '<select id="sort-select" class="form-control input-sm" style="display: inline-block; width: auto;">' +
+              '<option value="0_asc" selected>Latest to Oldest</option>' +
+              '<option value="0_desc">Oldest to Latest</option>' +
+              '<option value="2_asc">A-Z (Book Name)</option>' +
+              '<option value="2_desc">Z-A (Book Name)</option>' +
+              '<option value="4_asc">A-Z (Publisher)</option>' +
+              '<option value="4_desc">Z-A (Publisher)</option>' +
+              '</select>' +
+              '</div>').insertBefore(container.find('.dataTables_filter'));
+        }
+    });
+
+    // Handle sort selection change
+    $('#sort-select').on('change', function() {
+        var val = $(this).val().split('_');
+        var col = parseInt(val[0]);
+        var dir = val[1];
+        table.order([col, dir]).draw();
+    });
+});
+</script>
 </body>
 </html>
