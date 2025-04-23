@@ -11,8 +11,9 @@ if (isset($_SESSION['login']) && $_SESSION['login'] != '') {
 $sql = "SELECT tblbooks.id, tblbooks.BookName, tblbooks.bookImage, tblbooks.ISBNNumber, 
         tblcategory.CategoryName, tblpublishers.PublisherName, tblbooks.pages, tblbooks.edition
         FROM tblbooks 
-        JOIN tblpublishers ON tblpublishers.id=tblbooks.PublisherID 
-        JOIN tblcategory ON tblcategory.id=tblbooks.CatId
+        JOIN tblpublishers ON tblpublishers.id = tblbooks.PublisherID 
+        JOIN tblcategory ON tblcategory.id = tblbooks.CatId
+        WHERE tblbooks.isFeatured = 1
         ORDER BY tblbooks.id DESC LIMIT 3";
 $query = $dbh->prepare($sql);
 $query->execute();
@@ -118,42 +119,39 @@ $featuredBooks = $query->fetchAll(PDO::FETCH_OBJ);
                     ?>
                         <div class="book-item">
                             <div class="book-badge">Featured</div>
-                            <img src="shared/bookImg/<?php echo htmlentities($book->bookImage); ?>" alt="<?php echo htmlentities($book->BookName); ?>">
-                            <h4><?php echo htmlentities($book->BookName); ?></h4>
+                            <img src="shared/bookImg/<?php echo htmlentities($book->bookImage); ?>" alt="<?php echo htmlentities($book->BookName); ?>" class="img-fluid mb-3">
+                            <h4 class="text-center"><?php echo htmlentities($book->BookName); ?></h4>
                             
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-half-o"></i>
-                                <span>(4.5)</span>
-                            </div>
-                            
-                            <div class="book-detail">
-                                <span>Author:</span>
-                                <div class="detail-value"><?php echo htmlentities($book->PublisherName); ?></div>
-                            </div>
-                            <div class="book-detail">
-                                <span>Category:</span>
-                                <div class="detail-value"><?php echo htmlentities($book->CategoryName); ?></div>
-                            </div>
-                            <div class="book-detail">
-                                <span>Edition:</span>
-                                <div class="detail-value"><?php echo isset($book->edition) ? htmlentities($book->edition) : 'N/A'; ?></div>
-                            </div>
-                            <div class="book-detail">
-                                <span>Pages:</span>
-                                <div class="detail-value"><?php echo isset($book->pages) ? htmlentities($book->pages) : 'N/A'; ?></div>
-                            </div>
-                            <div class="book-detail">
-                                <span>ISBN:</span>
-                                <div class="detail-value"><?php echo htmlentities($book->ISBNNumber); ?></div>
+                            <div class="book-details">
+                                <table class="table table-borderless">
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Author:</strong></td>
+                                            <td><?php echo htmlentities($book->PublisherName); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Category:</strong></td>
+                                            <td><?php echo htmlentities($book->CategoryName); ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Edition:</strong></td>
+                                            <td><?php echo isset($book->edition) ? htmlentities($book->edition) : 'N/A'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Pages:</strong></td>
+                                            <td><?php echo isset($book->pages) ? htmlentities($book->pages) : 'N/A'; ?></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>ISBN:</strong></td>
+                                            <td><?php echo htmlentities($book->ISBNNumber); ?></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
                             </div>
                             
-                            <div class="book-description"><?php echo htmlentities($shortDesc); ?></div>
+                            <div class="book-description text-center"><?php echo htmlentities($shortDesc); ?></div>
                             
-                            <div class="book-actions">
+                            <div class="book-actions text-center mt-3">
                                 <?php if(isset($_SESSION['login'])) { ?>
                                 <a href="checkout-book.php?bookid=<?php echo htmlentities($book->id); ?>" class="btn btn-success btn-sm"><i class="fa fa-bookmark"></i> Borrow</a>
                                 <?php } else { ?>
@@ -166,47 +164,6 @@ $featuredBooks = $query->fetchAll(PDO::FETCH_OBJ);
                     } else {
                         // Default books display
                     ?>
-                        <div class="book-item">
-                            <div class="book-badge">Popular</div>
-                            <img src="assets/img/book1.jpg" alt="PHP Programming">
-                            <h4>PHP Programming</h4>
-                            
-                            <div class="rating">
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star"></i>
-                                <i class="fa fa-star-o"></i>
-                                <span>(4.0)</span>
-                            </div>
-                            
-                            <div class="book-detail">
-                                <span>Author:</span>
-                                <div class="detail-value">John Doe</div>
-                            </div>
-                            <div class="book-detail">
-                                <span>Category:</span>
-                                <div class="detail-value">Programming</div>
-                            </div>
-                            <div class="book-detail">
-                                <span>Edition:</span>
-                                <div class="detail-value">1st</div>
-                            </div>
-                            <div class="book-detail">
-                                <span>Pages:</span>
-                                <div class="detail-value">350</div>
-                            </div>
-                            <div class="book-detail">
-                                <span>ISBN:</span>
-                                <div class="detail-value">978-3-16-148410-0</div>
-                            </div>
-                            
-                            <div class="book-description">"Learn web development with PHP through practical examples and projects."</div>
-                            
-                            <div class="book-actions">
-                                <a href="login.php" class="btn btn-warning btn-sm"><i class="fa fa-lock"></i> Login to Borrow</a>
-                            </div>
-                        </div>
                         
                         <!-- Additional default books would follow the same pattern -->
                     <?php
