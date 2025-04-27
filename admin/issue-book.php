@@ -86,75 +86,9 @@ if(isset($_POST['issue'])) {
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-    
-    <style type="text/css">
-        .book-details {
-            margin-top: 20px;
-            border-top: 1px solid #eee;
-            padding-top: 15px;
-        }
-        .book-image {
-            text-align: center;
-            margin-bottom: 15px;
-        }
-        #loaderIcon {
-            display: none;
-        }
-        .required-field::after {
-            content: " *";
-            color: red;
-        }
-        .book-selection-container {
-            margin: 20px 0;
-            padding: 15px;
-            border: 1px solid #eee;
-            border-radius: 4px;
-        }
-        .book-selection-item {
-            transition: all 0.3s ease;
-        }
-        .book-selection-item:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
-        .book-selection-item .thumbnail {
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-        .book-selection-item .caption {
-            flex-grow: 1;
-        }
-        #get_book_name {
-            min-height: 200px;
-        }
-    </style>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const bookIdInput = document.getElementById('bookid');
-            let barcode = '';
-            let isProcessingBarcode = false;
-
-            document.addEventListener('keypress', function (event) {
-                if (document.activeElement === bookIdInput) { // Ensure only Book ID input processes the barcode
-                    if (event.key === 'Enter') {
-                        if (barcode && !isProcessingBarcode) {
-                            isProcessingBarcode = true;
-                            bookIdInput.value = barcode;
-                            barcode = '';
-                            getbook(); // Trigger book details fetch
-                            isProcessingBarcode = false;
-                        }
-                        event.preventDefault(); // Prevent form submission
-                    } else {
-                        barcode += event.key;
-                    }
-                }
-            });
-        });
-    </script>
+    <link href="assets/css/issue-book-style.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
 </head>
 <body>
     <?php include('includes/header.php');?>
@@ -176,12 +110,20 @@ if(isset($_POST['issue'])) {
             <div class="row">
                 <div class="col-md-10 col-md-offset-1">
                     <div class="panel panel-info">
-                        <div class="panel-heading">Issue Book</div>
+                        <div class="panel-heading">
+                            <span class="material-icons-round" style="vertical-align: middle; margin-right: 8px;">menu_book</span>
+                            Issue Book
+                        </div>
                         <div class="panel-body">
                             <form method="post" onsubmit="return validateForm()">
                                 <div class="form-group">
                                     <label class="required-field">LRN</label>
-                                    <input class="form-control" type="text" name="lrn" id="lrn" onBlur="getstudent()" autocomplete="off" required pattern="[0-9]*" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')" />
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="material-icons-round" style="font-size: 1.2rem; line-height: 1.2;">person</i>
+                                        </span>
+                                        <input class="form-control" type="text" name="lrn" id="lrn" onBlur="getstudent()" autocomplete="off" required pattern="[0-9]*" maxlength="12" oninput="this.value = this.value.replace(/[^0-9]/g, '')" placeholder="Enter student's LRN" />
+                                    </div>
                                 </div>
 
                                 <div class="form-group">
@@ -190,7 +132,12 @@ if(isset($_POST['issue'])) {
 
                                 <div class="form-group">
                                     <label class="required-field">ISBN Number or Book Title</label>
-                                    <input class="form-control" type="text" name="bookid" id="bookid" onBlur="getbook()" required />
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="material-icons-round" style="font-size: 1.2rem; line-height: 1.2;">qr_code_scanner</i>
+                                        </span>
+                                        <input class="form-control" type="text" name="bookid" id="bookid" onBlur="getbook()" required placeholder="Scan barcode or enter ISBN/title" />
+                                    </div>
                                     <small class="text-muted">Scan the barcode or manually enter the ISBN or part of the book title.</small>
                                 </div>
 
@@ -203,10 +150,18 @@ if(isset($_POST['issue'])) {
 
                                 <div class="form-group">
                                     <label class="required-field">Remark</label>
-                                    <textarea class="form-control" name="aremark" id="aremark" required placeholder="Enter any remarks about this issuance"></textarea> 
+                                    <div class="input-group">
+                                        <span class="input-group-addon">
+                                            <i class="material-icons-round" style="font-size: 1.2rem; line-height: 1.2;">notes</i>
+                                        </span>
+                                        <textarea class="form-control" name="aremark" id="aremark" required placeholder="Enter any remarks about this issuance"></textarea>
+                                    </div>
                                 </div>
 
-                                <button type="submit" name="issue" id="submit" class="btn btn-info">Issue Book</button>
+                                <button type="submit" name="issue" id="submit" class="btn btn-info">
+                                    <span class="material-icons-round" style="vertical-align: middle; margin-right: 5px; font-size: 1.2rem;">assignment_turned_in</span>
+                                    Issue Book
+                                </button>
                             </form>
                         </div>
                     </div>
@@ -222,6 +177,29 @@ if(isset($_POST['issue'])) {
     <script src="assets/js/custom.js"></script>
 
     <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const bookIdInput = document.getElementById('bookid');
+        let barcode = '';
+        let isProcessingBarcode = false;
+
+        document.addEventListener('keypress', function (event) {
+            if (document.activeElement === bookIdInput) { // Ensure only Book ID input processes the barcode
+                if (event.key === 'Enter') {
+                    if (barcode && !isProcessingBarcode) {
+                        isProcessingBarcode = true;
+                        bookIdInput.value = barcode;
+                        barcode = '';
+                        getbook(); // Trigger book details fetch
+                        isProcessingBarcode = false;
+                    }
+                    event.preventDefault(); // Prevent form submission
+                } else {
+                    barcode += event.key;
+                }
+            }
+        });
+    });
+
     $(document).on('click', '.book-selection-item', function() {
         var bookid = $(this).data('bookid');
         $("#loaderIcon").show();

@@ -1,175 +1,113 @@
 <?php
+// Start session and include database connection
 session_start();
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
-include('includes/config.php');
+include('../includes/config.php');
 
-// Redirect if not logged in
-if(strlen($_SESSION['alogin']) == 0) {
-    header('location:index.php');
-    exit();
-}
+// Define constants for image paths
+define('BOOK_IMAGE_DIR', 'shared/bookImg/');
+define('PLACEHOLDER_IMAGE', 'shared/bookImg/placeholder.jpg');
 
-// Handle book deletion
+// Check if delete action is requested
 if(isset($_GET['del'])) {
-    $id = intval($_GET['del']);
-    
+    $bookid = intval($_GET['del']);
     try {
-        // Begin transaction
-        $dbh->beginTransaction();
-        
-        // First check if the book is issued
-        $checkSql = "SELECT id FROM tblissuedbookdetails WHERE BookId = :id AND ReturnStatus IS NULL";
-        $checkQuery = $dbh->prepare($checkSql);
-        $checkQuery->bindParam(':id', $id, PDO::PARAM_INT);
-        $checkQuery->execute();
-        
-        if($checkQuery->rowCount() > 0) {
-            $_SESSION['error'] = "Cannot delete book. It is currently issued to a student.";
-            $dbh->rollBack();
-            header('location:manage-books.php');
-            exit();
-        }
-        
-        // Get the image name to delete it from server
-        $sql = "SELECT bookImage FROM tblbooks WHERE id = :id";
+        $sql = "DELETE FROM tblbooks WHERE id = :id";
         $query = $dbh->prepare($sql);
-        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->bindParam(':id', $bookid, PDO::PARAM_INT);
         $query->execute();
-        $result = $query->fetch(PDO::FETCH_OBJ);
-        
-        if($result) {
-            $imagePath = "../shared/bookImg/".$result->bookImage;
-            
-            // Delete the book record
-            $deleteSql = "DELETE FROM tblbooks WHERE id = :id";
-            $deleteQuery = $dbh->prepare($deleteSql);
-            $deleteQuery->bindParam(':id', $id, PDO::PARAM_INT);
-            
-            if($deleteQuery->execute()) {
-                // Delete the image file if it exists and isn't the placeholder
-                if(file_exists($imagePath)) {
-                    $placeholderPath = "../shared/bookImg/placeholder-book.jpg";
-                    if($imagePath != $placeholderPath && $result->bookImage != '') {
-                        unlink($imagePath);
-                    }
-                }
-                
-                $_SESSION['msg'] = "Book deleted successfully";
-                $dbh->commit();
-            } else {
-                $_SESSION['error'] = "Failed to delete book";
-                $dbh->rollBack();
-            }
-        } else {
-            $_SESSION['error'] = "Book not found";
-            $dbh->rollBack();
-        }
-    } catch (PDOException $e) {
-        $dbh->rollBack();
-        $_SESSION['error'] = "Database error: " . $e->getMessage();
+        $_SESSION['msg'] = "Book deleted successfully";
+        header('location:manage-books.php');
+        exit();
+    } catch(PDOException $e) {
+        $_SESSION['error'] = "Error deleting book: " . $e->getMessage();
+        header('location:manage-books.php');
+        exit();
     }
-    
-    header('location:manage-books.php');
-    exit();
 }
-
-// Define image paths
-define('BOOK_IMAGE_DIR', '../shared/bookImg/');
-define('PLACEHOLDER_IMAGE', BOOK_IMAGE_DIR . 'placeholder-book.jpg');
 ?>
-
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Online Library Management System | Manage Books</title>
-    <!-- BOOTSTRAP CORE STYLE -->
-    <link href="assets/css/bootstrap.css" rel="stylesheet" />
-    <!-- FONT AWESOME STYLE -->
-    <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <!-- DATATABLE STYLE -->
-    <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
-    <!-- CUSTOM STYLE -->
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <!-- GOOGLE FONT -->
-    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
-    <style>
-        .book-image {
-            max-width: 100px;
-            max-height: 100px;
-            object-fit: contain;
-        }
-        .action-buttons .btn {
-            margin-bottom: 5px;
-        }
-        @media (max-width: 768px) {
-            .action-buttons .btn {
-                width: 100%;
-            }
-        }
-    </style>
+    <meta name="description" content="Online Library Management System" />
+    <title>Library Management System | Manage Books</title>
+    
+    <!-- Core Styles -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
+    <link href="assets/css/manage-books-style.css" rel="stylesheet" />
+        
 </head>
 <body>
-    <!------MENU SECTION START-->
+    <!-- HEADER SECTION -->
     <?php include('includes/header.php'); ?>
-    <!-- MENU SECTION END-->
+    <!-- MAIN CONTENT -->
     <div class="content-wrapper">
         <div class="container">
-            <div class="row pad-botm">
+            <div class="row mb-4">
                 <div class="col-md-12">
                     <h4 class="header-line">Manage Books</h4>
-                </div>
-                
-                <!-- Display success/error messages -->
-                <?php if(isset($_SESSION['msg'])) { ?>
-                <div class="col-md-12">
-                    <div class="alert alert-success alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <i class="fa fa-check"></i> <?php echo htmlentities($_SESSION['msg']); unset($_SESSION['msg']); ?>
+                    
+                    <!-- Display success message -->
+                    <?php if(isset($_SESSION['msg'])) { ?>
+                    <div class="alert alert-success">
+                        <i class="fas fa-check-circle"></i>
+                        <div>
+                            <strong>Success!</strong> <?php echo htmlentities($_SESSION['msg']); unset($_SESSION['msg']); ?>
+                        </div>
                     </div>
-                </div>
-                <?php } ?>
-                
-                <?php if(isset($_SESSION['error'])) { ?>
-                <div class="col-md-12">
-                    <div class="alert alert-danger alert-dismissible">
-                        <button type="button" class="close" data-dismiss="alert">&times;</button>
-                        <i class="fa fa-exclamation-triangle"></i> <?php echo htmlentities($_SESSION['error']); unset($_SESSION['error']); ?>
+                    <?php } ?>
+                    
+                    <!-- Display error message -->
+                    <?php if(isset($_SESSION['error'])) { ?>
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i>
+                        <div>
+                            <strong>Error!</strong> <?php echo htmlentities($_SESSION['error']); unset($_SESSION['error']); ?>
+                        </div>
                     </div>
+                    <?php } ?>
                 </div>
-                <?php } ?>
             </div>
             
             <div class="row">
                 <div class="col-md-12">
-                    <!-- Advanced Tables -->
-                    <div class="panel panel-default">
-                        <div class="panel-heading clearfix">
-                            Books Listing
-                            <div class="pull-right">
-                                <a href="add-book.php" class="btn btn-primary btn-sm">
-                                    <i class="fa fa-plus"></i> Add New Book
-                                </a>
-                            </div>
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <div>Book Collection</div>
+                            <a href="add-book.php" class="btn btn-primary btn-add">
+                                <i class="fas fa-plus"></i> Add New Book
+                            </a>
                         </div>
                         <div class="panel-body">
+                            <div class="sort-controls">
+                                <label>Sort by:</label>
+                                <select id="sort-select" class="sort-select">
+                                    <option value="0_desc">Latest to Oldest</option>
+                                    <option value="0_asc">Oldest to Latest</option>
+                                    <option value="2_asc">A-Z (Book Name)</option>
+                                    <option value="2_desc">Z-A (Book Name)</option>
+                                    <option value="4_asc">A-Z (Publisher)</option>
+                                    <option value="4_desc">Z-A (Publisher)</option>
+                                </select>
+                            </div>
+                            
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                <table class="table" id="books-table">
                                     <thead>
                                         <tr>
-                                            <th>#</th>
-                                            <th>Cover</th>
-                                            <th>Book Name</th>
-                                            <th>Category</th>
-                                            <th>Publisher</th>
-                                            <th>ISBN</th>
-                                            <th>Qty</th>
-                                            <th>Status</th>
-                                            <th>Actions</th>
+                                            <th style="width: 5%">#</th>
+                                            <th style="width: 8%">Cover</th>
+                                            <th style="width: 20%">Book Name</th>
+                                            <th style="width: 12%">Category</th>
+                                            <th style="width: 15%">Publisher</th>
+                                            <th style="width: 12%">ISBN</th>
+                                            <th style="width: 6%">Qty</th>
+                                            <th style="width: 10%">Status</th>
+                                            <th style="width: 12%">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -193,47 +131,44 @@ define('PLACEHOLDER_IMAGE', BOOK_IMAGE_DIR . 'placeholder-book.jpg');
                                                 $imageFile = htmlentities($result->bookImage);
                                                 $imagePath = !empty($imageFile) ? BOOK_IMAGE_DIR . $imageFile : PLACEHOLDER_IMAGE;
                                                 
-                                                // Verify the image exists (for display purposes)
-                                                $finalImagePath = (file_exists($imagePath)) 
-                                                    ? $imagePath 
-                                                    : PLACEHOLDER_IMAGE;
-                                                
-                                                // Determine book status
+                                                // Determine book status with modern badges
                                                 $status = '';
                                                 if($result->isIssued == 1) {
-                                                    $status = '<span class="label label-warning">Issued</span>';
+                                                    $status = '<span class="badge badge-warning">Issued</span>';
                                                 } elseif($result->bookQty <= 0) {
-                                                    $status = '<span class="label label-danger">Out of Stock</span>';
+                                                    $status = '<span class="badge badge-danger">Out of Stock</span>';
                                                 } else {
-                                                    $status = '<span class="label label-success">Available</span>';
+                                                    $status = '<span class="badge badge-success">Available</span>';
                                                 }
                                     ?>
                                         <tr>
                                             <td><?php echo htmlentities($cnt); ?></td>
                                             <td>
-                                                <img src="<?php echo $finalImagePath; ?>" class="book-image img-thumbnail" 
+                                                <img src="<?php echo $imagePath; ?>" class="book-image" 
                                                      onerror="this.onerror=null;this.src='<?php echo PLACEHOLDER_IMAGE; ?>'">
                                             </td>
-                                            <td><?php echo htmlentities($result->BookName); ?></td>
+                                            <td>
+                                                <strong><?php echo htmlentities($result->BookName); ?></strong>
+                                            </td>
                                             <td><?php echo htmlentities($result->CategoryName); ?></td>
                                             <td><?php echo htmlentities($result->PublisherName); ?></td>
                                             <td><?php echo htmlentities($result->ISBNNumber); ?></td>
                                             <td><?php echo htmlentities($result->bookQty); ?></td>
                                             <td><?php echo $status; ?></td>
-                                            <td class="action-buttons">
-                                                <div class="btn-group-vertical" role="group">
+                                            <td>
+                                                <div class="actions">
                                                     <a href="view-book.php?bookid=<?php echo htmlentities($result->id); ?>" 
-                                                       class="btn btn-info btn-xs" title="View Details">
-                                                        <i class="fa fa-eye"></i> View
+                                                       class="btn btn-action btn-view" title="View Details">
+                                                        <i class="fas fa-eye"></i>
                                                     </a>
                                                     <a href="edit-book.php?bookid=<?php echo htmlentities($result->id); ?>" 
-                                                       class="btn btn-primary btn-xs" title="Edit Book">
-                                                        <i class="fa fa-edit"></i> Edit
+                                                       class="btn btn-action btn-edit" title="Edit Book">
+                                                        <i class="fas fa-edit"></i>
                                                     </a>
                                                     <a href="manage-books.php?del=<?php echo htmlentities($result->id); ?>" 
-                                                       class="btn btn-danger btn-xs" title="Delete Book"
+                                                       class="btn btn-action btn-delete" title="Delete Book"
                                                        onclick="return confirm('Are you sure you want to delete this book?');">
-                                                        <i class="fa fa-trash"></i> Delete
+                                                        <i class="fas fa-trash"></i>
                                                     </a>
                                                 </div>
                                             </td>
@@ -253,85 +188,78 @@ define('PLACEHOLDER_IMAGE', BOOK_IMAGE_DIR . 'placeholder-book.jpg');
                             </div>
                         </div>
                     </div>
-                    <!--End Advanced Tables -->
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- CONTENT-WRAPPER SECTION END-->
-    <?php include('includes/footer.php'); ?>
-    <!-- FOOTER SECTION END-->
-    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME -->
-    <!-- CORE JQUERY -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS -->
-    <script src="assets/js/bootstrap.js"></script>
-    <!-- DATATABLE SCRIPTS -->
-    <script src="assets/js/dataTables/jquery.dataTables.js"></script>
-    <script src="assets/js/dataTables/dataTables.bootstrap.js"></script>
-    <!-- CUSTOM SCRIPTS -->
-    <script src="assets/js/custom.js"></script>
+    <!-- FOOTER SECTION -->
+    <footer>
+        <!-- Footer content would go here -->
+    </footer>
+
+    <!-- JAVASCRIPT FILES -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/1.13.5/js/dataTables.bootstrap5.min.js"></script>
+    
     <script>
-$(document).ready(function() {
-    // Destroy existing DataTable if it exists
-    if ($.fn.DataTable.isDataTable('#dataTables-example')) {
-        $('#dataTables-example').DataTable().destroy();
-    }
-
-    // Initialize DataTable with enhanced sorting options
-    var table = $('#dataTables-example').DataTable({
-        responsive: true,
-        "order": [[0, "desc"]], // Default sort by ID (latest first)
-        "columnDefs": [
-            { "orderable": false, "targets": [1, 7, 8] }, // Disable sorting for image, status, and actions columns
-            { "width": "5%", "targets": 0 },
-            { "width": "10%", "targets": 1 },
-            { "width": "20%", "targets": 2 },
-            { "width": "10%", "targets": [6, 7] },
-            { "width": "15%", "targets": 8 },
-            { "type": "string", "targets": 2 } // Ensure proper string sorting for book names
-        ],
-        "language": {
-            "lengthMenu": "Show _MENU_ books per page",
-            "zeroRecords": "No books found",
-            "info": "Showing _START_ to _END_ of _TOTAL_ books",
-            "infoEmpty": "No books available",
-            "infoFiltered": "(filtered from _MAX_ total books)",
-            "search": "Search books:",
-            "paginate": {
-                "first": "First",
-                "last": "Last",
-                "next": "Next",
-                "previous": "Previous"
+    $(document).ready(function() {
+        // Initialize DataTable with modern options
+        var table = $('#books-table').DataTable({
+            responsive: true,
+            order: [[0, "desc"]], // Default sort by ID (latest first)
+            columnDefs: [
+                { orderable: false, targets: [1, 8] }, // Disable sorting for image and actions columns
+                { className: "align-middle", targets: "_all" }
+            ],
+            language: {
+                lengthMenu: "Show _MENU_ books per page",
+                zeroRecords: "No books found in collection",
+                info: "_START_-_END_ of _TOTAL_ books",
+                infoEmpty: "No books available",
+                infoFiltered: "(filtered from _MAX_ books)",
+                search: "",
+                searchPlaceholder: "Search books...",
+                paginate: {
+                    first: '<i class="fas fa-angle-double-left"></i>',
+                    last: '<i class="fas fa-angle-double-right"></i>',
+                    previous: '<i class="fas fa-angle-left"></i>',
+                    next: '<i class="fas fa-angle-right"></i>'
+                }
+            },
+            dom: '<"top"lf>rt<"bottom"ip><"clear">',
+            stateSave: true,
+            pageLength: 10,
+            lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            drawCallback: function() {
+                $('.dataTables_paginate > .pagination').addClass('pagination-sm');
             }
-        },
-        "dom": '<"top"lf>rt<"bottom"ip><"clear">',
-        "initComplete": function(settings, json) {
-            // Add custom sorting controls
-            var container = $('.dataTables_length').parent();
-            $('<div class="sort-options pull-right" style="margin-left: 20px;">' +
-              '<label>Sort by: </label>' +
-              '<select id="sort-select" class="form-control input-sm" style="display: inline-block; width: auto;">' +
-              '<option value="0_asc" selected>Latest to Oldest</option>' +
-              '<option value="0_desc">Oldest to Latest</option>' +
-              '<option value="2_asc">A-Z (Book Name)</option>' +
-              '<option value="2_desc">Z-A (Book Name)</option>' +
-              '<option value="4_asc">A-Z (Publisher)</option>' +
-              '<option value="4_desc">Z-A (Publisher)</option>' +
-              '</select>' +
-              '</div>').insertBefore(container.find('.dataTables_filter'));
-        }
-    });
+        });
 
-    // Handle sort selection change
-    $('#sort-select').on('change', function() {
-        var val = $(this).val().split('_');
-        var col = parseInt(val[0]);
-        var dir = val[1];
-        table.order([col, dir]).draw();
+        // Enhanced sorting control
+        $('#sort-select').on('change', function() {
+            var val = $(this).val().split('_');
+            var col = parseInt(val[0]);
+            var dir = val[1];
+            table.order([col, dir]).draw();
+        });
+        
+        // Add animation to table rows
+        $('.table tbody tr').each(function(index) {
+            $(this).css({
+                'animation': 'fadeInUp 0.5s ease forwards',
+                'animation-delay': (index * 0.05) + 's',
+                'opacity': '0'
+            });
+        });
+        
+        // Auto close alerts after 5 seconds
+        setTimeout(function() {
+            $('.alert').fadeOut('slow');
+        }, 5000);
     });
-});
-</script>
+    </script>
 </body>
 </html>
