@@ -1,0 +1,298 @@
+/* COMPLETE DARK THEME WITH ANIMATED HEADER EFFECT */
+:root {
+    /* Absolute Dark Color Palette */
+    --bg-body: #0a0a0f;
+    --bg-container: #11111d;
+    --bg-card: #1a1a2e;
+    --bg-element: #25253d;
+    --bg-hover: #2e2e4a;
+    
+    /* Text Colors */
+    --text-primary: #f0f0ff;
+    --text-secondary: #b8c2d9;
+    --text-muted: #8a94b0;
+    
+    /* Accents */
+    --accent-primary: #7c8df8;
+    --accent-primary-light: #939ef9;
+    --accent-primary-dark: #6366f1;
+    --accent-danger: #f87171;
+    --accent-success: #4ade80;
+    --accent-warning: #fbbf24;
+    --accent-info: #60a5fa;
+    
+    /* Borders */
+    --border-primary: rgba(255, 255, 255, 0.08);
+    --border-secondary: rgba(255, 255, 255, 0.12);
+    
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+    
+    /* Transitions */
+    --transition-fast: all 0.15s ease-out;
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Base Reset */
+*,
+*::before,
+*::after {
+    background-color: transparent !important;
+    color: inherit !important;
+    border-color: var(--border-primary) !important;
+}
+
+body {
+    background-color: var(--bg-body) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* Layout Components */
+.content-wrapper {
+    background-color: var(--bg-container) !important;
+    padding: 2rem;
+    margin-top: 70px;
+    min-height: calc(100vh - 70px);
+}
+
+/* Animated Header Line */
+.header-line {
+    color: var(--text-primary);
+    font-size: 1.75rem;
+    font-weight: 700;
+    margin-bottom: 1.5rem;
+    position: relative;
+    padding-bottom: 0.5rem;
+    display: inline-block;
+    cursor: default;
+    transition: var(--transition-normal);
+}
+
+.header-line::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 50px;
+    height: 3px;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-primary-dark));
+    border-radius: 3px;
+    transition: var(--transition-slow);
+    transform-origin: left center;
+}
+
+.header-line:hover::after {
+    width: 100%;
+    background: linear-gradient(90deg, var(--accent-primary), var(--accent-info));
+}
+
+/* Panel System */
+.panel {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-primary);
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: var(--transition-normal);
+}
+
+.panel:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}
+
+.panel-heading {
+    background: linear-gradient(to right, var(--bg-element), var(--bg-card)) !important;
+    color: var(--text-primary);
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.panel-body {
+    padding: 1.5rem;
+    background-color: var(--bg-card) !important;
+}
+
+/* Table System */
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid var(--border-primary);
+    background-color: var(--bg-card) !important;
+}
+
+.table {
+    width: 100%;
+    color: var(--text-primary);
+    margin-bottom: 0;
+    background-color: var(--bg-card) !important;
+}
+
+.table thead th {
+    background-color: var(--bg-element) !important;
+    color: var(--text-primary);
+    padding: 1rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-primary);
+    position: sticky;
+    top: 0;
+}
+
+.table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-primary);
+    background-color: var(--bg-card) !important;
+    transition: var(--transition-fast);
+}
+
+.table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.table tbody tr:hover td {
+    background-color: var(--bg-hover) !important;
+}
+
+/* Button System */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: var(--transition-normal);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.875rem;
+}
+
+.btn-primary {
+    background-color: var(--accent-primary) !important;
+    color: #111 !important;
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-primary-light) !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(124, 141, 248, 0.3);
+}
+
+.btn-danger {
+    background-color: var(--accent-danger) !important;
+    color: #111 !important;
+}
+
+.btn-danger:hover {
+    background-color: #fa9393 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
+}
+
+.btn-xs {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    border-radius: 4px;
+}
+
+/* Status Indicators */
+.status-badge {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.status-active {
+    background-color: rgba(74, 222, 128, 0.15) !important;
+    color: var(--accent-success) !important;
+    border: 1px solid var(--accent-success) !important;
+}
+
+.status-inactive {
+    background-color: rgba(248, 113, 113, 0.15) !important;
+    color: var(--accent-danger) !important;
+    border: 1px solid var(--accent-danger) !important;
+}
+
+/* Alert System */
+.alert {
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-left: 4px solid transparent;
+}
+
+.alert-success {
+    background-color: rgba(16, 185, 129, 0.1) !important;
+    color: var(--accent-success) !important;
+    border-left-color: var(--accent-success) !important;
+}
+
+.alert-danger {
+    background-color: rgba(239, 68, 68, 0.1) !important;
+    color: var(--accent-danger) !important;
+    border-left-color: var(--accent-danger) !important;
+}
+
+/* Action Buttons */
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* Responsive Fixes */
+@media (max-width: 768px) {
+    .content-wrapper {
+        padding: 1rem;
+    }
+    
+    .header-line {
+        font-size: 1.5rem;
+    }
+    
+    .panel-body {
+        padding: 1rem;
+    }
+    
+    .table thead th,
+    .table tbody td {
+        padding: 0.75rem;
+    }
+    
+    .action-buttons {
+        flex-direction: column;
+    }
+}
+
+/* Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.panel {
+    animation: fadeIn 0.3s ease-out forwards;
+}
+
+/* Ensures all interactive elements have proper cursor */
+a, button, [role="button"], input[type="submit"], input[type="button"] {
+    cursor: pointer;
+}

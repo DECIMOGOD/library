@@ -37,7 +37,7 @@ if (isset($_GET['del'])) {
     <!-- DATATABLE STYLE -->
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
     <!-- CUSTOM STYLE -->
-    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/manage-publishers-style.css" rel="stylesheet" />
     <!-- GOOGLE FONT -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>

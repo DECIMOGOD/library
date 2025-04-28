@@ -50,7 +50,7 @@ $books = $query->fetchAll(PDO::FETCH_OBJ);
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
     <link href="https://cdn.datatables.net/1.13.4/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
     <!-- CUSTOM STYLE -->
-    <link href="assets/css/style.css" rel="stylesheet" />
+    <link href="assets/css/edit-book-featured-style.css" rel="stylesheet" />
     <!-- GOOGLE FONT -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <style>
