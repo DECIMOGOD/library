@@ -1,152 +1,201 @@
 <?php
+// Start session and include database connection
 session_start();
-error_reporting(0);
-include('includes/config.php');
+include('../includes/config.php');
 
-// Redirect if not logged in
-if(strlen($_SESSION['alogin']) == 0) {
-    header('location:index.php');
+// Check if book ID is provided
+if (!isset($_GET['bookid']) || empty($_GET['bookid'])) {
+    $_SESSION['error'] = "Invalid book ID.";
+    header('location:manage-books.php');
     exit();
 }
 
-// Check if book ID is provided
-if(isset($_GET['bookid'])) {
-    $bookId = $_GET['bookid'];
+$bookid = intval($_GET['bookid']);
 
-    // Fetch book details - using AuthorId to match the database structure
-    $sql = "SELECT b.*, c.CategoryName, p.PublisherName 
-            FROM tblbooks b 
-            JOIN tblcategory c ON c.id = b.CatId 
-            JOIN tblpublishers p ON p.id = b.AuthorId 
-            WHERE b.id = :bookid";
+try {
+    // Fetch book details
+    $sql = "SELECT tblbooks.BookName, tblbooks.ISBNNumber, tblbooks.bookQty, tblbooks.bookImage, tblbooks.isIssued,
+            tblcategory.CategoryName, tblpublishers.PublisherName
+            FROM tblbooks
+            JOIN tblcategory ON tblcategory.id = tblbooks.CatId
+            JOIN tblpublishers ON tblpublishers.id = tblbooks.PublisherID
+            WHERE tblbooks.id = :id";
     $query = $dbh->prepare($sql);
-    $query->bindParam(':bookid', $bookId, PDO::PARAM_INT);
+    $query->bindParam(':id', $bookid, PDO::PARAM_INT);
     $query->execute();
-    $bookDetails = $query->fetch(PDO::FETCH_ASSOC);
+    $book = $query->fetch(PDO::FETCH_OBJ);
 
-    if(!$bookDetails) {
+    if (!$book) {
         $_SESSION['error'] = "Book not found.";
         header('location:manage-books.php');
         exit();
     }
-} else {
-    $_SESSION['error'] = "Invalid request.";
+} catch (PDOException $e) {
+    $_SESSION['error'] = "Database error: " . $e->getMessage();
     header('location:manage-books.php');
     exit();
 }
 ?>
-
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title>Online Library Management System | View Book</title>
-    <!-- BOOTSTRAP CORE STYLE  -->
+    <meta name="description" content="Online Library Management System" />
+    <title>Library Management System | View Book</title>
+    
+    <!-- Bootstrap CSS -->
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
-    <!-- FONT AWESOME STYLE  -->
+    <!-- Font Awesome -->
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
-    <!-- CUSTOM STYLE  -->
-    <link href="assets/css/style.css" rel="stylesheet" />
-    <!-- NEW BOOK VIEW STYLE -->
-    <link href="assets/css/library-book-view.css" rel="stylesheet" />
-    <!-- GOOGLE FONT -->
-    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <!-- Custom CSS -->
+    <link href="assets/css/dashboard-style.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .book-detail-card {
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            overflow: hidden;
+            background: #fff;
+        }
+        .book-cover {
+            height: 100%;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        .detail-item {
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .detail-item:last-child {
+            border-bottom: none;
+            margin-bottom: 0;
+            padding-bottom: 0;
+        }
+        .detail-label {
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 5px;
+        }
+        .detail-value {
+            font-size: 1.05rem;
+            color: #333;
+        }
+        .status-badge {
+            font-size: 0.9rem;
+            padding: 6px 12px;
+            border-radius: 20px;
+        }
+        .back-btn {
+            transition: all 0.3s ease;
+        }
+        .back-btn:hover {
+            transform: translateX(-3px);
+        }
+        .header-title {
+            position: relative;
+            padding-bottom: 10px;
+        }
+        .header-title:after {
+            content: '';
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 60px;
+            height: 3px;
+            background: linear-gradient(90deg, #4e73df, #224abe);
+            border-radius: 3px;
+        }
+    </style>
 </head>
 <body>
-    <!------MENU SECTION START-->
-    <?php include('includes/header.php');?>
-    <!-- MENU SECTION END-->
-    <div class="content-wrapper lib-book-container">
+    <!-- HEADER SECTION -->
+    <?php include('includes/header.php'); ?>
+    
+    <!-- MAIN CONTENT -->
+    <div class="content-wrapper">
         <div class="container">
-            <div class="row pad-botm">
+            <div class="row mb-4">
                 <div class="col-md-12">
-                    <h4 class="header-line lib-page-header"><span class="lib-header-text">View Book Details</span></h4>
+                    <h4 class="header-title">Book Details</h4>
+                    
+                    <!-- Display error message if any -->
+                    <?php if(isset($_SESSION['error'])) { ?>
+                    <div class="alert alert-danger alert-dismissible fade show">
+                        <i class="fas fa-exclamation-circle me-2"></i>
+                        <?php echo htmlentities($_SESSION['error']); unset($_SESSION['error']); ?>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                    <?php } ?>
                 </div>
             </div>
+            
             <div class="row">
-                <div class="col-md-12">
-                    <div class="panel panel-default lib-book-card">
-                        <div class="panel-heading lib-book-header">
-                            <h4>Book Information</h4>
-                        </div>
-                        <div class="panel-body lib-book-body">
-                            <?php if($bookDetails): ?>
-                                <div class="row">
-                                    <div class="col-md-4 lib-book-image-container">
-                                        <?php
-                                        $imagePath = "/library/shared/bookImg/" . htmlentities($bookDetails['bookImage']);
-                                        if(empty($bookDetails['bookImage'])) {
-                                            $imagePath = "/library/shared/bookImg/placeholder-book.jpg";
-                                        }
-                                        ?>
-                                        <img src="<?php echo $imagePath; ?>" class="lib-book-cover" 
-                                             onerror="this.src='/library/shared/bookImg/placeholder-book.jpg'">
+                <div class="col-lg-12">
+                    <div class="book-detail-card p-4">
+                        <div class="row">
+                            <!-- Book Cover Column -->
+                            <div class="col-md-4 mb-4 mb-md-0">
+                                <div class="h-100 d-flex align-items-center">
+                                    <img src="<?php echo (!empty($book->bookImage) && file_exists('../shared/bookImg/' . $book->bookImage)) 
+                                        ? '../shared/bookImg/' . htmlentities($book->bookImage) 
+                                        : '../shared/bookImg/placeholder.jpg'; ?>" 
+                                        class="book-cover w-100" 
+                                        alt="<?php echo htmlentities($book->BookName); ?> cover"
+                                        onerror="this.onerror=null;this.src='../shared/bookImg/placeholder.jpg'">
+                                </div>
+                            </div>
+                            
+                            <!-- Book Details Column -->
+                            <div class="col-md-8">
+                                <div class="d-flex flex-column h-100">
+                                    <h3 class="mb-4"><?php echo htmlentities($book->BookName); ?></h3>
+                                    
+                                    <div class="detail-item">
+                                        <div class="detail-label">Category</div>
+                                        <div class="detail-value"><?php echo htmlentities($book->CategoryName); ?></div>
                                     </div>
-                                    <div class="col-md-8">
-                                        <div class="lib-book-details">
-                                            <?php
-                                            // Fields to exclude from display
-                                            $excludeFields = ['id', 'CatId', 'AuthorId', 'bookImage'];
-
-                                            // Display all fields from the database query except excluded fields
-                                            foreach($bookDetails as $key => $value) {
-                                                if(in_array($key, $excludeFields)) continue; // Skip excluded fields
-                                                
-                                                // Customize the label for PublisherName
-                                                $label = ucwords(str_replace('_', ' ', $key));
-                                                if ($key == 'PublisherName') {
-                                                    $label = 'Publisher'; // Change "PublisherName" to "Publisher"
-                                                }
-                                                
-                                                echo '<div class="lib-book-detail-row">';
-                                                echo '<span class="lib-book-label">' . $label . ':</span>';
-                                                
-                                                // Add special formatting based on field type
-                                                if($key == 'RegDate' || $key == 'UpdationDate') {
-                                                    echo '<span class="lib-book-value lib-book-date">';
-                                                    echo !empty($value) ? date('F j, Y', strtotime($value)) : 'N/A';
-                                                    echo '</span>';
-                                                } 
-                                                else if($key == 'ISBNNumber') {
-                                                    echo '<span class="lib-book-value lib-book-isbn">' . htmlentities($value) . '</span>';
-                                                }
-                                                else if($key == 'CategoryName') {
-                                                    echo '<span class="lib-book-value"><span class="lib-book-category">' . htmlentities($value) . '</span></span>';
-                                                }
-                                                else if($key == 'BookPrice') {
-                                                    echo '<span class="lib-book-value">$' . number_format($value, 2) . '</span>';
-                                                }
-                                                else if($key == 'Status') {
-                                                    if($value == 1) {
-                                                        echo '<span class="lib-book-value lib-status-available">Available</span>';
-                                                    } else {
-                                                        echo '<span class="lib-book-value lib-status-unavailable">Not Available</span>';
-                                                    }
-                                                }
-                                                else {
-                                                    echo '<span class="lib-book-value">' . htmlentities($value) . '</span>';
-                                                }
-                                                
-                                                echo '</div>';
+                                    
+                                    <div class="detail-item">
+                                        <div class="detail-label">Publisher</div>
+                                        <div class="detail-value"><?php echo htmlentities($book->PublisherName); ?></div>
+                                    </div>
+                                    
+                                    <div class="detail-item">
+                                        <div class="detail-label">ISBN Number</div>
+                                        <div class="detail-value"><?php echo htmlentities($book->ISBNNumber); ?></div>
+                                    </div>
+                                    
+                                    <div class="detail-item">
+                                        <div class="detail-label">Available Quantity</div>
+                                        <div class="detail-value"><?php echo htmlentities($book->bookQty); ?></div>
+                                    </div>
+                                    
+                                    <div class="detail-item">
+                                        <div class="detail-label">Status</div>
+                                        <div class="detail-value">
+                                            <?php 
+                                            if ($book->isIssued == 1) {
+                                                echo '<span class="status-badge bg-warning text-dark"><i class="fas fa-book-reader me-1"></i> Issued</span>';
+                                            } elseif ($book->bookQty <= 0) {
+                                                echo '<span class="status-badge bg-danger"><i class="fas fa-times-circle me-1"></i> Out of Stock</span>';
+                                            } else {
+                                                echo '<span class="status-badge bg-success"><i class="fas fa-check-circle me-1"></i> Available</span>';
                                             }
                                             ?>
                                         </div>
                                     </div>
+                                    
+                                    <div class="mt-auto pt-3">
+                                        <a href="manage-books.php" class="btn btn-primary back-btn">
+                                            <i class="fas fa-arrow-left me-2"></i> Back to Manage Books
+                                        </a>
+                                    </div>
                                 </div>
-                            <?php else: ?>
-                                <p class="text-center">No details found for this book.</p>
-                            <?php endif; ?>
-                        </div>
-                        <div class="panel-footer lib-book-footer">
-                            <a href="edit-book.php?bookid=<?php echo $bookId; ?>" class="btn btn-primary lib-edit-button">
-                                <i class="fa fa-edit"></i> Edit Book Details
-                            </a>
-                            <a href="manage-books.php" class="btn lib-back-button">
-                                <i class="fa fa-arrow-left"></i> Back to Manage Books
-                            </a>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -154,13 +203,17 @@ if(isset($_GET['bookid'])) {
         </div>
     </div>
 
-    <!-- CONTENT-WRAPPER SECTION END-->
-    <?php include('includes/footer.php');?>
-    <!-- FOOTER SECTION END-->
-    <!-- JAVASCRIPT FILES PLACED AT THE BOTTOM TO REDUCE THE LOADING TIME  -->
-    <!-- CORE JQUERY  -->
-    <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS  -->
-    <script src="assets/js/bootstrap.js"></script>
+    <!-- FOOTER SECTION -->
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <div class="text-center text-muted">
+                &copy; <?php echo date('Y'); ?> Library Management System
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

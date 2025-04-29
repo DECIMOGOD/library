@@ -3,18 +3,35 @@
 session_start();
 include('../includes/config.php');
 
-// Define constants for image paths
-define('BOOK_IMAGE_DIR', 'shared/bookImg/');
-define('PLACEHOLDER_IMAGE', 'shared/bookImg/placeholder.jpg');
+// Define constants for image paths (using absolute paths for reliability)
+define('BOOK_IMAGE_DIR', '../shared/bookImg/');
+define('PLACEHOLDER_IMAGE', '../shared/bookImg/placeholder.jpg');
 
 // Check if delete action is requested
 if(isset($_GET['del'])) {
     $bookid = intval($_GET['del']);
     try {
+        // First get the image path to delete the file
+        $sql = "SELECT bookImage FROM tblbooks WHERE id = :id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':id', $bookid, PDO::PARAM_INT);
+        $query->execute();
+        $result = $query->fetch(PDO::FETCH_OBJ);
+        
+        // Delete the book record
         $sql = "DELETE FROM tblbooks WHERE id = :id";
         $query = $dbh->prepare($sql);
         $query->bindParam(':id', $bookid, PDO::PARAM_INT);
         $query->execute();
+        
+        // Delete the associated image file if it's not the placeholder
+        if($result && !empty($result->bookImage) && $result->bookImage != 'placeholder.jpg') {
+            $imagePath = BOOK_IMAGE_DIR . $result->bookImage;
+            if(file_exists($imagePath)) {
+                unlink($imagePath);
+            }
+        }
+        
         $_SESSION['msg'] = "Book deleted successfully";
         header('location:manage-books.php');
         exit();
@@ -33,13 +50,47 @@ if(isset($_GET['del'])) {
     <meta name="description" content="Online Library Management System" />
     <title>Library Management System | Manage Books</title>
     
-    <!-- Core Styles -->
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet" />
-    <link href="https://cdn.datatables.net/1.13.5/css/dataTables.bootstrap5.min.css" rel="stylesheet" />
-    <link href="assets/css/manage-books-style.css" rel="stylesheet" />
-        
+    <!-- Bootstrap CSS -->
+    <link href="assets/css/bootstrap.css" rel="stylesheet" />
+    <!-- Font Awesome -->
+    <link href="assets/css/font-awesome.css" rel="stylesheet" />
+    <!-- Google Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <!-- Custom Dashboard CSS -->
+    <link href="assets/css/dashboard-style.css" rel="stylesheet" />
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <style>
+        .book-image {
+            width: 50px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 3px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .actions .btn-action {
+            padding: 5px 8px;
+            margin: 0 2px;
+        }
+        .badge {
+            font-size: 0.85em;
+            padding: 5px 8px;
+        }
+        .table-responsive {
+            overflow-x: auto;
+        }
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- HEADER SECTION -->
@@ -83,9 +134,9 @@ if(isset($_GET['del'])) {
                             </a>
                         </div>
                         <div class="panel-body">
-                            <div class="sort-controls">
+                            <div class="sort-controls mb-3">
                                 <label>Sort by:</label>
-                                <select id="sort-select" class="sort-select">
+                                <select id="sort-select" class="form-select form-select-sm" style="width: auto; display: inline-block;">
                                     <option value="0_desc">Latest to Oldest</option>
                                     <option value="0_asc">Oldest to Latest</option>
                                     <option value="2_asc">A-Z (Book Name)</option>
@@ -96,7 +147,7 @@ if(isset($_GET['del'])) {
                             </div>
                             
                             <div class="table-responsive">
-                                <table class="table" id="books-table">
+                                <table class="table table-hover" id="books-table">
                                     <thead>
                                         <tr>
                                             <th style="width: 5%">#</th>
@@ -129,23 +180,26 @@ if(isset($_GET['del'])) {
                                             foreach($results as $result) {
                                                 // Determine the correct image path
                                                 $imageFile = htmlentities($result->bookImage);
-                                                $imagePath = !empty($imageFile) ? BOOK_IMAGE_DIR . $imageFile : PLACEHOLDER_IMAGE;
+                                                $imagePath = (!empty($imageFile) && file_exists(BOOK_IMAGE_DIR . $imageFile)) 
+                                                    ? BOOK_IMAGE_DIR . $imageFile 
+                                                    : PLACEHOLDER_IMAGE;
                                                 
                                                 // Determine book status with modern badges
                                                 $status = '';
                                                 if($result->isIssued == 1) {
-                                                    $status = '<span class="badge badge-warning">Issued</span>';
+                                                    $status = '<span class="badge bg-warning text-dark">Issued</span>';
                                                 } elseif($result->bookQty <= 0) {
-                                                    $status = '<span class="badge badge-danger">Out of Stock</span>';
+                                                    $status = '<span class="badge bg-danger">Out of Stock</span>';
                                                 } else {
-                                                    $status = '<span class="badge badge-success">Available</span>';
+                                                    $status = '<span class="badge bg-success">Available</span>';
                                                 }
                                     ?>
                                         <tr>
                                             <td><?php echo htmlentities($cnt); ?></td>
                                             <td>
                                                 <img src="<?php echo $imagePath; ?>" class="book-image" 
-                                                     onerror="this.onerror=null;this.src='<?php echo PLACEHOLDER_IMAGE; ?>'">
+                                                     onerror="this.onerror=null;this.src='<?php echo PLACEHOLDER_IMAGE; ?>'"
+                                                     alt="<?php echo htmlentities($result->BookName); ?> cover">
                                             </td>
                                             <td>
                                                 <strong><?php echo htmlentities($result->BookName); ?></strong>
@@ -158,15 +212,15 @@ if(isset($_GET['del'])) {
                                             <td>
                                                 <div class="actions">
                                                     <a href="view-book.php?bookid=<?php echo htmlentities($result->id); ?>" 
-                                                       class="btn btn-action btn-view" title="View Details">
+                                                       class="btn btn-sm btn-action btn-primary" title="View Details">
                                                         <i class="fas fa-eye"></i>
                                                     </a>
                                                     <a href="edit-book.php?bookid=<?php echo htmlentities($result->id); ?>" 
-                                                       class="btn btn-action btn-edit" title="Edit Book">
+                                                       class="btn btn-sm btn-action btn-warning" title="Edit Book">
                                                         <i class="fas fa-edit"></i>
                                                     </a>
                                                     <a href="manage-books.php?del=<?php echo htmlentities($result->id); ?>" 
-                                                       class="btn btn-action btn-delete" title="Delete Book"
+                                                       class="btn btn-sm btn-action btn-danger" title="Delete Book"
                                                        onclick="return confirm('Are you sure you want to delete this book?');">
                                                         <i class="fas fa-trash"></i>
                                                     </a>
@@ -177,10 +231,10 @@ if(isset($_GET['del'])) {
                                                 $cnt++;
                                             }
                                         } else {
-                                            echo '<tr><td colspan="9" class="text-center">No books found in the database.</td></tr>';
+                                            echo '<tr><td colspan="9" class="text-center py-4">No books found in the database.</td></tr>';
                                         }
                                     } catch(PDOException $e) {
-                                        echo '<tr><td colspan="9" class="text-center">Database error: ' . $e->getMessage() . '</td></tr>';
+                                        echo '<tr><td colspan="9" class="text-center py-4 text-danger">Database error: ' . htmlentities($e->getMessage()) . '</td></tr>';
                                     }
                                     ?>
                                     </tbody>
@@ -194,8 +248,12 @@ if(isset($_GET['del'])) {
     </div>
 
     <!-- FOOTER SECTION -->
-    <footer>
-        <!-- Footer content would go here -->
+    <footer class="footer mt-auto py-3 bg-light">
+        <div class="container">
+            <div class="text-center text-muted">
+                &copy; <?php echo date('Y'); ?> Library Management System
+            </div>
+        </div>
     </footer>
 
     <!-- JAVASCRIPT FILES -->
@@ -212,7 +270,8 @@ if(isset($_GET['del'])) {
             order: [[0, "desc"]], // Default sort by ID (latest first)
             columnDefs: [
                 { orderable: false, targets: [1, 8] }, // Disable sorting for image and actions columns
-                { className: "align-middle", targets: "_all" }
+                { className: "align-middle", targets: "_all" },
+                { searchable: false, targets: [1, 6, 7, 8] } // Disable search for these columns
             ],
             language: {
                 lengthMenu: "Show _MENU_ books per page",
@@ -229,12 +288,24 @@ if(isset($_GET['del'])) {
                     next: '<i class="fas fa-angle-right"></i>'
                 }
             },
-            dom: '<"top"lf>rt<"bottom"ip><"clear">',
+            dom: '<"top"<"row"<"col-md-6"l><"col-md-6"f>>>rt<"bottom"<"row"<"col-md-6"i><"col-md-6"p>>><"clear">',
             stateSave: true,
             pageLength: 10,
             lengthMenu: [[5, 10, 25, 50, -1], [5, 10, 25, 50, "All"]],
+            initComplete: function() {
+                $('.dataTables_filter input').addClass('form-control form-control-sm');
+                $('.dataTables_length select').addClass('form-select form-select-sm');
+            },
             drawCallback: function() {
                 $('.dataTables_paginate > .pagination').addClass('pagination-sm');
+                // Add animation to table rows
+                $('#books-table tbody tr').each(function(index) {
+                    $(this).css({
+                        'animation': 'fadeInUp 0.5s ease forwards',
+                        'animation-delay': (index * 0.05) + 's',
+                        'opacity': '0'
+                    });
+                });
             }
         });
 
@@ -244,15 +315,6 @@ if(isset($_GET['del'])) {
             var col = parseInt(val[0]);
             var dir = val[1];
             table.order([col, dir]).draw();
-        });
-        
-        // Add animation to table rows
-        $('.table tbody tr').each(function(index) {
-            $(this).css({
-                'animation': 'fadeInUp 0.5s ease forwards',
-                'animation-delay': (index * 0.05) + 's',
-                'opacity': '0'
-            });
         });
         
         // Auto close alerts after 5 seconds
