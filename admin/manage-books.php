@@ -62,6 +62,10 @@ if(isset($_GET['del'])) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
     <style>
+        body {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
         .book-image {
             width: 50px;
             height: 70px;
@@ -89,6 +93,123 @@ if(isset($_GET['del'])) {
                 opacity: 1;
                 transform: translateY(0);
             }
+        }
+        
+        /* Dark Theme Styles */
+        .content-wrapper {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+        .panel {
+            background-color: #1e293b;
+            border: 1px solid #334155;
+            color: #ffffff;
+        }
+        .panel-heading {
+            background-color: #0f172a;
+            color: #ffffff;
+            border-bottom: 1px solid #334155;
+        }
+        .table {
+            background-color: #1e293b;
+            color: #ffffff;
+        }
+        .table th {
+            background-color: #0f172a;
+            color: #ffffff;
+            border-color: #334155;
+        }
+        .table td {
+            border-color: #334155;
+            color: #ffffff;
+        }
+        .table-hover tbody tr:hover {
+            background-color: #334155;
+            color: #ffffff;
+        }
+        .form-control, 
+        .form-select {
+            background-color: #0f172a;
+            color: #ffffff;
+            border-color: #334155;
+        }
+        .form-control:focus, 
+        .form-select:focus {
+            background-color: #0f172a;
+            color: #ffffff;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 0.25rem rgba(79, 70, 229, 0.25);
+        }
+        .alert {
+            background-color: #0f172a;
+            border-color: #334155;
+            color: #ffffff;
+        }
+        .alert-success {
+            background-color: #064e3b;
+            border-color: #047857;
+            color: #ffffff;
+        }
+        .alert-danger {
+            background-color: #7f1d1d;
+            border-color: #b91c1c;
+            color: #ffffff;
+        }
+        .page-item.disabled .page-link {
+            background-color: #0f172a;
+            border-color: #334155;
+            color: #64748b;
+        }
+        .page-link {
+            background-color: #0f172a;
+            border-color: #334155;
+            color: #ffffff;
+        }
+        .page-item.active .page-link {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+            color: #ffffff;
+        }
+        .dataTables_info {
+            color: #94a3b8 !important;
+        }
+        .btn-primary {
+            background-color: #4f46e5;
+            border-color: #4f46e5;
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background-color: #4338ca;
+            border-color: #4338ca;
+            color: #ffffff;
+        }
+        .btn-warning {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+            color: #1e293b;
+        }
+        .btn-danger {
+            background-color: #dc2626;
+            border-color: #dc2626;
+            color: #ffffff;
+        }
+        .header-line {
+            color: #ffffff;
+        }
+        .footer {
+            color: #ffffff;
+            background-color: #0f172a !important;
+        }
+        .sort-controls label {
+            color: #ffffff;
+        }
+        /* Fix for DataTables search box */
+        .dataTables_filter input {
+            color: white !important;
+        }
+        /* Fix for select dropdown text */
+        .dataTables_length select option {
+            color: #1e293b;
         }
     </style>
 </head>
@@ -146,7 +267,7 @@ if(isset($_GET['del'])) {
                                 </select>
                             </div>
                             
-                            <div class="table-responsive">
+                            <div class="table-responsive">  
                                 <table class="table table-hover" id="books-table">
                                     <thead>
                                         <tr>
@@ -248,9 +369,9 @@ if(isset($_GET['del'])) {
     </div>
 
     <!-- FOOTER SECTION -->
-    <footer class="footer mt-auto py-3 bg-light">
+    <footer class="footer mt-auto py-3">
         <div class="container">
-            <div class="text-center text-muted">
+            <div class="text-center">
                 &copy; <?php echo date('Y'); ?> Library Management System
             </div>
         </div>
@@ -295,6 +416,8 @@ if(isset($_GET['del'])) {
             initComplete: function() {
                 $('.dataTables_filter input').addClass('form-control form-control-sm');
                 $('.dataTables_length select').addClass('form-select form-select-sm');
+                // Force white text in search box
+                $('.dataTables_filter input').css('color', 'white');
             },
             drawCallback: function() {
                 $('.dataTables_paginate > .pagination').addClass('pagination-sm');

@@ -111,7 +111,7 @@ body::after {
     backdrop-filter: blur(20px);
 }
 
-.panel-heading {
+.panel-heading {    
     padding: 1.5rem 2rem;
     background: rgba(255, 255, 255, 0.5);
     border-bottom: 1px solid var(--card-border);
