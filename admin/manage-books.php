@@ -205,7 +205,18 @@ if(isset($_GET['del'])) {
         }
         /* Fix for DataTables search box */
         .dataTables_filter input {
-            color: white !important;
+            color: black !important; /* Ensure text in the search bar is black */
+            background-color: white; /* Add a white background for contrast */
+            border: 1px solid #ccc; /* Add a border for better visibility */
+            padding: 5px; /* Add padding for better usability */
+            border-radius: 4px; /* Add rounded corners */
+            width: 200px; /* Set a fixed width for the search box */
+            margin-left: 400px;
+        }
+        .dataTables_filter input:focus {
+            outline: none; /* Remove default outline */
+            border-color: #4f46e5; /* Add focus border color */
+            box-shadow: 0 0 5px rgba(79, 70, 229, 0.5); /* Add focus shadow */
         }
         /* Fix for select dropdown text */
         .dataTables_length select option {

@@ -43,6 +43,36 @@ if (strlen($_SESSION['alogin']) == 0) {
     <link href="assets/css/style.css" rel="stylesheet" />
     <!-- GOOGLE FONT -->
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <style>
+        body {
+            background-color: rgba(26, 26, 46, 0.95) !important; /* Updated background color */
+            color: white; /* Ensure text is white for readability */
+        }
+        .panel {
+            background-color: rgba(26, 26, 46, 0.98); /* Keep panel background consistent */
+            color: white;
+        }
+        .panel-heading {
+            background-color: rgba(26, 26, 46, 0.98);
+            color: white;
+        }
+        table {
+            background-color: rgba(26, 26, 46, 0.98);
+            color: white;
+        }
+        table tr.odd {
+            background-color: rgba(26, 26, 46, 0.98) !important; /* Ensure odd rows have the same background */
+            color: white !important; /* Ensure text in odd rows is white */
+        }
+        table tr.even {
+            background-color: rgba(30, 30, 46, 0.95) !important; /* Slightly different background for even rows */
+            color: white !important; /* Ensure text in even rows is white */
+        }
+        table tr:hover {
+            background-color: #4a5568 !important; /* Add a hover effect */
+            color: white !important; /* Ensure text remains white on hover */
+        }
+    </style>
 </head>
 <body>
     <!------MENU SECTION START-->
@@ -65,7 +95,7 @@ if (strlen($_SESSION['alogin']) == 0) {
                         </div>
                         <div class="panel-body">
                             <div class="table-responsive">
-                                <table class="table table-striped table-bordered table-hover" id="issueHistory">
+                                <table class="table  table-bordered table-hover" id="issueHistory">
                                     <thead>
                                         <tr>
                                             <th>#</th>

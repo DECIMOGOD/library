@@ -50,6 +50,31 @@ if (isset($_POST['return'])) {
     <link href="assets/css/bootstrap.css" rel="stylesheet">
     <link href="assets/css/font-awesome.css" rel="stylesheet">
     <link href="assets/css/style.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgba(26, 26, 46, 0.95) !important; /* Updated background color */
+            color: white; /* Ensure text is white for readability */
+        }
+        .panel {
+            background-color: rgba(26, 26, 46, 0.98); /* Keep panel background consistent */
+            color: white;
+        }
+        .panel-heading {
+            background-color: rgba(26, 26, 46, 0.98);
+            color: white;
+        }
+        .form-control {
+            background-color: rgba(30, 30, 46, 0.95);
+            color: white;
+            border: 1px solid #ccc;
+        }
+        .form-control:focus {
+            background-color: rgba(30, 30, 46, 0.95);
+            color: white;
+            border-color: #4f46e5;
+            box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
+        }
+    </style>
 </head>
 <body>
 <?php include('includes/header.php'); ?>

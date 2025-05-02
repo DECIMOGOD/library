@@ -89,6 +89,30 @@ if(isset($_POST['issue'])) {
     <link href="assets/css/issue-book-style.css" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+    <style>
+        body {
+            background-color: rgba(26, 26, 46, 0.95) !important; /* Updated background color */
+            color: white; /* Ensure text is white for readability */
+        }
+        .book-details {
+            color: white;
+            background-color: rgba(26, 26, 46, 0.98); /* Keep the book details background */
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 50px;
+            height: 100%;
+        }
+        .book-details img {
+            max-width: 200px;
+            height: auto;
+            display: block;
+            margin-bottom: 10px;
+            margin-left: 100px;
+        }
+        table {
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <?php include('includes/header.php');?>
@@ -143,7 +167,7 @@ if(isset($_POST['issue'])) {
 
                                 <div class="form-group">
                                     <div id="loaderIcon" class="text-center">
-                                        <img src="assets/img/loader.gif" alt="Loading..." />
+                                        <img src="/library/shared/bookImg/" alt="Loading..." />
                                     </div>
                                     <div id="get_book_name" class="book-details"></div>
                                 </div>

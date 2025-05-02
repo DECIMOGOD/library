@@ -142,32 +142,28 @@ try {
     <!-- DataTables CSS -->
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.css">
     <style>
-        .form-group {
-            margin-bottom: 20px;
+        body {
+            background-color: rgba(26, 26, 46, 0.95) !important;/* Dark background */
+            color: white; /* Ensure all text is white */
         }
-        .panel-info > .panel-heading {
-            background-color: #5bc0de;
-            color: #fff;
-            font-weight: bold;
+        .form-group label, .form-control, .panel, .panel-heading, .alert {
+            color: white; /* Ensure form text, labels, and alerts are white */
+        }
+        .panel {
+            background-color: #2d3748; /* Dark panel background */
+        }
+        .panel-heading {
+            background-color: #4a5568; /* Darker panel heading */
         }
         .btn-info {
-            background-color: #5bc0de;
-            border-color: #46b8da;
+            background-color: #3182ce; /* Button background */
+            color: white; /* Button text color */
         }
         .btn-info:hover {
-            background-color: #31b0d5;
-            border-color: #269abc;
+            background-color: #2b6cb0; /* Button hover background */
         }
         .help-block {
-            font-size: 12px;
-            color: #737373;
-            font-style: italic;
-        }
-        .header-line {
-            font-weight: bold;
-            padding-bottom: 10px;
-            border-bottom: 1px solid #eeeeee;
-            margin-bottom: 30px;
+            color: #a0aec0; /* Light gray for help text */
         }
     </style>
 </head>
@@ -175,7 +171,7 @@ try {
     <!------MENU SECTION START-->
     <?php include('includes/header.php'); ?>
     <!-- MENU SECTION END-->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="background-color: rgba(26, 26, 46, 0.95) !important;">
         <div class="container">
             <div class="row pad-botm">
                 <div class="col-md-12">

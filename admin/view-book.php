@@ -55,7 +55,7 @@ try {
     <style>
         .book-detail-card {
             border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 4px 20px rgba(4, 0, 70, 0.1);
             overflow: hidden;
             background: #fff;
         }
@@ -77,12 +77,12 @@ try {
         }
         .detail-label {
             font-weight: 600;
-            color: #555;
+            color: white;
             margin-bottom: 5px;
         }
         .detail-value {
             font-size: 1.05rem;
-            color: #333;
+            color: white;
         }
         .status-badge {
             font-size: 0.9rem;
@@ -97,7 +97,8 @@ try {
         }
         .header-title {
             position: relative;
-            padding-bottom: 10px;
+            padding-bottom: 10px;'
+            color: white;
         }
         .header-title:after {
             content: '';
@@ -120,7 +121,7 @@ try {
         <div class="container">
             <div class="row mb-4">
                 <div class="col-md-12">
-                    <h4 class="header-title">Book Details</h4>
+                    <h4 class="header-title" style=" color: white;">Book Details</h4>
                     
                     <!-- Display error message if any -->
                     <?php if(isset($_SESSION['error'])) { ?>
@@ -135,7 +136,7 @@ try {
             
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="book-detail-card p-4">
+                    <div class="book-detail-card p-4" style="background: rgba(8, 0, 41, 0.95);">
                         <div class="row">
                             <!-- Book Cover Column -->
                             <div class="col-md-4 mb-4 mb-md-0">
@@ -151,7 +152,7 @@ try {
                             
                             <!-- Book Details Column -->
                             <div class="col-md-8">
-                                <div class="d-flex flex-column h-100">
+                                <div class="d-flex flex-column h-100" style= " color: white;">
                                     <h3 class="mb-4"><?php echo htmlentities($book->BookName); ?></h3>
                                     
                                     <div class="detail-item">
@@ -203,14 +204,7 @@ try {
         </div>
     </div>
 
-    <!-- FOOTER SECTION -->
-    <footer class="footer mt-auto py-3 bg-light">
-        <div class="container">
-            <div class="text-center text-muted">
-                &copy; <?php echo date('Y'); ?> Library Management System
-            </div>
-        </div>
-    </footer>
+   
 
     <!-- JavaScript Libraries -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>

@@ -20,6 +20,32 @@ if (strlen($_SESSION['alogin']) == 0) {
     <link href="assets/js/dataTables/dataTables.bootstrap.css" rel="stylesheet" />
     <link href="assets/css/manage-issued-book-style.css" rel="stylesheet" />
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <style>
+        body {
+            color: #ffffff; /* Set text color to white */
+        }
+        .table-striped > tbody > tr:nth-of-type(odd) {
+            background-color: #2c3e50; /* Dark background for odd rows */
+        }
+        .table-striped > tbody > tr:nth-of-type(even) {
+            background-color: #34495e; /* Slightly lighter background for even rows */
+        }
+        .table-striped > tbody > tr:hover {
+            background-color: #1abc9c; /* Highlight row on hover */
+        }
+        .panel-heading {
+            color: #ffffff; /* White text for panel heading */
+        }
+        .table-striped > tbody > tr > td {
+            color: #ffffff; /* Set table text color to white */
+        }
+        .table-striped > thead > tr > th {
+            color: #ffffff; /* Set table header text color to white */
+        }
+        .table-striped > tbody > tr:nth-of-type(odd) > td {
+            color: #ffffff; /* Set text color of odd rows to white */
+        }
+    </style>
 </head>
 <body>
 <?php include('includes/header.php'); ?>

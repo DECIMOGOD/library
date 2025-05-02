@@ -12,26 +12,34 @@ if(isset($_POST['signup']))
     $department = isset($_POST['department']) ? trim($_POST['department']) : '';
     $grade_level = isset($_POST['grade_level']) ? trim($_POST['grade_level']) : '';
     $section = isset($_POST['section']) ? trim($_POST['section']) : '';
-    $strand = ($department == "Senior High") ? trim($_POST['strand']) : ''; // Only required for Senior High
+    $strand = ($department == "Senior High") ? trim($_POST['strand']) : '';
     $password = md5($_POST['password']); 
     $status = 1;
 
-    // Backend Validation: Ensure LRN is exactly 12 digits
     if (!preg_match('/^\d{12}$/', $lrn)) {
-        echo '<script>alert("Invalid LRN! It must be exactly 12 digits and contain only numbers.");</script>';
-        exit(); // Stop execution if LRN is invalid
+        $_SESSION['sweetalert'] = [
+            'icon' => 'error',
+            'title' => 'Invalid LRN!',
+            'text' => 'LRN must be exactly 12 digits and contain only numbers.'
+        ];
+        header("Location: signup.php");
+        exit();
     }
 
-    // Check if LRN already exists
     $sql_check = "SELECT LRN FROM tblstudents WHERE LRN = :lrn";
     $query_check = $dbh->prepare($sql_check);
     $query_check->bindParam(':lrn', $lrn, PDO::PARAM_STR);
     $query_check->execute();
 
     if ($query_check->rowCount() > 0) {
-        echo '<script>alert("This LRN is already registered! Please use a different LRN.");</script>';
+        $_SESSION['sweetalert'] = [
+            'icon' => 'error',
+            'title' => 'Registration Failed',
+            'text' => 'This LRN is already registered! Please use a different LRN.'
+        ];
+        header("Location: signup.php");
+        exit();
     } else {
-        // Insert the new student record
         $sql = "INSERT INTO tblstudents (LRN, Name, Address, Department, Grade_Level, Section, Strand, Password, Status) 
                 VALUES (:lrn, :fname, :address, :department, :grade_level, :section, :strand, :password, :status)";
 
@@ -47,9 +55,22 @@ if(isset($_POST['signup']))
         $query->bindParam(':status', $status, PDO::PARAM_INT);
 
         if ($query->execute()) {
-            echo '<script>alert("Your registration was successful! Your LRN is ' . $lrn . '");</script>';
+            $_SESSION['sweetalert'] = [
+                'icon' => 'success',
+                'title' => 'Registration Successful!',
+                'html' => 'Your registration was successful!<br><br>Your LRN is: <strong>'.$lrn.'</strong>',
+                'redirect' => 'login.php'
+            ];
+            header("Location: signup.php");
+            exit();
         } else {
-            echo '<script>alert("Something went wrong. Please try again.");</script>';
+            $_SESSION['sweetalert'] = [
+                'icon' => 'error',
+                'title' => 'Registration Failed',
+                'text' => 'Something went wrong. Please try again.'
+            ];
+            header("Location: signup.php");
+            exit();
         }
     }
 }
@@ -68,9 +89,38 @@ if(isset($_POST['signup']))
     <!-- CUSTOM STYLE -->
     <link href="assets/css/style.css" rel="stylesheet" />
     <!-- GOOGLE FONT -->
-    <link href='http://fonts.googleapis.com/css?familys=Open+Sans' rel='stylesheet' type='text/css' />
+    <link href='https://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    <style>
+        .swal2-popup {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
 </head>
 <body class="signup-page-background">
+    <?php
+    if(isset($_SESSION['sweetalert'])) {
+        $alert = $_SESSION['sweetalert'];
+        unset($_SESSION['sweetalert']);
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>';
+        echo '<script>
+            document.addEventListener("DOMContentLoaded", function() {
+                Swal.fire({
+                    icon: "'.$alert['icon'].'",
+                    title: "'.$alert['title'].'",
+                    '. (isset($alert['html']) ? 'html: `'.$alert['html'].'`' : 'text: "'.$alert['text'].'"') .',
+                    confirmButtonColor: "#3085d6",
+                })'.(isset($alert['redirect']) ? '.then((result) => {
+                    if (result.isConfirmed) {
+                        window.location.href = "'.$alert['redirect'].'";
+                    }
+                })' : '').';
+            });
+        </script>';
+    }
+    ?>
+    
     <div class="signup-wrapper">
         <div class="container">
             <div class="signup-back-link">
@@ -88,7 +138,7 @@ if(isset($_POST['signup']))
                 </div>
                 
                 <div class="signup-form">
-                    <form role="form" method="post" onSubmit="return valid();">
+                    <form role="form" method="post" id="signupForm">
                         <div class="signup-form-group">
                             <label for="lrn"><i class="fa fa-id-card"></i> Enter LRN</label>
                             <input class="signup-form-control" type="text" name="lrn" id="lrn" required autocomplete="off" 
@@ -136,13 +186,19 @@ if(isset($_POST['signup']))
                         </div>
                         
                         <div class="signup-form-group">
+                            <label for="section"><i class="fa fa-users"></i> Section</label>
+                            <input class="signup-form-control" type="text" name="section" id="section" required autocomplete="off" placeholder="Enter your section" />
+                        </div>
+                        
+                        <div class="signup-form-group">
                             <label for="password"><i class="fa fa-lock"></i> Password</label>
-                            <input class="signup-form-control" type="password" name="password" id="password" required autocomplete="off" placeholder="Create a strong password" />
+                            <input class="signup-form-control" type="password" name="password" id="password" required autocomplete="off" placeholder="Create a strong password" minlength="8" />
+                            <small class="form-text text-muted">Minimum 8 characters</small>
                         </div>
                         
                         <div class="signup-form-group">
                             <label for="confirmpassword"><i class="fa fa-lock"></i> Confirm Password</label>
-                            <input class="signup-form-control" type="password" name="confirmpassword" id="confirmpassword" required autocomplete="off" placeholder="Re-enter your password" />
+                            <input class="signup-form-control" type="password" name="confirmpassword" id="confirmpassword" required autocomplete="off" placeholder="Re-enter your password" minlength="8" />
                         </div>
                         
                         <div class="signup-footer">
@@ -162,15 +218,50 @@ if(isset($_POST['signup']))
     <script src="assets/js/jquery-1.10.2.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/custom.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+        // Password matching validation
+        document.getElementById('signupForm').addEventListener('submit', function(e) {
+            var password = document.getElementById('password').value;
+            var confirmPassword = document.getElementById('confirmpassword').value;
+            
+            if (password !== confirmPassword) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Password Mismatch',
+                    text: 'Your passwords do not match. Please try again.',
+                    confirmButtonColor: '#3085d6',
+                });
+                return false;
+            }
+            
+            if (password.length < 8) {
+                e.preventDefault();
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Weak Password',
+                    text: 'Password must be at least 8 characters long.',
+                    confirmButtonColor: '#3085d6',
+                });
+                return false;
+            }
+            
+            return true;
+        });
+
         function toggleStrand() {
             var department = document.getElementById("department").value;
             var strandField = document.getElementById("strandField");
+            var strandSelect = document.getElementById("strand");
 
             if (department === "Senior High") {
                 strandField.style.display = "block";
+                strandSelect.setAttribute("required", "required");
             } else {
                 strandField.style.display = "none";
+                strandSelect.removeAttribute("required");
             }
         }
 
@@ -178,7 +269,6 @@ if(isset($_POST['signup']))
             var department = document.getElementById("department").value;
             var gradeLevelDropdown = document.getElementById("grade_level");
 
-            // Clear existing options
             gradeLevelDropdown.innerHTML = '<option value="">Select Grade Level</option>';
 
             var grades = [];
@@ -188,7 +278,6 @@ if(isset($_POST['signup']))
                 grades = [11, 12];
             }
 
-            // Add new options dynamically
             grades.forEach(function(grade) {
                 var option = document.createElement("option");
                 option.value = "Grade " + grade;
@@ -196,6 +285,15 @@ if(isset($_POST['signup']))
                 gradeLevelDropdown.appendChild(option);
             });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateGradeLevels();
+            
+            // Check if there's a hash in the URL indicating a redirect from form submission
+            if(window.location.hash === '#submitted') {
+                window.history.replaceState({}, document.title, window.location.pathname);
+            }
+        });
     </script>
 </body>
-</html>
+</html> 
