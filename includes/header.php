@@ -26,6 +26,9 @@
                     <li class="lms-nav-item <?php echo (basename($_SERVER['PHP_SELF']) == 'my-profile.php') ? 'active' : ''; ?>">
                         <a href="my-profile.php" class="lms-nav-link">Profile</a>
                     </li>
+                    <li class="lms-nav-item <?php echo (basename($_SERVER['PHP_SELF']) == 'account-approval.php') ? 'active' : ''; ?>">
+                        <a href="account-approval.php" class="lms-nav-link">Pending Accounts</a>
+                    </li>
                 <?php else: ?>
                     <li class="lms-nav-item <?php echo (basename($_SERVER['PHP_SELF']) == 'index.php') ? 'active' : ''; ?>">
                         <a href="index.php" class="lms-nav-link">Home</a>

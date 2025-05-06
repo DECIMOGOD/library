@@ -371,10 +371,10 @@
             else if (currentPage.includes('issue')) {
                 document.getElementById('circulation-link').classList.add('active');
             }
-            else if (currentPage === 'reg-students.php') {
+            else if (currentPage.includes('reg-students.php')) {
                 document.getElementById('students-link').classList.add('active');
             }
-            else if (currentPage === 'account-approval.php') {
+            else if (currentPage.includes('account-approval.php')) {
                 document.getElementById('pending-accounts-link').classList.add('active');
             }
             else if (currentPage.includes('change-password.php')) {

@@ -49,6 +49,7 @@ $students = $query_students->fetchAll(PDO::FETCH_ASSOC);
 $faculty = $query_faculty->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
+<link rel="stylesheet" href="assets/css/account-approval-style.css">
 <div class="container mt-5 pt-4">
     <!-- Success Message -->
     <?php if (isset($_SESSION['message'])): ?>

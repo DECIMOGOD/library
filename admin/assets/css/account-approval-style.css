@@ -1,0 +1,185 @@
+:root {
+    /* Deep Dark Color Palette */
+    --bg-body: #0a0a0f;
+    --bg-container: #11111d;
+    --bg-card: #1a1a2e;
+    --bg-element: #25253d;
+    --bg-hover: #2e2e4a;
+    --bg-table-header: #1e1e3d;
+
+    /* Text Colors */
+    --text-primary: #f0f0ff;
+    --text-secondary: #b8c2d9;
+    --text-muted: #8a94b0;
+
+    /* Accents */
+    --accent-primary: #7c8df8;
+    --accent-primary-light: #939ef9;
+    --accent-primary-dark: #6366f1;
+    --accent-danger: #f87171;
+    --accent-success: #4ade80;
+    --accent-warning: #fbbf24;
+    --accent-info: #60a5fa;
+
+    /* Borders */
+    --border-primary: rgba(255, 255, 255, 0.08);
+    --border-secondary: rgba(255, 255, 255, 0.12);
+
+    /* Shadows */
+    --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5);
+    --shadow-md: 0 4px 6px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 10px 25px rgba(0, 0, 0, 0.5);
+
+    /* Transitions */
+    --transition-fast: all 0.15s ease-out;
+    --transition-normal: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-slow: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+body {
+    background-color: var(--bg-body) !important;
+    color: var(--text-primary) !important;
+    font-family: 'Inter', system-ui, sans-serif;
+    line-height: 1.6;
+}
+
+.container {
+    background-color: var(--bg-container) !important;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: var(--shadow-md);
+}
+
+/* Card Styling */
+.card {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-primary);
+    border-radius: 10px;
+    box-shadow: var(--shadow-md);
+    overflow: hidden;
+    transition: var(--transition-normal);
+    margin-bottom: 1.5rem;
+}
+
+.card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}
+
+.card-header {
+    background: linear-gradient(to right, var(--bg-element), var(--bg-card)) !important;
+    color: var(--text-primary);
+    padding: 1.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-bottom: 1px solid var(--border-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.card-body {
+    padding: 1.5rem;
+    background-color: var(--bg-card) !important;
+}
+
+/* Table Styling */
+.table {
+    width: 100%;
+    color: var(--text-primary);
+    margin-bottom: 0;
+    background-color: var(--bg-card) !important;
+    border-collapse: collapse;
+}
+
+.table thead th {
+    background-color: var(--bg-table-header) !important;
+    color: var(--text-primary);
+    padding: 1rem;
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-primary);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table tbody td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-primary);
+    background-color: var(--bg-card) !important;
+    transition: var(--transition-fast);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table tbody tr:hover td {
+    background-color: var(--bg-hover) !important;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--bg-element);
+}
+
+/* Button Styling */
+.btn {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: var(--transition-normal);
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-success {
+    background-color: var(--accent-success) !important;
+    color: #111 !important;
+}
+
+.btn-success:hover {
+    background-color: #86efac !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(74, 222, 128, 0.3);
+}
+
+.btn-danger {
+    background-color: var(--accent-danger) !important;
+    color: #111 !important;
+}
+
+.btn-danger:hover {
+    background-color: #fca5a5 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(248, 113, 113, 0.3);
+}
+
+/* Badge Styling */
+.badge {
+    background-color: var(--accent-primary);
+    color: #111;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-weight: 600;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+
+    .table thead th,
+    .table tbody td {
+        padding: 0.75rem;
+        font-size: 0.9rem;
+    }
+}
+
+.alert {
+    background-color: var(--bg-element) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-primary);
+    border-radius: 6px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
