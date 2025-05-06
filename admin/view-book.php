@@ -97,7 +97,7 @@ try {
         }
         .header-title {
             position: relative;
-            padding-bottom: 10px;'
+            padding-bottom: 10px;
             color: white;
         }
         .header-title:after {

@@ -12,22 +12,21 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-dark: #1a1a2e;     /* Deep navy for main background */
-            --primary-accent: #4cc9f0;   /* Bright teal for highlights */
-            --secondary-accent: #f72585; /* Vibrant pink for contrast */
-            --light-bg: #f8f9fa;        /* Light background */
-            --text-light: #e6e6e6;       /* Light text */
-            --text-dark: #14213d;        /* Dark text */
+            --primary-dark: #1a1a2e;
+            --primary-accent: #4cc9f0;
+            --secondary-accent: #f72585;
+            --light-bg: #f8f9fa;
+            --text-light: #e6e6e6;
+            --text-dark: #14213d;
             --transition-speed: 0.3s;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--light-bg);
-            padding-top: 70px; /* To account for fixed header */
+            padding-top: 70px;
         }
 
-        /* Modern Glassmorphism Navbar */
         .navbar-custom {
             background: rgba(26, 26, 46, 0.95) !important;
             backdrop-filter: blur(10px);
@@ -94,7 +93,6 @@
             text-align: center;
         }
 
-        /* Animated underline effect */
         .navbar-nav .nav-link::after {
             content: '';
             position: absolute;
@@ -112,7 +110,6 @@
             width: calc(100% - 2.4rem);
         }
 
-        /* Dropdown Menu - Glassmorphism */
         .dropdown-menu {
             background: rgba(111, 113, 255, 0.95);
             backdrop-filter: blur(15px);
@@ -157,7 +154,6 @@
             border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* Logout Button - Modern Style */
         .logout-btn {
             background: linear-gradient(135deg, var(--secondary-accent), #b5179e);
             color: white !important;
@@ -182,7 +178,6 @@
             margin-right: 8px;
         }
 
-        /* Mobile Toggle Button */
         .navbar-toggler {
             border: none;
             padding: 0.5rem;
@@ -199,7 +194,6 @@
             height: 1.5em;
         }
 
-        /* Mobile Menu */
         @media (max-width: 991.98px) {
             .navbar-collapse {
                 background: rgba(26, 26, 46, 0.98);
@@ -232,7 +226,6 @@
             }
         }
 
-        /* Scroll behavior for navbar */
         @media (min-width: 992px) {
             .dropdown:hover .dropdown-menu {
                 display: block;
@@ -290,18 +283,6 @@
                         </ul>
                     </li>
 
-                    <!-- Publishers Dropdown -->
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" id="publishers-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-building"></i> Publishers
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="publishersDropdown">
-                            <li><a class="dropdown-item" href="add-publisher.php"><i class="fas fa-plus-circle me-2"></i>Add Publisher</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="manage-publishers.php"><i class="fas fa-edit me-2"></i>Manage Publishers</a></li>
-                        </ul>
-                    </li>
-
                     <!-- Books Dropdown -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" id="books-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -310,8 +291,6 @@
                         <ul class="dropdown-menu" aria-labelledby="booksDropdown">
                             <li><a class="dropdown-item" href="add-book.php"><i class="fas fa-plus-circle me-2"></i>Add Book</a></li>
                             <li><a class="dropdown-item" href="manage-books.php"><i class="fas fa-edit me-2"></i>Manage Books</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="edit-featured-books.php"><i class="fas fa-star me-2"></i>Featured Books</a></li>
                         </ul>
                     </li>
 
@@ -327,13 +306,21 @@
                         </ul>
                     </li>
 
-                    <!-- Additional Links -->
+                    <!-- Users Section -->
                     <li class="nav-item">
                         <a class="nav-link" id="students-link" href="reg-students.php">
                             <i class="fas fa-users"></i> Students
                         </a>
                     </li>
 
+                    <!-- Pending Accounts Link -->
+                    <li class="nav-item">
+                        <a class="nav-link" id="pending-accounts-link" href="account-approval.php">
+                            <i class="fas fa-user-clock"></i> Pending Accounts
+                        </a>
+                    </li>
+
+                    <!-- Security -->
                     <li class="nav-item">
                         <a class="nav-link" id="security-link" href="change-password.php">
                             <i class="fas fa-key"></i> Security
@@ -364,63 +351,33 @@
             }
         });
 
-        // Smooth dropdown animation
-        document.querySelectorAll('.dropdown').forEach(function(dropdown) {
-            dropdown.addEventListener('mouseenter', function() {
-                const menu = this.querySelector('.dropdown-menu');
-                menu.style.display = 'block';
-                menu.style.opacity = '0';
-                menu.style.transform = 'translateY(10px)';
-                
-                setTimeout(() => {
-                    menu.style.opacity = '1';
-                    menu.style.transform = 'translateY(0)';
-                }, 10);
-            });
-            
-            dropdown.addEventListener('mouseleave', function() {
-                const menu = this.querySelector('.dropdown-menu');
-                menu.style.opacity = '0';
-                menu.style.transform = 'translateY(10px)';
-                
-                setTimeout(() => {
-                    if (!menu.matches(':hover')) {
-                        menu.style.display = 'none';
-                    }
-                }, 300);
-            });
-        });
-
         // Set active menu item based on current page
         document.addEventListener('DOMContentLoaded', function() {
-            // Get the current page filename
-            const currentPage = window.location.pathname.split('/').pop();
+            const currentPage = window.location.pathname.split('/').pop().toLowerCase();
             
-            // Remove active class from all nav links
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.classList.remove('active');
             });
             
-            // Set active class based on current page
             if (currentPage === 'dashboard.php' || currentPage === '') {
                 document.getElementById('dashboard-link').classList.add('active');
             } 
-            else if (currentPage === 'add-category.php' || currentPage === 'manage-categories.php') {
+            else if (currentPage.includes('category')) {
                 document.getElementById('categories-link').classList.add('active');
             }
-            else if (currentPage === 'add-publisher.php' || currentPage === 'manage-publishers.php') {
-                document.getElementById('publishers-link').classList.add('active');
-            }
-            else if (currentPage === 'add-book.php' || currentPage === 'manage-books.php' || currentPage === 'edit-featured-books.php') {
+            else if (currentPage.includes('book') && !currentPage.includes('issue')) {
                 document.getElementById('books-link').classList.add('active');
             }
-            else if (currentPage === 'issue-book.php' || currentPage === 'manage-issued-books.php') {
+            else if (currentPage.includes('issue')) {
                 document.getElementById('circulation-link').classList.add('active');
             }
             else if (currentPage === 'reg-students.php') {
                 document.getElementById('students-link').classList.add('active');
             }
-            else if (currentPage === 'change-password.php') {
+            else if (currentPage === 'account-approval.php') {
+                document.getElementById('pending-accounts-link').classList.add('active');
+            }
+            else if (currentPage.includes('change-password.php')) {
                 document.getElementById('security-link').classList.add('active');
             }
         });

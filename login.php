@@ -4,7 +4,7 @@ error_reporting(0);
 include('includes/config.php');
 
 // Clear session if already logged in
-if ($_SESSION['login'] != '') {
+if ($_SESSION['login'] != '') { // Use 'login' session key for consistency
     $_SESSION['login'] = '';
 }
 
@@ -14,11 +14,14 @@ if (isset($_POST['login'])) {
     // Get input data
     $lrn = $_POST['lrn'];
     $password = md5($_POST['password']);
+    $role = $_POST['role'];
 
     // SQL query to check login credentials
-    $sql = "SELECT LRN, Password, id, Status FROM tblstudents WHERE LRN=:lrn and Password=:password";
+    $identifier = $role === 'student' ? 'LRN' : 'faculty_id';
+    $table = $role === 'student' ? 'tblstudents' : 'tblfaculty';
+    $sql = "SELECT $identifier AS Identifier, Password, id, Status, Role FROM $table WHERE $identifier=:identifier and Password=:password";
     $query = $dbh->prepare($sql);
-    $query->bindParam(':lrn', $lrn, PDO::PARAM_STR);
+    $query->bindParam(':identifier', $lrn, PDO::PARAM_STR); // Bind LRN or faculty_id
     $query->bindParam(':password', $password, PDO::PARAM_STR);
     $query->execute();
     $results = $query->fetchAll(PDO::FETCH_OBJ);
@@ -28,9 +31,12 @@ if (isset($_POST['login'])) {
         foreach ($results as $result) {
             $_SESSION['stdid'] = $result->id;
             if ($result->Status == 1) {
-                $_SESSION['login'] = $_POST['lrn'];
-                $_SESSION['LRN'] = $result->LRN; // Set LRN session variable
+                $_SESSION['login'] = $_POST['lrn']; // Use 'login' session key
+                $_SESSION['LRN'] = $result->Identifier; // Set Identifier session variable
+                $_SESSION['Role'] = $result->Role; // Set Role session variable
                 echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
+            } elseif ($result->Status == 0) {
+                echo "<script>alert('Your account is pending approval. Please wait for admin approval.');</script>";
             } else {
                 echo "<script>alert('Your Account Has been blocked. Please contact admin');</script>";
             }
@@ -87,16 +93,41 @@ if (isset($_POST['login'])) {
                             <label for="password"><i class="fa fa-lock"></i> Password</label>
                             <input class="form-control" type="password" name="password" id="password" required autocomplete="off" placeholder="Enter your password" />
                         </div>
+                        <div class="form-group">
+                            <label for="role"><i class="fa fa-user-circle"></i> Login As</label>
+                            <select class="form-control" name="role" id="role" required>
+                                <option value="student">Student</option>
+                                <option value="teacher">Teacher</option>
+                            </select>
+                        </div>
                         
                         <div class="login-footer">
                             <button type="submit" name="login" class="btn login-btn">LOGIN</button>
                             <div class="login-links">
                                 <a href="user-forgot-password.php">Forgot Password?</a>
                                 <span class="divider">|</span>
-                                <a href="signup.php">Register New Account</a>
+                                <a href="#" data-toggle="modal" data-target="#registerModal">Register New Account</a>
                             </div>
                         </div>
                     </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register As</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <a href="signup.php" class="btn btn-primary btn-block">Register as Student</a>
+                    <a href="reg-faculty.php" class="btn btn-secondary btn-block">Register as Faculty</a>
                 </div>
             </div>
         </div>
