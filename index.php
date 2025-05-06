@@ -434,7 +434,7 @@ body {
 
             <!-- Call to Action Section -->
             <div class="cta-container">
-                <h3><i class="fa fa-book"></i> Ready to Start Your Reading Journey pogi?</h3>
+                <h3><i class="fa fa-book"></i> Ready to Start Your Reading Journey?</h3>
                 <p>Create an account to access our full library catalog and borrow books.</p>
                 <div class="cta-buttons">
                     <a href="signup.php"><i class="fa fa-user-plus"></i> Sign Up Now</a>
