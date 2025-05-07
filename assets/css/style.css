@@ -715,6 +715,7 @@ body {
     font-family: 'Poppins', sans-serif;
     box-sizing: border-box;
     transition: all 0.3s ease;
+    height: 50px;
 }
 
 .form-control:focus {

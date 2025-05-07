@@ -86,7 +86,7 @@ if (isset($_POST['login'])) {
                 <div class="login-form">
                     <form role="form" method="post">
                         <div class="form-group">
-                            <label for="lrn"><i class="fa fa-user"></i> Enter LRN</label>
+                            <label for="lrn"><i class="fa fa-user"></i> <span id="identifier-label">Enter LRN</span></label>
                             <input class="form-control" type="text" name="lrn" id="lrn" required autocomplete="off" placeholder="Enter your LRN number" />
                         </div>
                         <div class="form-group">
@@ -95,7 +95,7 @@ if (isset($_POST['login'])) {
                         </div>
                         <div class="form-group">
                             <label for="role"><i class="fa fa-user-circle"></i> Login As</label>
-                            <select class="form-control" name="role" id="role" required>
+                            <select class="form-control" name="role" id="role" required onchange="updateIdentifierField()">
                                 <option value="student">Student</option>
                                 <option value="teacher">Teacher</option>
                             </select>
@@ -137,5 +137,20 @@ if (isset($_POST['login'])) {
     <script src="assets/js/jquery-1.10.2.js"></script>
     <script src="assets/js/bootstrap.js"></script>
     <script src="assets/js/custom.js"></script>
+    <script>
+        function updateIdentifierField() {
+            const role = document.getElementById('role').value;
+            const label = document.getElementById('identifier-label');
+            const input = document.getElementById('lrn');
+            
+            if (role === 'teacher') {
+                label.textContent = 'Enter Faculty ID';
+                input.placeholder = 'Enter your Faculty ID';
+            } else {
+                label.textContent = 'Enter LRN';
+                input.placeholder = 'Enter your LRN number';
+            }
+        }
+    </script>
 </body>
 </html>
