@@ -15,9 +15,6 @@
                 <p>A comprehensive library management system designed to streamline book lending, tracking, and user management.</p>
                 <div class="footer-social">
                     <a href="#" title="Facebook"><i class="fab fa-facebook"></i></a>
-                    <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="#" title="LinkedIn"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
 

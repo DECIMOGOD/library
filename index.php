@@ -44,12 +44,12 @@ body {
     background-color: #f9fafc;
     color: #2c3e50;
     line-height: 1.7;
-    padding-top: 80px;
+    padding-top: 60px; /* Adjusted to reduce space above carousel */
 }
 
 /* Hero section and carousel styling */
 .hero-section {
-    margin-top: 0;
+    margin-top: -40px; /* Removes white space above the carousel */
     padding: 0;
     position: relative;
     overflow: hidden;
@@ -72,21 +72,28 @@ body {
 }
 
 .carousel-indicators {
-    bottom: 30px;
+    bottom: 20px; /* Adjusted position */
 }
 
 .carousel-indicators li {
-    border: 2px solid #fff;
-    width: 10px;
-    height: 10px;
-    margin: 0 6px;
+    border: none; /* Removed border for a cleaner look */
+    width: 14px; /* Slightly larger size */
+    height: 14px;
+    margin: 0 6px; /* Adjusted spacing */
     border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
+    transition: all 0.3s ease; /* Smooth transition */
 }
 
 .carousel-indicators li.active {
-    background-color: #fff;
-    width: 12px;
-    height: 12px;
+    background-color: #3b82f6; /* Matches the theme's primary color */
+    width: 16px; /* Slightly larger active indicator */
+    height: 16px;
+}
+
+.carousel-indicators li:hover {
+    background-color: #2563eb; /* Slightly darker hover effect */
+    transform: scale(1.2); /* Enlarges on hover */
 }
 
 .carousel-control {
@@ -399,13 +406,13 @@ body {
                 <div id="carousel-example" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="item active">
-                            <img src="assets/img/1.jpg" alt="Library Collection">
+                            <img src="assets/img/1.png" alt="Library Collection" style="width: 100%; height: 550px; object-fit: scale-down; filter: brightness(0.9);">
                         </div>
                         <div class="item">
-                            <img src="assets/img/2.jpg" alt="Study Space">
+                            <img src="assets/img/2.png" alt="Study Space" style="width: 100%; height: 550px; object-fit: contain; filter: brightness(0.9);">
                         </div>
                         <div class="item">
-                            <img src="assets/img/3.jpg" alt="Digital Resources">
+                            <img src="assets/img/3.png" alt="Digital Resources" style="width: 100%; height: 550px; object-fit: contain; filter: brightness(0.9);">
                         </div>
                     </div>
 
