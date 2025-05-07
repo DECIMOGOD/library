@@ -38,360 +38,158 @@ $featuredBooks = $query->fetchAll(PDO::FETCH_OBJ);
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         /* Enhanced styling for the redesigned index page */
-        /* Enhanced styling for a more formal, modern landing page */
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: #f9fafc;
-    color: #2c3e50;
-    line-height: 1.7;
-    padding-top: 60px; /* Adjusted to reduce space above carousel */
-}
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f9fafc;
+            color: #2c3e50;
+            line-height: 1.7;
+            padding-top: 80px;
+        }
 
-/* Hero section and carousel styling */
-.hero-section {
-    margin-top: -40px; /* Removes white space above the carousel */
-    padding: 0;
-    position: relative;
-    overflow: hidden;
-}
+        /* Hero section and carousel styling */
+        .hero-section {
+            margin-top: 0;
+            padding: 0;
+            position: relative;
+            overflow: hidden;
+        }
 
-#carousel-example {
-    margin-top: 0 !important;
-    box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-}
+        #carousel-example {
+            margin-top: 0 !important;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+        }
 
-.carousel-inner {
-    border-radius: 0;
-}
+        .carousel-inner {
+            border-radius: 0;
+        }
 
-.carousel-inner .item img {
-    width: 100%;
-    height: 550px;
-    object-fit: cover;
-    filter: brightness(0.9);
-}
+        .carousel-inner .item img {
+            width: 100%;
+            height: 550px;
+            object-fit: cover;
+            filter: brightness(0.9);
+        }
 
-.carousel-indicators {
-    bottom: 20px; /* Adjusted position */
-}
+        /* Welcome section styling */
+        .welcome-section {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 50px 70px;
+            margin: 40px auto;
+            max-width: 85%;
+            position: relative;
+            z-index: 10;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            text-align: center;
+        }
 
-.carousel-indicators li {
-    border: none; /* Removed border for a cleaner look */
-    width: 14px; /* Slightly larger size */
-    height: 14px;
-    margin: 0 6px; /* Adjusted spacing */
-    border-radius: 50%;
-    background-color: rgba(255, 255, 255, 0.5); /* Semi-transparent white */
-    transition: all 0.3s ease; /* Smooth transition */
-}
+        /* CTA section styling */
+        .cta-container {
+            background: linear-gradient(135deg, #2563eb, #1e3a8a);
+            color: white;
+            border-radius: 6px;
+            padding: 60px 50px;
+            margin: 60px auto;
+            max-width: 85%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
 
-.carousel-indicators li.active {
-    background-color: #3b82f6; /* Matches the theme's primary color */
-    width: 16px; /* Slightly larger active indicator */
-    height: 16px;
-}
+        .cta-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 25px;
+            margin-top: 35px;
+        }
 
-.carousel-indicators li:hover {
-    background-color: #2563eb; /* Slightly darker hover effect */
-    transform: scale(1.2); /* Enlarges on hover */
-}
+        /* Featured books section styling */
+        .featured-books-container {
+            background-color: #ffffff;
+            border-radius: 6px;
+            padding: 60px 40px;
+            margin: 60px auto;
+            max-width: 85%;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+        }
 
-.carousel-control {
-    width: 5%;
-    background-image: none;
-    opacity: 0.7;
-}
+        .book-list {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 35px;
+            margin-top: 40px;
+        }
 
-.carousel-control:hover {
-    opacity: 1;
-}
+        .book-item {
+            background: #fff;
+            width: 300px;
+            border-radius: 6px;
+            overflow: hidden;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            transition: all 0.3s ease;
+            position: relative;
+            border: none;
+        }
 
-/* Welcome section styling */
-.welcome-section {
-    background-color: #ffffff;
-    border-radius: 6px;
-    padding: 50px 70px;
-    margin: 40px auto;
-    max-width: 85%;
-    position: relative;
-    z-index: 10;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-    text-align: center;
-}
+        /* Modal specific styles */
+        .modal-content {
+            border: none;
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-.welcome-section h2 {
-    color: #1e3a8a;
-    font-weight: 600;
-    font-size: 30px;
-    margin-bottom: 25px;
-    position: relative;
-    display: inline-block;
-    letter-spacing: 0.5px;
-}
+        .modal-header {
+            border-bottom: none;
+        }
 
-.welcome-section h2:after {
-    content: '';
-    position: absolute;
-    width: 50px;
-    height: 2px;
-    background: #3b82f6;
-    bottom: -10px;
-    left: 50%;
-    transform: translateX(-50%);
-}
+        .modal-body .card {
+            cursor: pointer;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
 
-.welcome-section p {
-    color: #475569;
-    font-size: 16px;
-    line-height: 1.8;
-    max-width: 800px;
-    margin: 0 auto;
-    font-weight: 300;
-}
+        .modal-body .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
 
-/* CTA section styling */
-.cta-container {
-    background: linear-gradient(135deg, #2563eb, #1e3a8a);
-    color: white;
-    border-radius: 6px;
-    padding: 60px 50px;
-    margin: 60px auto;
-    max-width: 85%;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-}
+        .hover-shadow {
+            transition: all 0.3s ease;
+        }
 
-.cta-container:before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 200px;
-    height: 200px;
-    background: rgba(255,255,255,0.08);
-    border-radius: 50%;
-    transform: translate(50%, -50%);
-}
+        .hover-shadow:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
 
-.cta-container h3 {
-    font-size: 26px;
-    font-weight: 500;
-    margin-bottom: 20px;
-    letter-spacing: 0.5px;
-}
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .carousel-inner .item img {
+                height: 350px;
+            }
+            
+            .welcome-section {
+                padding: 40px 25px;
+                margin: 30px auto;
+                max-width: 90%;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                gap: 15px;
+            }
+            
+            .book-item {
+                width: 100%;
+                max-width: 320px;
+            }
 
-.cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    margin-top: 35px;
-}
-
-.cta-buttons a {
-    background-color: #f8fafc;
-    color: #1e3a8a;
-    padding: 12px 35px;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: 500;
-    text-decoration: none;
-    transition: all 0.3s ease;
-    border: none;
-    display: inline-flex;
-    align-items: center;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    letter-spacing: 0.3px;
-}
-
-.cta-buttons a i {
-    margin-right: 10px;
-}
-
-.cta-buttons a:hover {
-    background-color: #ffffff;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-/* Featured books section styling */
-.featured-books-container {
-    background-color: #ffffff;
-    border-radius: 6px;
-    padding: 60px 40px;
-    margin: 60px auto;
-    max-width: 85%;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.05);
-}
-
-.featured-books-container h3 {
-    color: #1e3a8a;
-    font-size: 26px;
-    font-weight: 600;
-    margin-bottom: 50px;
-    text-align: center;
-    position: relative;
-    letter-spacing: 0.5px;
-}
-
-.featured-books-container h3:after {
-    content: '';
-    position: absolute;
-    width: 50px;
-    height: 2px;
-    background: #3b82f6;
-    bottom: -15px;
-    left: 50%;
-    transform: translateX(-50%);
-}
-
-.featured-books-container h3 i {
-    color: #3b82f6;
-    margin-right: 10px;
-}
-
-.book-list {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 35px;
-    margin-top: 40px;
-}
-
-.book-item {
-    background: #fff;
-    width: 300px;
-    border-radius: 6px;
-    overflow: hidden;
-    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-    transition: all 0.3s ease;
-    position: relative;
-    border: none;
-}
-
-.book-item:hover {
-    transform: translateY(-8px);
-    box-shadow: 0 15px 30px rgba(0,0,0,0.12);
-}
-
-.book-badge {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: #3b82f6;
-    color: #ffffff;
-    padding: 5px 15px;
-    border-radius: 3px;
-    font-weight: 500;
-    font-size: 12px;
-    z-index: 1;
-    letter-spacing: 0.3px;
-}
-
-.book-item img {
-    width: 100%;
-    height: 250px;
-    object-fit: cover;
-    transition: all 0.5s ease;
-}
-
-.book-item:hover img {
-    transform: scale(1.03);
-}
-
-.book-item h4 {
-    color: #1e3a8a;
-    font-weight: 500;
-    padding: 20px 20px 10px;
-    margin: 0;
-    font-size: 17px;
-    border-bottom: 1px solid #f1f5f9;
-}
-
-.book-details {
-    padding: 15px 20px;
-}
-
-.book-details table {
-    margin-bottom: 0;
-}
-
-.book-details strong {
-    color: #3b82f6;
-    font-weight: 500;
-}
-
-.book-description {
-    padding: 15px 20px;
-    color: #64748b;
-    font-size: 14px;
-    border-top: 1px solid #f1f5f9;
-}
-
-.book-actions {
-    padding: 0 20px 20px;
-}
-
-.book-actions .btn {
-    border-radius: 4px;
-    padding: 8px 20px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    letter-spacing: 0.3px;
-}
-
-.book-actions .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-}
-
-.view-all-container {
-    text-align: center;
-    margin-top: 50px;
-}
-
-.view-all-container .btn {
-    background: #3b82f6;
-    color: white;
-    border: none;
-    padding: 12px 35px;
-    border-radius: 4px;
-    font-size: 15px;
-    font-weight: 500;
-    transition: all 0.3s ease;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    letter-spacing: 0.3px;
-}
-
-.view-all-container .btn:hover {
-    background: #2563eb;
-    transform: translateY(-2px);
-    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-}
-
-/* Responsive adjustments */
-@media (max-width: 768px) {
-    .carousel-inner .item img {
-        height: 350px;
-    }
-    
-    .welcome-section {
-        padding: 40px 25px;
-        margin: 30px auto;
-        max-width: 90%;
-    }
-    
-    .cta-buttons {
-        flex-direction: column;
-        gap: 15px;
-    }
-    
-    .book-item {
-        width: 100%;
-        max-width: 320px;
-    }
-}
+            .modal-body .card {
+                margin-bottom: 15px;
+            }
+        }
     </style>
 </head>
 <body>
@@ -406,13 +204,13 @@ body {
                 <div id="carousel-example" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="item active">
-                            <img src="assets/img/1.png" alt="Library Collection" style="width: 100%; height: 550px; object-fit: scale-down; filter: brightness(0.9);">
+                            <img src="assets/img/1.jpg" alt="Library Collection">
                         </div>
                         <div class="item">
-                            <img src="assets/img/2.png" alt="Study Space" style="width: 100%; height: 550px; object-fit: contain; filter: brightness(0.9);">
+                            <img src="assets/img/2.jpg" alt="Study Space">
                         </div>
                         <div class="item">
-                            <img src="assets/img/3.png" alt="Digital Resources" style="width: 100%; height: 550px; object-fit: contain; filter: brightness(0.9);">
+                            <img src="assets/img/3.jpg" alt="Digital Resources">
                         </div>
                     </div>
 
@@ -444,8 +242,8 @@ body {
                 <h3><i class="fa fa-book"></i> Ready to Start Your Reading Journey?</h3>
                 <p>Create an account to access our full library catalog and borrow books.</p>
                 <div class="cta-buttons">
-                    <a href="signup.php"><i class="fa fa-user-plus"></i> Sign Up Now</a>
-                    <a href="login.php"><i class="fa fa-sign-in"></i> Log In</a>
+                    <a href="#" data-toggle="modal" data-target="#registerModal" class="btn btn-light btn-lg"><i class="fa fa-user-plus"></i> Sign Up Now</a>
+                    <a href="login.php" class="btn btn-outline-light btn-lg"><i class="fa fa-sign-in"></i> Log In</a>
                 </div>
             </div>
 
@@ -458,7 +256,7 @@ body {
                         foreach($featuredBooks as $book) {
                             $shortDesc = "This book is available in our library collection.";
                     ?>
-                        <div class="book-item">
+                        <div class="book-item hover-shadow">
                             <div class="book-badge">Featured</div>
                             <img src="shared/bookImg/<?php echo htmlentities($book->bookImage); ?>" alt="<?php echo htmlentities($book->BookName); ?>">
                             <h4><?php echo htmlentities($book->BookName); ?></h4>
@@ -503,7 +301,6 @@ body {
                     <?php
                         }
                     } else {
-                        // No featured books found
                         echo '<div class="alert alert-info">No featured books available at the moment.</div>';
                     }
                     ?>
@@ -518,15 +315,31 @@ body {
 
     <?php include('includes/footer.php'); ?>
 
-    <!-- FOOTER SECTION END-->
+    <!-- Registration Modal -->
+    <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="registerModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="registerModalLabel">Register As</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body text-center">
+                    <a href="signup.php" class="btn btn-primary btn-block">Register as Student</a>
+                    <a href="reg-faculty.php" class="btn btn-secondary btn-block">Register as Faculty</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SCRIPTS -->
     <script src="assets/js/jquery-1.10.2.js"></script>
-    <!-- BOOTSTRAP SCRIPTS -->
     <script src="assets/js/bootstrap.js"></script>
-    <!-- CUSTOM SCRIPTS -->
     <script src="assets/js/custom.js"></script>
     <script>
-        // Add animation to book items when they come into view
         $(document).ready(function() {
+            // Add animation to book items when they come into view
             $(window).scroll(function() {
                 $('.book-item').each(function() {
                     var position = $(this).offset().top;
@@ -539,10 +352,24 @@ body {
                 });
             });
             
-            // Add visible class for CSS transitions
-            $('.book-item').css('opacity', '0');
+            // Smooth modal animation
+            $('#registerModal').on('show.bs.modal', function (e) {
+                $('.modal .card').css({
+                    'opacity': '0',
+                    'transform': 'translateY(20px)'
+                });
+                
+                setTimeout(function() {
+                    $('.modal .card').each(function(i) {
+                        $(this).delay(100*i).animate({
+                            'opacity': '1',
+                            'transform': 'translateY(0)'
+                        }, 300);
+                    });
+                }, 100);
+            });
             
-            // Add CSS class for animations
+            // Initialize animations
             $('<style>')
                 .prop('type', 'text/css')
                 .html(`
@@ -554,6 +381,9 @@ body {
                     .book-item.visible {
                         opacity: 1;
                         transform: translateY(0);
+                    }
+                    .modal .card {
+                        transition: all 0.4s ease;
                     }
                 `)
                 .appendTo('head');
