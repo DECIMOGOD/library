@@ -84,32 +84,50 @@ if (isset($_POST['login'])) {
                 </div>
                 
                 <div class="login-form">
-                    <form role="form" method="post">
-                        <div class="form-group">
-                            <label for="lrn"><i class="fa fa-user"></i> Enter LRN</label>
-                            <input class="form-control" type="text" name="lrn" id="lrn" required autocomplete="off" placeholder="Enter your LRN number" />
+                    <ul class="nav nav-tabs" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="student-tab" data-toggle="tab" href="#student-login" role="tab" aria-controls="student-login" aria-selected="true">Student Login</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="teacher-tab" data-toggle="tab" href="#teacher-login" role="tab" aria-controls="teacher-login" aria-selected="false">Teacher Login</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <!-- Student Login Form -->
+                        <div class="tab-pane fade show active" id="student-login" role="tabpanel" aria-labelledby="student-tab">
+                            <form role="form" method="post">
+                                <div class="form-group">
+                                    <label for="lrn"><i class="fa fa-user"></i> Enter LRN</label>
+                                    <input class="form-control" type="text" name="lrn" id="lrn" required autocomplete="off" placeholder="Enter your LRN number" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password"><i class="fa fa-lock"></i> Password</label>
+                                    <input class="form-control" type="password" name="password" id="password" required autocomplete="off" placeholder="Enter your password" />
+                                </div>
+                                <input type="hidden" name="role" value="student" />
+                                <div class="login-footer">
+                                    <button type="submit" name="login" class="btn login-btn">LOGIN</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="password"><i class="fa fa-lock"></i> Password</label>
-                            <input class="form-control" type="password" name="password" id="password" required autocomplete="off" placeholder="Enter your password" />
+                        <!-- Teacher Login Form -->
+                        <div class="tab-pane fade" id="teacher-login" role="tabpanel" aria-labelledby="teacher-tab">
+                            <form role="form" method="post">
+                                <div class="form-group">
+                                    <label for="faculty-id"><i class="fa fa-user"></i> Enter Faculty ID</label>
+                                    <input class="form-control" type="text" name="lrn" id="faculty-id" required autocomplete="off" placeholder="Enter your Faculty ID" />
+                                </div>
+                                <div class="form-group">
+                                    <label for="password-teacher"><i class="fa fa-lock"></i> Password</label>
+                                    <input class="form-control" type="password" name="password" id="password-teacher" required autocomplete="off" placeholder="Enter your password" />
+                                </div>
+                                <input type="hidden" name="role" value="teacher" />
+                                <div class="login-footer">
+                                    <button type="submit" name="login" class="btn login-btn">LOGIN</button>
+                                </div>
+                            </form>
                         </div>
-                        <div class="form-group">
-                            <label for="role"><i class="fa fa-user-circle"></i> Login As</label>
-                            <select class="form-control" name="role" id="role" required>
-                                <option value="student">Student</option>
-                                <option value="teacher">Teacher</option>
-                            </select>
-                        </div>
-                        
-                        <div class="login-footer">
-                            <button type="submit" name="login" class="btn login-btn">LOGIN</button>
-                            <div class="login-links">
-                                <a href="user-forgot-password.php">Forgot Password?</a>
-                                <span class="divider">|</span>
-                                <a href="#" data-toggle="modal" data-target="#registerModal">Register New Account</a>
-                            </div>
-                        </div>
-                    </form>
+                    </div>
                 </div>
             </div>
         </div>
