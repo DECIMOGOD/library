@@ -291,6 +291,19 @@
                         <ul class="dropdown-menu" aria-labelledby="booksDropdown">
                             <li><a class="dropdown-item" href="add-book.php"><i class="fas fa-plus-circle me-2"></i>Add Book</a></li>
                             <li><a class="dropdown-item" href="manage-books.php"><i class="fas fa-edit me-2"></i>Manage Books</a></li>
+                            <!-- Added Edit Featured Books link under Books section -->
+                            <li><a class="dropdown-item" href="edit-featured-books.php"><i class="fas fa-star me-2"></i>Edit Featured Books</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Publishers Dropdown -->
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" id="publishers-link" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-building"></i> Publishers
+                        </a>
+                        <ul class="dropdown-menu" aria-labelledby="publishersDropdown">
+                            <li><a class="dropdown-item" href="add-publisher.php"><i class="fas fa-plus-circle me-2"></i>Add Publisher</a></li>
+                            <li><a class="dropdown-item" href="manage-publishers.php"><i class="fas fa-edit me-2"></i>Manage Publishers</a></li>
                         </ul>
                     </li>
 
