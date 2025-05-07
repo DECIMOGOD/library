@@ -5,7 +5,6 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 if (isset($_POST['signup'])) {
-    $role = isset($_POST['role']) ? trim($_POST['role']) : '';
     $username = isset($_POST['username']) ? trim($_POST['username']) : '';
     $faculty_id = isset($_POST['faculty_id']) ? trim($_POST['faculty_id']) : '';
     $password = md5($_POST['password']);
@@ -15,63 +14,53 @@ if (isset($_POST['signup'])) {
     $date_hired = isset($_POST['date_hired']) ? trim($_POST['date_hired']) : '';
     $status = 0; // Set status to 0 (pending) for new faculty registrations
 
-    if ($role === 'Faculty') {
-        // Check if username or faculty ID already exists
-        $sql_check = "SELECT username, faculty_id FROM tblfaculty WHERE username = :username OR faculty_id = :faculty_id";
-        $query_check = $dbh->prepare($sql_check);
-        $query_check->bindParam(':username', $username, PDO::PARAM_STR);
-        $query_check->bindParam(':faculty_id', $faculty_id, PDO::PARAM_STR);
-        $query_check->execute();
+    // Check if username or faculty ID already exists
+    $sql_check = "SELECT username, faculty_id FROM tblfaculty WHERE username = :username OR faculty_id = :faculty_id";
+    $query_check = $dbh->prepare($sql_check);
+    $query_check->bindParam(':username', $username, PDO::PARAM_STR);
+    $query_check->bindParam(':faculty_id', $faculty_id, PDO::PARAM_STR);
+    $query_check->execute();
 
-        if ($query_check->rowCount() > 0) {
+    if ($query_check->rowCount() > 0) {
+        $_SESSION['sweetalert'] = [
+            'icon' => 'error',
+            'title' => 'Registration Failed',
+            'text' => 'Username or Faculty ID already exists! Please use different credentials.'
+        ];
+        header("Location: reg-faculty.php");
+        exit();
+    } else {
+        $sql = "INSERT INTO tblfaculty (username, faculty_id, password, fullname, contact_number, department, date_hired, status) 
+                VALUES (:username, :faculty_id, :password, :fullname, :contact_number, :department, :date_hired, :status)";
+
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':username', $username, PDO::PARAM_STR);
+        $query->bindParam(':faculty_id', $faculty_id, PDO::PARAM_STR);
+        $query->bindParam(':password', $password, PDO::PARAM_STR);
+        $query->bindParam(':fullname', $fullname, PDO::PARAM_STR);
+        $query->bindParam(':contact_number', $contact_number, PDO::PARAM_STR);
+        $query->bindParam(':department', $department, PDO::PARAM_STR);
+        $query->bindParam(':date_hired', $date_hired, PDO::PARAM_STR);
+        $query->bindParam(':status', $status, PDO::PARAM_INT);
+
+        if ($query->execute()) {
             $_SESSION['sweetalert'] = [
-                'icon' => 'error',
-                'title' => 'Registration Failed',
-                'text' => 'Username or Faculty ID already exists! Please use different credentials.'
+                'icon' => 'success',
+                'title' => 'Registration Successful!',
+                'text' => 'Your registration was successful!',
+                'redirect' => 'login.php'
             ];
             header("Location: reg-faculty.php");
             exit();
         } else {
-            $sql = "INSERT INTO tblfaculty (username, faculty_id, password, fullname, contact_number, department, date_hired, status) 
-                    VALUES (:username, :faculty_id, :password, :fullname, :contact_number, :department, :date_hired, :status)";
-
-            $query = $dbh->prepare($sql);
-            $query->bindParam(':username', $username, PDO::PARAM_STR);
-            $query->bindParam(':faculty_id', $faculty_id, PDO::PARAM_STR);
-            $query->bindParam(':password', $password, PDO::PARAM_STR);
-            $query->bindParam(':fullname', $fullname, PDO::PARAM_STR);
-            $query->bindParam(':contact_number', $contact_number, PDO::PARAM_STR);
-            $query->bindParam(':department', $department, PDO::PARAM_STR);
-            $query->bindParam(':date_hired', $date_hired, PDO::PARAM_STR);
-            $query->bindParam(':status', $status, PDO::PARAM_INT);
-
-            if ($query->execute()) {
-                $_SESSION['sweetalert'] = [
-                    'icon' => 'success',
-                    'title' => 'Registration Successful!',
-                    'text' => 'Your registration was successful!',
-                    'redirect' => 'login.php'
-                ];
-                header("Location: reg-faculty.php");
-                exit();
-            } else {
-                $_SESSION['sweetalert'] = [
-                    'icon' => 'error',
-                    'title' => 'Registration Failed',
-                    'text' => 'Something went wrong. Please try again.'
-                ];
-                header("Location: reg-faculty.php");
-                exit();
-            }
+            $_SESSION['sweetalert'] = [
+                'icon' => 'error',
+                'title' => 'Registration Failed',
+                'text' => 'Something went wrong. Please try again.'
+            ];
+            header("Location: reg-faculty.php");
+            exit();
         }
-    } else {
-        $_SESSION['sweetalert'] = [
-            'icon' => 'error',
-            'title' => 'Invalid Role',
-            'text' => 'Only Faculty registration is allowed on this page.'
-        ];
-        header("Location: reg-faculty.php");
-        exit();
     }
 }
 ?>
@@ -134,20 +123,11 @@ if (isset($_POST['signup'])) {
                 
                 <div class="signup-header">
                     <h2>Library Management System</h2>
-                    <h4>Facuty Registration</h4>
+                    <h4>Faculty Registration</h4>
                 </div>
                 
                 <div class="signup-form">
                     <form role="form" method="post" id="signupForm">
-                        <div class="signup-form-group">
-                            <label for="role"><i class="fa fa-user-tag"></i> Role</label>
-                            <select class="signup-form-control" name="role" id="role" required>
-                                <option value="">Select Role</option>
-                                <option value="Faculty">Faculty</option>
-                                <option value="Student">Student</option>
-                            </select>
-                        </div>
-                        
                         <div class="signup-form-group">
                             <label for="username"><i class="fa fa-user"></i> Username</label>
                             <input class="signup-form-control" type="text" name="username" id="username" required autocomplete="off" placeholder="Enter your username" />

@@ -306,10 +306,10 @@
                         </ul>
                     </li>
 
-                    <!-- Users Section -->
+                    <!-- Manage Accounts Section -->
                     <li class="nav-item">
                         <a class="nav-link" id="students-link" href="reg-students.php">
-                            <i class="fas fa-users"></i> Students
+                            <i class="fas fa-users"></i> Manage Accounts
                         </a>
                     </li>
 

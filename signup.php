@@ -6,7 +6,6 @@ ini_set('display_errors', 1);
 
 if(isset($_POST['signup']))
 {
-    $role = isset($_POST['role']) ? trim($_POST['role']) : '';
     $lrn = isset($_POST['lrn']) ? trim($_POST['lrn']) : '';  
     $fname = isset($_POST['fullname']) ? trim($_POST['fullname']) : '';  
     $address = isset($_POST['address']) ? trim($_POST['address']) : '';
@@ -17,72 +16,62 @@ if(isset($_POST['signup']))
     $password = md5($_POST['password']); 
     $status = 0; // Set status to 0 (pending) for new student registrations
 
-    if ($role === 'Student') {
-        if (!preg_match('/^\d{12}$/', $lrn)) {
-            $_SESSION['sweetalert'] = [
-                'icon' => 'error',
-                'title' => 'Invalid LRN!',
-                'text' => 'LRN must be exactly 12 digits and contain only numbers.'
-            ];
-            header("Location: signup.php");
-            exit();
-        }
+    if (!preg_match('/^\d{12}$/', $lrn)) {
+        $_SESSION['sweetalert'] = [
+            'icon' => 'error',
+            'title' => 'Invalid LRN!',
+            'text' => 'LRN must be exactly 12 digits and contain only numbers.'
+        ];
+        header("Location: signup.php");
+        exit();
+    }
 
-        $sql_check = "SELECT LRN FROM tblstudents WHERE LRN = :lrn";
-        $query_check = $dbh->prepare($sql_check);
-        $query_check->bindParam(':lrn', $lrn, PDO::PARAM_STR);
-        $query_check->execute();
+    $sql_check = "SELECT LRN FROM tblstudents WHERE LRN = :lrn";
+    $query_check = $dbh->prepare($sql_check);
+    $query_check->bindParam(':lrn', $lrn, PDO::PARAM_STR);
+    $query_check->execute();
 
-        if ($query_check->rowCount() > 0) {
+    if ($query_check->rowCount() > 0) {
+        $_SESSION['sweetalert'] = [
+            'icon' => 'error',
+            'title' => 'Registration Failed',
+            'text' => 'This LRN is already registered! Please use a different LRN.'
+        ];
+        header("Location: signup.php");
+        exit();
+    } else {
+        $sql = "INSERT INTO tblstudents (LRN, Name, Address, Department, Grade_Level, Section, Strand, Password, Status) 
+                VALUES (:lrn, :fname, :address, :department, :grade_level, :section, :strand, :password, :status)";
+
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':lrn', $lrn, PDO::PARAM_STR);
+        $query->bindParam(':fname', $fname, PDO::PARAM_STR);
+        $query->bindParam(':address', $address, PDO::PARAM_STR);
+        $query->bindParam(':department', $department, PDO::PARAM_STR);
+        $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR);
+        $query->bindParam(':section', $section, PDO::PARAM_STR);
+        $query->bindParam(':strand', $strand, PDO::PARAM_STR);
+        $query->bindParam(':password', $password, PDO::PARAM_STR);
+        $query->bindParam(':status', $status, PDO::PARAM_INT);
+
+        if ($query->execute()) {
             $_SESSION['sweetalert'] = [
-                'icon' => 'error',
-                'title' => 'Registration Failed',
-                'text' => 'This LRN is already registered! Please use a different LRN.'
+                'icon' => 'success',
+                'title' => 'Registration Successful!',
+                'html' => 'Your registration is pending approval by the admin.<br><br>Your LRN is: <strong>'.$lrn.'</strong>',
+                'redirect' => 'login.php'
             ];
             header("Location: signup.php");
             exit();
         } else {
-            $sql = "INSERT INTO tblstudents (LRN, Name, Address, Department, Grade_Level, Section, Strand, Password, Status) 
-                    VALUES (:lrn, :fname, :address, :department, :grade_level, :section, :strand, :password, :status)";
-
-            $query = $dbh->prepare($sql);
-            $query->bindParam(':lrn', $lrn, PDO::PARAM_STR);
-            $query->bindParam(':fname', $fname, PDO::PARAM_STR);
-            $query->bindParam(':address', $address, PDO::PARAM_STR);
-            $query->bindParam(':department', $department, PDO::PARAM_STR);
-            $query->bindParam(':grade_level', $grade_level, PDO::PARAM_STR);
-            $query->bindParam(':section', $section, PDO::PARAM_STR);
-            $query->bindParam(':strand', $strand, PDO::PARAM_STR);
-            $query->bindParam(':password', $password, PDO::PARAM_STR);
-            $query->bindParam(':status', $status, PDO::PARAM_INT);
-
-            if ($query->execute()) {
-                $_SESSION['sweetalert'] = [
-                    'icon' => 'success',
-                    'title' => 'Registration Successful!',
-                    'html' => 'Your registration is pending approval by the admin.<br><br>Your LRN is: <strong>'.$lrn.'</strong>',
-                    'redirect' => 'login.php'
-                ];
-                header("Location: signup.php");
-                exit();
-            } else {
-                $_SESSION['sweetalert'] = [
-                    'icon' => 'error',
-                    'title' => 'Registration Failed',
-                    'text' => 'Something went wrong. Please try again.'
-                ];
-                header("Location: signup.php");
-                exit();
-            }
+            $_SESSION['sweetalert'] = [
+                'icon' => 'error',
+                'title' => 'Registration Failed',
+                'text' => 'Something went wrong. Please try again.'
+            ];
+            header("Location: signup.php");
+            exit();
         }
-    } else {
-        $_SESSION['sweetalert'] = [
-            'icon' => 'error',
-            'title' => 'Invalid Role',
-            'text' => 'Only Student registration is allowed on this page.'
-        ];
-        header("Location: signup.php");
-        exit();
     }
 }
 ?>
@@ -150,15 +139,6 @@ if(isset($_POST['signup']))
                 
                 <div class="signup-form">
                     <form role="form" method="post" id="signupForm">
-                        <div class="signup-form-group">
-                            <label for="role"><i class="fa fa-user-tag"></i> Role</label>
-                            <select class="signup-form-control" name="role" id="role" required>
-                                <option value="">Select Role</option>
-                                <option value="Faculty">Faculty</option>
-                                <option value="Student">Student</option>
-                            </select>
-                        </div>
-                        
                         <div class="signup-form-group">
                             <label for="lrn"><i class="fa fa-id-card"></i> Enter LRN</label>
                             <input class="signup-form-control" type="text" name="lrn" id="lrn" required autocomplete="off" 

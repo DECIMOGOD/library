@@ -10,7 +10,14 @@ function approveAccount($id, $role, $dbh) {
     $sql = "UPDATE $table SET Status = 1 WHERE id = :id";
     $query = $dbh->prepare($sql);
     $query->bindParam(':id', $id, PDO::PARAM_INT);
-    return $query->execute();
+
+    // Add error handling
+    if ($query->execute()) {
+        return true;
+    } else {
+        error_log("Failed to approve account with ID: $id in table: $table");
+        return false;
+    }
 }
 
 // Function to reject an account
@@ -19,7 +26,14 @@ function rejectAccount($id, $role, $dbh) {
     $sql = "DELETE FROM $table WHERE id = :id";
     $query = $dbh->prepare($sql);
     $query->bindParam(':id', $id, PDO::PARAM_INT);
-    return $query->execute();
+
+    // Add error handling
+    if ($query->execute()) {
+        return true;
+    } else {
+        error_log("Failed to reject account with ID: $id in table: $table");
+        return false;
+    }
 }
 
 // Handle approval/rejection actions
@@ -32,6 +46,8 @@ if (isset($_POST['approve']) || isset($_POST['reject'])) {
             $_SESSION['message'] = "Account approved successfully!";
         } elseif (isset($_POST['reject']) && rejectAccount($id, $role, $dbh)) {
             $_SESSION['message'] = "Account rejected successfully!";
+        } else {
+            $_SESSION['message'] = "An error occurred. Please try again.";
         }
         header("Location: account-approval.php");
         exit();

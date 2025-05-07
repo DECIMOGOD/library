@@ -139,6 +139,31 @@ if (strlen($_SESSION['alogin']) == 0) {
         }
     }
 
+    // Function to change faculty status
+    function changeFacultyStatus($dbh, $id, $status) {
+        $sql = "UPDATE tblfaculty SET Status=:status WHERE id=:id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        $query->bindParam(':status', $status, PDO::PARAM_INT);
+        $query->execute();
+        header('location:reg-students.php');
+        exit;
+    }
+
+    // Function to delete a faculty account
+    function deleteFaculty($dbh, $id) {
+        $sql = "DELETE FROM tblfaculty WHERE id = :id";
+        $query = $dbh->prepare($sql);
+        $query->bindParam(':id', $id, PDO::PARAM_INT);
+        if ($query->execute()) {
+            echo "<script>alert('Faculty Deleted Successfully');</script>";
+        } else {
+            echo "<script>alert('Error: Failed to delete faculty.');</script>";
+        }
+        header('location:reg-students.php');
+        exit;
+    }
+
     // Handle CSV import
     if (isset($_POST['import'])) {
         $fileName = $_FILES['csv_file']['tmp_name'];
@@ -175,6 +200,24 @@ if (strlen($_SESSION['alogin']) == 0) {
         $Password = isset($_POST['Password']) ? $_POST['Password'] : ''; // Get password if provided
 
         addStudent($dbh, $LRN, $Name, $Address, $Department, $Grade_Level, $Section, $Strand, $Password);
+    }
+
+    // Handle faculty status change (inactive)
+    if (isset($_GET['finid'])) {
+        $id = $_GET['finid'];
+        changeFacultyStatus($dbh, $id, 0);
+    }
+
+    // Handle faculty status change (active)
+    if (isset($_GET['fid'])) {
+        $id = $_GET['fid'];
+        changeFacultyStatus($dbh, $id, 1);
+    }
+
+    // Handle faculty deletion
+    if (isset($_GET['fdelid'])) {
+        $id = $_GET['fdelid'];
+        deleteFaculty($dbh, $id);
     }
 }
 ?>
@@ -423,6 +466,66 @@ if (strlen($_SESSION['alogin']) == 0) {
                                             }
                                         }
                                         ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Reg Faculty</div>
+                        <div class="panel-body">
+                            <div class="table-responsive">
+                                <table class="table table-striped table-bordered table-hover" id="dataTables-example">
+                                    <thead>
+                                        <tr>
+                                            <th class="center">#</th>
+                                            <th class="center">Faculty ID</th>
+                                            <th class="center">Full Name</th>
+                                            <th class="center">Department</th>
+                                            <th class="center">Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <?php
+                                        // Fetch only approved faculty accounts (Status = 1)
+                                        $sql = "SELECT id, faculty_id, fullname, department FROM tblfaculty WHERE Status = 1";
+                                        $query = $dbh->prepare($sql);
+                                        $query->execute();
+                                        $results = $query->fetchAll(PDO::FETCH_OBJ);
+                                        $cnt = 1;
+                                        if ($query->rowCount() > 0) {
+                                            foreach ($results as $result) { ?>
+                                                <tr class="odd gradeX">
+                                                    <td class="center"><?php echo htmlentities($cnt);?></td>
+                                                    <td class="center"><?php echo htmlentities($result->faculty_id ?? '');?></td>
+                                                    <td class="center"><?php echo htmlentities($result->fullname ?? '');?></td>
+                                                    <td class="center">
+                                                        <?php echo htmlentities($result->department ?? 'Not Assigned'); ?> <!-- Display department -->
+                                                    </td>
+                                                    <td class="center">
+                                                        <div class="action-buttons">
+                                                            <a href="faculty-details.php?fid=<?php echo htmlentities($result->id ?? ''); ?>">
+                                                                <button class="btn btn-success btn-sm">Details</button>
+                                                            </a>
+                                                            <a href="reg-students.php?fdelid=<?php echo htmlentities($result->id ?? '');?>" onclick="return confirm('Are you sure you want to delete this faculty?');">
+                                                                <button class="btn btn-danger btn-sm">Delete</button>
+                                                            </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                        <?php
+                                            $cnt++;
+                                            }
+                                        } else { ?>
+                                            <tr>
+                                                <td colspan="5" class="text-center">No approved faculty accounts found.</td>
+                                            </tr>
+                                        <?php } ?>
                                     </tbody>
                                 </table>
                             </div>
