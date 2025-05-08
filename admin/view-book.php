@@ -141,9 +141,7 @@ try {
                             <!-- Book Cover Column -->
                             <div class="col-md-4 mb-4 mb-md-0">
                                 <div class="h-100 d-flex align-items-center">
-                                    <img src="<?php echo (!empty($book->bookImage) && file_exists('../shared/bookImg/' . $book->bookImage)) 
-                                        ? '../shared/bookImg/' . htmlentities($book->bookImage) 
-                                        : '../shared/bookImg/placeholder.jpg'; ?>" 
+                                    <img src="../shared/bookImg/<?php echo htmlentities($book->bookImage); ?>" 
                                         class="book-cover w-100" 
                                         alt="<?php echo htmlentities($book->BookName); ?> cover"
                                         onerror="this.onerror=null;this.src='../shared/bookImg/placeholder.jpg'">

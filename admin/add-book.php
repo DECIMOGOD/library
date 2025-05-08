@@ -10,6 +10,26 @@ if (!isset($_SESSION['alogin']) || empty($_SESSION['alogin'])) {
     exit();
 }
 
+// Function to verify upload directory
+function verifyUploadDirectory($dir) {
+    if (!is_dir($dir)) {
+        $oldMask = umask(0);
+        $created = mkdir($dir, 0775, true);
+        umask($oldMask);
+        
+        if (!$created) {
+            throw new Exception("Could not create upload directory");
+        }
+    }
+    
+    if (!is_writable($dir)) {
+        if (!chmod($dir, 0775)) {
+            throw new Exception("Upload directory is not writable");
+        }
+    }
+    return true;
+}
+
 // Handle bulk upload
 if(isset($_POST['bulkupload'])) {
     if(isset($_FILES['csvfile']) && $_FILES['csvfile']['error'] == UPLOAD_ERR_OK) {
@@ -85,7 +105,7 @@ if(isset($_POST['bulkupload'])) {
                 if(!$isbnExists) {
                     $bookImagePath = '';
                     if(!empty($bookImage)) {
-                        $imagePath = 'shared/bookImg/' . basename($bookImage);
+                        $imagePath = '../shared/bookImg/' . basename($bookImage);
                         if(file_exists($imagePath)) {
                             $bookImagePath = $bookImage;
                         } else {
@@ -178,66 +198,47 @@ if(isset($_POST['add'])) {
     // Handle file upload with improved error handling
     $bookpic = '';
     if(isset($_FILES['bookpic']) && $_FILES['bookpic']['error'] === UPLOAD_ERR_OK) {
-        $file = $_FILES['bookpic'];
-        $fileName = $file['name'];
-        $fileTmpName = $file['tmp_name'];
-        $fileSize = $file['size'];
-        $fileError = $file['error'];
-        $fileType = $file['type'];
-        
-        // Sanitize filename
-        $fileName = preg_replace("/[^a-zA-Z0-9\.]/", "_", $fileName);
-        $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
-        $allowed = array('jpg', 'jpeg', 'png', 'gif');
-        
-        if(in_array($fileExt, $allowed)) {
-            // Verify file is actually an image
-            if (!getimagesize($fileTmpName)) {
-                $_SESSION['error'] = "Error: The uploaded file is not a valid image.";
-                header("Location: add-book.php");
-                exit();
-            }
+        try {
+            // Verify upload directory
+            verifyUploadDirectory('../shared/bookImg/');
+            
+            $file = $_FILES['bookpic'];
+            $fileName = $file['name'];
+            $fileTmpName = $file['tmp_name'];
+            $fileSize = $file['size'];
+            $fileError = $file['error'];
+            $fileType = $file['type'];
+            
+            // Sanitize filename
+            $fileName = preg_replace("/[^a-zA-Z0-9\.]/", "_", $fileName);
+            $fileExt = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
+            $allowed = array('jpg', 'jpeg', 'png', 'gif');
+            
+            if(in_array($fileExt, $allowed)) {
+                // Verify file is actually an image
+                if (!getimagesize($fileTmpName)) {
+                    throw new Exception("The uploaded file is not a valid image.");
+                }
 
-            if($fileSize < 5000000) { // 5MB max
-                // Create upload directory if it doesn't exist
-                $uploadDir = '../shared/bookImg/';
-                if (!file_exists($uploadDir)) {
-                    if (!mkdir($uploadDir, 0755, true)) {
-                        error_log("Failed to create directory: $uploadDir");
-                        $_SESSION['error'] = "Error: Could not create upload directory.";
-                        header("Location: add-book.php");
-                        exit();
+                if($fileSize < 5000000) { // 5MB max
+                    // Generate unique filename
+                    $fileNameNew = uniqid('', true).".".$fileExt;
+                    $fileDestination = '../shared/bookImg/' . $fileNameNew;
+                    
+                    // Move the file
+                    if(move_uploaded_file($fileTmpName, $fileDestination)) {
+                        $bookpic = $fileNameNew;
+                    } else {
+                        throw new Exception("Unable to save the uploaded file. Please try again.");
                     }
-                }
-                
-                // Verify directory is writable
-                if (!is_writable($uploadDir)) {
-                    error_log("Directory not writable: $uploadDir");
-                    $_SESSION['error'] = "Error: Upload directory is not writable.";
-                    header("Location: add-book.php");
-                    exit();
-                }
-                
-                // Generate unique filename
-                $fileNameNew = uniqid('', true).".".$fileExt;
-                $fileDestination = $uploadDir . $fileNameNew;
-                
-                // Move the file
-                if(move_uploaded_file($fileTmpName, $fileDestination)) {
-                    $bookpic = $fileNameNew;
                 } else {
-                    error_log("Failed to move uploaded file. Tmp: $fileTmpName, Dest: $fileDestination");
-                    $_SESSION['error'] = "Error: Unable to save the uploaded file. Please try again.";
-                    header("Location: add-book.php");
-                    exit();
+                    throw new Exception("Your file is too large (max 5MB).");
                 }
             } else {
-                $_SESSION['error'] = "Error: Your file is too large (max 5MB).";
-                header("Location: add-book.php");
-                exit();
+                throw new Exception("You cannot upload files of this type. Only JPG, JPEG, PNG, and GIF are allowed.");
             }
-        } else {
-            $_SESSION['error'] = "Error: You cannot upload files of this type. Only JPG, JPEG, PNG, and GIF are allowed.";
+        } catch (Exception $e) {
+            $_SESSION['error'] = "Error: " . $e->getMessage();
             header("Location: add-book.php");
             exit();
         }
@@ -295,7 +296,7 @@ if(isset($_POST['add'])) {
         $_SESSION['error'] = "Error: Something went wrong. Please try again.";
         // Delete the uploaded image if database insert failed
         if (!empty($bookpic)) {
-            @unlink('shared/bookImg/' . $bookpic);
+            @unlink('../shared/bookImg/' . $bookpic);
         }
         header("Location: add-book.php");
         exit();
