@@ -182,7 +182,7 @@ body {
    CAROUSEL SECTION STYLES
  ============================================================ */
 #carousel-example {
-    margin-top: 60px !important; /* Ensure carousel starts below fixed header */
+    margin-top: 120px !important; /* Reduced the top margin to minimize white space */
     padding: 0 !important;
     position: relative;
     z-index: 1;

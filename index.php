@@ -48,7 +48,7 @@ $featuredBooks = $query->fetchAll(PDO::FETCH_OBJ);
 
         /* Hero section and carousel styling */
         .hero-section {
-            margin-top: 0;
+            margin-top: 60px;
             padding: 0;
             position: relative;
             overflow: hidden;
@@ -65,9 +65,8 @@ $featuredBooks = $query->fetchAll(PDO::FETCH_OBJ);
 
         .carousel-inner .item img {
             width: 100%;
-            height: 550px;
-            object-fit: cover;
-            filter: brightness(0.9);
+            height: auto;
+            object-fit: contain;
         }
 
         /* Welcome section styling */
@@ -123,14 +122,25 @@ $featuredBooks = $query->fetchAll(PDO::FETCH_OBJ);
         }
 
         .book-item {
-            background: #fff;
-            width: 300px;
-            border-radius: 6px;
-            overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
-            transition: all 0.3s ease;
-            position: relative;
-            border: none;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: center;
+            height: auto;
+            min-height: 450px; /* Ensures all cards have a minimum height */
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: #fff;
+        }
+
+        .book-details {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .book-actions {
+            margin-top: auto;
         }
 
         /* Modal specific styles */
@@ -162,6 +172,10 @@ $featuredBooks = $query->fetchAll(PDO::FETCH_OBJ);
         .hover-shadow:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+
+        .view-all-container {
+            margin-top: 30px; /* Added margin to create space between the button and the featured books */
         }
 
         /* Responsive adjustments */
@@ -204,13 +218,13 @@ $featuredBooks = $query->fetchAll(PDO::FETCH_OBJ);
                 <div id="carousel-example" class="carousel slide" data-ride="carousel">
                     <div class="carousel-inner">
                         <div class="item active">
-                            <img src="assets/img/1.jpg" alt="Library Collection">
+                            <img src="assets/img/1.png" alt="Library Collection">
                         </div>
                         <div class="item">
-                            <img src="assets/img/2.jpg" alt="Study Space">
+                            <img src="assets/img/2.png" alt="Study Space">
                         </div>
                         <div class="item">
-                            <img src="assets/img/3.jpg" alt="Digital Resources">
+                            <img src="assets/img/3.png" alt="Digital Resources">
                         </div>
                     </div>
 
