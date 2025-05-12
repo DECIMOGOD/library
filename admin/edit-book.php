@@ -171,7 +171,7 @@ try {
     <!------MENU SECTION START-->
     <?php include('includes/header.php'); ?>
     <!-- MENU SECTION END-->
-    <div class="content-wrapper" style="background-color: rgba(26, 26, 46, 0.95) !important;">
+    <div class="content-wrapper" style="background-color: rgba(26, 26, 46, 0.95) !important; padding-top: 100px;">
         <div class="container">
             <div class="row pad-botm">
                 <div class="col-md-12">
@@ -196,7 +196,7 @@ try {
                                                 $imagePath = !empty($result->bookImage) ? "/library/shared/bookImg/" . htmlentities($result->bookImage) : "/library/shared/bookImg/placeholder-book.jpg";
                                                 ?>
                                                 <img src="<?php echo $imagePath; ?>" width="150" class="img-responsive img-thumbnail" onerror="this.src='/library/shared/bookImg/placeholder-book.jpg'"><br>
-                                                <a href="change-bookimg.php?bookid=<?php echo htmlentities($result->bookid); ?>" class="btn btn-primary btn-sm" style="margin-top: 10px;">
+                                                <a href="change-bookimg.php?bookid=<?php echo htmlentities($bookid); ?>" class="btn btn-primary btn-sm" style="margin-top: 10px;">
                                                     <i class="fa fa-picture-o"></i> Change Book Image
                                                 </a>
                                             </div>

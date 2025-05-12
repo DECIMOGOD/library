@@ -59,6 +59,8 @@ body {
     padding: 2rem;
     margin-top: 70px;
     min-height: calc(100vh - 70px);
+    margin-top: 200px;
+    
 }
 
 /* Animated Header Line */

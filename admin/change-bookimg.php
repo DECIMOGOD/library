@@ -15,7 +15,7 @@ $bookid=intval($_GET['bookid']);
 $bookimg=$_FILES["bookpic"]["name"];
 //currentimage
 $cimage=$_POST['curremtimage'];
-$cpath="bookimg"."/".$cimage;
+$cpath="../shared/bookImg/".$cimage; // Update the current image path
 // get the image extension
 $extension = substr($bookimg,strlen($bookimg)-4,strlen($bookimg));
 // allowed extensions
@@ -31,13 +31,13 @@ echo "<script>alert('Invalid format. Only jpg / jpeg/ png /gif format allowed');
 }
 else
 {
-    move_uploaded_file($_FILES["bookpic"]["tmp_name"],"bookimg/".$imgnewname);
-$sql="update  tblbooks set bookImage=:imgnewname where id=:bookid";
+    move_uploaded_file($_FILES["bookpic"]["tmp_name"],"../shared/bookImg/".$imgnewname); // Save to shared/bookImg
+$sql="UPDATE tblbooks SET bookImage=:imgnewname WHERE id=:bookid";
 $query = $dbh->prepare($sql);
 $query->bindParam(':imgnewname',$imgnewname,PDO::PARAM_STR);
 $query->bindParam(':bookid',$bookid,PDO::PARAM_STR);
 $query->execute();
-unlink($cpath);
+unlink($cpath); // Delete the old image
 echo "<script>alert('Book image updated successfully');</script>";
 echo "<script>window.location.href='manage-books.php'</script>";
 
@@ -66,7 +66,7 @@ echo "<script>window.location.href='manage-books.php'</script>";
       <!------MENU SECTION START-->
 <?php include('includes/header.php');?>
 <!-- MENU SECTION END-->
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="margin-top: 50px; background-color: #1e293b; height: 100vh;">
          <div class="container">
         <div class="row pad-botm">
             <div class="col-md-12">
@@ -75,13 +75,13 @@ echo "<script>window.location.href='manage-books.php'</script>";
                             </div>
 
 </div>
-<div class="row">
-<div class="col-md12 col-sm-12 col-xs-12">
+<div class="row" style="margin-top: 50px;">
+<div class="col-md12 col-sm-12 col-xs-12 mt-5">
 <div class="panel panel-info">
 <div class="panel-heading">
 Book Info
 </div>
-<div class="panel-body">
+<div class="panel-body" style="">
 <form role="form" method="post" enctype="multipart/form-data">
 <?php 
 $bookid=intval($_GET['bookid']);
@@ -99,7 +99,7 @@ foreach($results as $result)
 <div class="col-md-6">
 <div class="form-group">
 <label>Book Image</label>
-<img src="bookimg/<?php echo htmlentities($result->bookImage);?>" width="100">
+<img src="../shared/bookImg/<?php echo htmlentities($result->bookImage); ?>" width="100" onerror="this.src='../shared/bookImg/placeholder.jpg';"> <!-- Update the image display path -->
 </div></div>
 
 <div class="col-md-6">

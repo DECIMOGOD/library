@@ -24,7 +24,7 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--light-bg);
-            padding-top: 70px;
+            
         }
 
         .navbar-custom {
@@ -36,9 +36,11 @@
             padding: 0.5rem 1rem;
             position: fixed;
             width: 100%;
+            height: 80px;
             top: 0;
             z-index: 1030;
             transition: all var(--transition-speed) ease;
+            margin-top: 0;
         }
 
         .navbar-custom.scrolled {

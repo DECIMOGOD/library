@@ -44,10 +44,27 @@ if (isset($_GET['fid'])) {
     <link href="assets/css/bootstrap.css" rel="stylesheet" />
     <link href="assets/css/font-awesome.css" rel="stylesheet" />
     <link href="assets/css/style.css" rel="stylesheet" />
+    <style>
+        .panel-heading {
+            color: white;
+            background-color: #007bff;
+        }
+        .panel-body {
+            color: white;
+            background-color: #1e293b;
+
+        }
+        .table {
+            color: white;
+        }
+        .table th, .table td {
+            color: white;
+        }
+    </style>
 </head>
 <body>
     <?php include('includes/header.php'); ?>
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="background-color: #1e293b; height: 100vh;">
         <div class="container">
             <div class="row pad-botm">
                 <div class="col-md-12">
@@ -55,11 +72,11 @@ if (isset($_GET['fid'])) {
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
+                <div class="col-md-6" style="margin-left: 300px; margin-top: 200px;">
                     <div class="panel panel-info">
-                        <div class="panel-heading" style="color: white; background-color: #007bff;">Faculty Information</div>
-                        <div class="panel-body" style="color: white; background-color: #1e293b;"> <!-- Changed background color -->
-                            <table class="table table-striped" style="color: white;">
+                        <div class="panel-heading">Faculty Information</div>
+                        <div class="panel-body">
+                            <table class="table table-striped">
                                 <tr>
                                     <th style="color: white;">Faculty ID</th>
                                     <td style="color: white;"><?php echo htmlentities($faculty->faculty_id ?? 'Not Provided'); ?></td>

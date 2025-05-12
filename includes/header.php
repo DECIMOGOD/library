@@ -47,7 +47,7 @@
                     <a href="logout.php" class="lms-btn-login">Logout</a>
                 <?php else: ?>
                     <a href="login.php" class="lms-btn-login">Login</a>
-                    <a href="signup.php" class="lms-btn-signup">Sign Up</a>
+                    <a href="#" data-toggle="modal"  data-target="#registerModal" class="lms-btn-signup">Sign Up</a>
                 <?php endif; ?>
             </div>
         </nav>

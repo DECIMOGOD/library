@@ -36,7 +36,10 @@ if (isset($_POST['login'])) {
                 $_SESSION['Role'] = $result->Role; // Set Role session variable
                 echo "<script type='text/javascript'> document.location ='dashboard.php'; </script>";
             } elseif ($result->Status == 0) {
-                echo "<script>alert('Your account is pending approval. Please wait for admin approval.');</script>";
+                echo "<script>
+                    alert('Your account is pending approval. Please wait for admin approval.');
+                    document.getElementById('lrn').focus();
+                </script>";
             } else {
                 echo "<script>alert('Your Account Has been blocked. Please contact admin');</script>";
             }

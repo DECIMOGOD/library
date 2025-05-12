@@ -26,26 +26,26 @@ if (strlen($_SESSION['alogin']) == 0) {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href='http://fonts.googleapis.com/css?family=Open+Sans' rel='stylesheet' type='text/css' />
 </head>
-<body>
+<body style="background-color: #121212; color: #ffffff; padding-top: 0px; ">
     <!-- MENU SECTION START -->
     <?php include('includes/header.php'); ?>
     <!-- MENU SECTION END -->
 
-    <div class="content-wrapper">
+    <div class="content-wrapper" style="background-color: #1a1a2e; padding: 20px; border-radius: 8px;">
         <div class="container">
             <div class="row pad-botm">
                 <div class="col-md-12">
-                    <h4 class="header-line">ADMIN DASHBOARD</h4>
+                    <h4 class="header-line" style="color: white;">ADMIN DASHBOARD</h4>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-md-4 col-sm-6">
                     <a href="manage-books.php" class="no-underline">
-                        <div class="dashboard-card card-primary">
-                            <div class="card-content">
+                        <div class="dashboard-card card-primary" style="background-color: #2c2c2c; color: #ffffff; border: none; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                            <div class="card-content" style="padding: 20px; background-color: #1a1a2e;">
                                 <div class="card-icon">
-                                    <i class="material-icons-round">menu_book</i>
+                                    <i class="material-icons-round" style="color: #ffcc00;">menu_book</i>
                                 </div>
                                 <?php 
                                 $sql = "SELECT id FROM tblbooks";
@@ -53,8 +53,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 $query->execute();
                                 $listdbooks = $query->rowCount();
                                 ?>
-                                <h3 class="card-count"><?php echo htmlentities($listdbooks); ?></h3>
-                                <p class="card-label">Books in Collection</p>
+                                <h3 class="card-count" style="font-size: 2rem; font-weight: bold;"><?php echo htmlentities($listdbooks); ?></h3>
+                                <p class="card-label" style="font-size: 1rem; font-weight: 500;">Books in Collection</p>
                             </div>
                         </div>
                     </a>
@@ -62,10 +62,10 @@ if (strlen($_SESSION['alogin']) == 0) {
 
                 <div class="col-md-4 col-sm-6">
                     <a href="manage-issued-books.php" class="no-underline">
-                        <div class="dashboard-card card-warning">
-                            <div class="card-content">
+                        <div class="dashboard-card card-warning" style="background-color: #2c2c2c; color: #ffffff; border: none; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                            <div class="card-content" style="padding: 20px; background-color: #1a1a2e;">
                                 <div class="card-icon">
-                                    <i class="material-icons-round">pending_actions</i>
+                                    <i class="material-icons-round" style="color: #ffcc00;">pending_actions</i>
                                 </div>
                                 <?php 
                                 $sql2 = "SELECT id FROM tblissuedbookdetails WHERE (ReturnStatus='' OR ReturnStatus IS NULL)";
@@ -73,8 +73,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 $query2->execute();
                                 $returnedbooks = $query2->rowCount();
                                 ?>
-                                <h3 class="card-count"><?php echo htmlentities($returnedbooks); ?></h3>
-                                <p class="card-label">Books Checked Out</p>
+                                <h3 class="card-count" style="font-size: 2rem; font-weight: bold;"><?php echo htmlentities($returnedbooks); ?></h3>
+                                <p class="card-label" style="font-size: 1rem; font-weight: 500;">Books Checked Out</p>
                             </div>
                         </div>
                     </a>
@@ -82,10 +82,10 @@ if (strlen($_SESSION['alogin']) == 0) {
 
                 <div class="col-md-4 col-sm-6">
                     <a href="reg-students.php" class="no-underline">
-                        <div class="dashboard-card card-danger">
-                            <div class="card-content">
+                        <div class="dashboard-card card-danger" style="background-color: #2c2c2c; color: #ffffff; border: none; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                            <div class="card-content" style="padding: 20px; background-color: #1a1a2e;">
                                 <div class="card-icon">
-                                    <i class="material-icons-round">school</i>
+                                    <i class="material-icons-round" style="color: #ffcc00;">school</i>
                                 </div>
                                 <?php 
                                 $sql3 = "SELECT id FROM tblstudents";
@@ -93,8 +93,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 $query3->execute();
                                 $regstds = $query3->rowCount();
                                 ?>
-                                <h3 class="card-count"><?php echo htmlentities($regstds); ?></h3>
-                                <p class="card-label">Registered Students</p>
+                                <h3 class="card-count" style="font-size: 2rem; font-weight: bold;"><?php echo htmlentities($regstds); ?></h3>
+                                <p class="card-label" style="font-size: 1rem; font-weight: 500;">Registered Students</p>
                             </div>
                         </div>
                     </a>
@@ -102,10 +102,10 @@ if (strlen($_SESSION['alogin']) == 0) {
 
                 <div class="col-md-4 col-sm-6">
                     <a href="manage-publishers.php" class="no-underline">
-                        <div class="dashboard-card card-success">
-                            <div class="card-content">
+                        <div class="dashboard-card card-success" style="background-color: #2c2c2c; color: #ffffff; border: none; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                            <div class="card-content" style="padding: 20px; background-color: #1a1a2e;">
                                 <div class="card-icon">
-                                    <i class="material-icons-round">business</i>
+                                    <i class="material-icons-round" style="color: #ffcc00;">business</i>
                                 </div>
                                 <?php 
                                 $sql4 = "SELECT id FROM tblpublishers";
@@ -113,8 +113,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 $query4->execute();
                                 $listdpublishers = $query4->rowCount();
                                 ?>
-                                <h3 class="card-count"><?php echo htmlentities($listdpublishers); ?></h3>
-                                <p class="card-label">Publishing Partners</p>
+                                <h3 class="card-count" style="font-size: 2rem; font-weight: bold;"><?php echo htmlentities($listdpublishers); ?></h3>
+                                <p class="card-label" style="font-size: 1rem; font-weight: 500;">Publishing Partners</p>
                             </div>
                         </div>
                     </a>
@@ -122,10 +122,10 @@ if (strlen($_SESSION['alogin']) == 0) {
 
                 <div class="col-md-4 col-sm-6">
                     <a href="manage-categories.php" class="no-underline">
-                        <div class="dashboard-card card-info">
-                            <div class="card-content">
+                        <div class="dashboard-card card-info" style="background-color: #2c2c2c; color: #ffffff; border: none; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                            <div class="card-content" style="padding: 20px; background-color: #1a1a2e;">
                                 <div class="card-icon">
-                                    <i class="material-icons-round">category</i>
+                                    <i class="material-icons-round" style="color: #ffcc00;">category</i>
                                 </div>
                                 <?php 
                                 $sql5 = "SELECT id FROM tblcategory";
@@ -133,8 +133,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 $query5->execute();
                                 $listdcats = $query5->rowCount();
                                 ?>
-                                <h3 class="card-count"><?php echo htmlentities($listdcats); ?></h3>
-                                <p class="card-label">Book Categories</p>
+                                <h3 class="card-count" style="font-size: 2rem; font-weight: bold;"><?php echo htmlentities($listdcats); ?></h3>
+                                <p class="card-label" style="font-size: 1rem; font-weight: 500;">Book Categories</p>
                             </div>
                         </div>
                     </a>
@@ -142,10 +142,10 @@ if (strlen($_SESSION['alogin']) == 0) {
 
                 <div class="col-md-4 col-sm-6">
                     <a href="manage-issued-books.php" class="no-underline">
-                        <div class="dashboard-card" style="background: linear-gradient(135deg, #7209b7, #560bad);">
-                            <div class="card-content">
+                        <div class="dashboard-card" style="background: linear-gradient(135deg, #7209b7, #560bad); color: #ffffff; border: none; transition: transform 0.3s ease, box-shadow 0.3s ease;">
+                            <div class="card-content" style="padding: 20px; background-color: #1a1a2e;">
                                 <div class="card-icon">
-                                    <i class="material-icons-round">history_edu</i>
+                                    <i class="material-icons-round" style="color: #ffcc00;">history_edu</i>
                                 </div>
                                 <?php 
                                 $sql6 = "SELECT id FROM tblissuedbookdetails WHERE ReturnStatus=1";
@@ -153,8 +153,8 @@ if (strlen($_SESSION['alogin']) == 0) {
                                 $query6->execute();
                                 $returnedcount = $query6->rowCount();
                                 ?>
-                                <h3 class="card-count"><?php echo htmlentities($returnedcount); ?></h3>
-                                <p class="card-label">Books Returned</p>
+                                <h3 class="card-count" style="font-size: 2rem; font-weight: bold;"><?php echo htmlentities($returnedcount); ?></h3>
+                                <p class="card-label" style="font-size: 1rem; font-weight: 500;">Books Returned</p>
                             </div>
                         </div>
                     </a>
