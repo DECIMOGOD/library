@@ -39,7 +39,7 @@ function countBooks($pdo, $search = '', $category = null, $publisher = null) {
 }
 
 // Function to get paginated books
-function getBooks($pdo, $search = '', $category = null, $publisher = null, $page = 1, $perPage = 6) {
+function getBooks($pdo, $search = '', $category = null, $publisher = null, $page = 1, $perPage = 6, $orderDir = 'ASC') {
     $offset = ($page - 1) * $perPage;
     
     $sql = "SELECT b.*, c.CategoryName, p.PublisherName 
@@ -65,7 +65,8 @@ function getBooks($pdo, $search = '', $category = null, $publisher = null, $page
         $params[':publisher'] = $publisher;
     }
     
-    $sql .= " ORDER BY b.BookName LIMIT :perPage OFFSET :offset";
+    $orderDir = strtoupper($orderDir) === 'DESC' ? 'DESC' : 'ASC';
+    $sql .= " ORDER BY b.id $orderDir LIMIT :perPage OFFSET :offset";
     
     $stmt = $pdo->prepare($sql);
     
@@ -97,11 +98,14 @@ $category = $_GET['category'] ?? null;
 $publisher = $_GET['publisher'] ?? null;
 $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
 $perPage = 6; // Books per page
+$sort = $_GET['sort'] ?? 'oldest'; // Default sort
+$allowedSorts = ['oldest' => 'ASC', 'newest' => 'DESC'];
+$orderDir = $allowedSorts[$sort] ?? 'ASC';
 
 // Get data
 $totalBooks = countBooks($pdo, $search, $category, $publisher);
 $totalPages = ceil($totalBooks / $perPage);
-$books = getBooks($pdo, $search, $category, $publisher, $page, $perPage);
+$books = getBooks($pdo, $search, $category, $publisher, $page, $perPage, $orderDir);
 $categories = getCategories($pdo);
 $publishers = getPublishers($pdo);
 ?>
@@ -211,6 +215,13 @@ $publishers = getPublishers($pdo);
                                 <?= htmlspecialchars($pub['PublisherName']) ?>
                             </option>
                         <?php endforeach; ?>
+                    </select>
+                </div>
+                <div class="col-md-3">
+                    <label for="sort" class="form-label">Sort By</label>
+                    <select class="form-select" id="sort" name="sort">
+                        <option value="oldest" <?= ($sort === 'oldest') ? 'selected' : '' ?>>Oldest to Newest</option>
+                        <option value="newest" <?= ($sort === 'newest') ? 'selected' : '' ?>>Newest to Oldest</option>
                     </select>
                 </div>
             </div>
@@ -444,7 +455,7 @@ $publishers = getPublishers($pdo);
             <!-- Previous Page Link -->
             <li class="page-item <?= $page <= 1 ? 'disabled' : '' ?>">
                 <a class="page-link" 
-                   href="?search=<?= urlencode($search) ?>&category=<?= $category ?>&publisher=<?= $publisher ?>&page=<?= $page-1 ?>" 
+                   href="?search=<?= urlencode($search) ?>&category=<?= $category ?>&publisher=<?= $publisher ?>&sort=<?= $sort ?>&page=<?= $page-1 ?>" 
                    aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
@@ -454,7 +465,7 @@ $publishers = getPublishers($pdo);
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <li class="page-item <?= $i == $page ? 'active' : '' ?>">
                     <a class="page-link" 
-                       href="?search=<?= urlencode($search) ?>&category=<?= $category ?>&publisher=<?= $publisher ?>&page=<?= $i ?>">
+                       href="?search=<?= urlencode($search) ?>&category=<?= $category ?>&publisher=<?= $publisher ?>&sort=<?= $sort ?>&page=<?= $i ?>">
                         <?= $i ?>
                     </a>
                 </li>
@@ -463,7 +474,7 @@ $publishers = getPublishers($pdo);
             <!-- Next Page Link -->
             <li class="page-item <?= $page >= $totalPages ? 'disabled' : '' ?>">
                 <a class="page-link" 
-                   href="?search=<?= urlencode($search) ?>&category=<?= $category ?>&publisher=<?= $publisher ?>&page=<?= $page+1 ?>" 
+                   href="?search=<?= urlencode($search) ?>&category=<?= $category ?>&publisher=<?= $publisher ?>&sort=<?= $sort ?>&page=<?= $page+1 ?>" 
                    aria-label="Next">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
