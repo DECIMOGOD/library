@@ -74,6 +74,15 @@ if (isset($_POST['return'])) {
             border-color: #4f46e5;
             box-shadow: 0 0 5px rgba(79, 70, 229, 0.5);
         }
+        /* Add margin to prevent header overlap */
+        .content-wrapper {
+            margin-top: 80px;
+        }
+        @media (max-width: 768px) {
+            .content-wrapper {
+                margin-top: 110px;
+            }
+        }
     </style>
 </head>
 <body>

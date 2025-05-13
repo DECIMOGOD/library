@@ -100,7 +100,7 @@ if (isset($_POST['login'])) {
                             <label for="role"><i class="fa fa-user-circle"></i> Login As</label>
                             <select class="form-control" name="role" id="role" required onchange="updateIdentifierField()">
                                 <option value="student">Student</option>
-                                <option value="teacher">Teacher</option>
+                                <option value="teacher">Faculty</option>
                             </select>
                         </div>
                         

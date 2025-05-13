@@ -14,6 +14,11 @@ $page = $_GET['page'] ?? 1;
 $booksPerPage = 8; // Changed from 5 to 8
 $offset = ($page - 1) * $booksPerPage;
 
+// Sorting
+$sort = $_GET['sort'] ?? 'oldest'; // Default to oldest
+$allowedSorts = ['oldest' => 'ASC', 'newest' => 'DESC'];
+$orderDir = $allowedSorts[$sort] ?? 'ASC';
+
 // Main query
 $sql = "SELECT SQL_CALC_FOUND_ROWS 
         tblbooks.*, tblcategory.CategoryName 
@@ -22,7 +27,7 @@ $sql = "SELECT SQL_CALC_FOUND_ROWS
         WHERE tblbooks.BookName LIKE :search 
            OR tblbooks.ISBNNumber LIKE :search
            OR tblcategory.CategoryName LIKE :search
-        ORDER BY tblbooks.BookName
+        ORDER BY tblbooks.id $orderDir
         LIMIT :offset, :booksPerPage";
 
 $query = $dbh->prepare($sql);
@@ -188,11 +193,15 @@ $totalPages = ceil($totalBooks / $booksPerPage);
                             <input type="text" name="search" class="form-control" 
                                    placeholder="Search by book title, ISBN or category..." 
                                    value="<?php echo htmlspecialchars($search); ?>">
+                            <select name="sort" class="form-control" style="max-width:180px; margin-left:10px;">
+                                <option value="oldest" <?php if($sort==='oldest') echo 'selected'; ?>>Oldest to Newest</option>
+                                <option value="newest" <?php if($sort==='newest') echo 'selected'; ?>>Newest to Oldest</option>
+                            </select>
                             <div class="input-group-append">
                                 <button class="btn btn-primary" type="submit">
                                     <i class="fa fa-search"></i> Search
                                 </button>
-                                <?php if (!empty($search)): ?>
+                                <?php if (!empty($search) || ($sort && $sort!=='oldest')): ?>
                                     <a href="listed-books.php" class="btn btn-outline-secondary">
                                         <i class="fa fa-times"></i> Clear
                                     </a>
@@ -248,7 +257,7 @@ $totalPages = ceil($totalBooks / $booksPerPage);
                                 <ul class="pagination">
                                     <?php if ($page > 1): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page-1; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page-1; ?>&search=<?php echo urlencode($search); ?>&sort=<?php echo urlencode($sort); ?>">
                                                 Previous
                                             </a>
                                         </li>
@@ -256,7 +265,7 @@ $totalPages = ceil($totalBooks / $booksPerPage);
                                     
                                     <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                                         <li class="page-item <?php echo ($i == $page) ? 'active' : ''; ?>">
-                                            <a class="page-link" href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $i; ?>&search=<?php echo urlencode($search); ?>&sort=<?php echo urlencode($sort); ?>">
                                                 <?php echo $i; ?>
                                             </a>
                                         </li>
@@ -264,7 +273,7 @@ $totalPages = ceil($totalBooks / $booksPerPage);
                                     
                                     <?php if ($page < $totalPages): ?>
                                         <li class="page-item">
-                                            <a class="page-link" href="?page=<?php echo $page+1; ?>&search=<?php echo urlencode($search); ?>">
+                                            <a class="page-link" href="?page=<?php echo $page+1; ?>&search=<?php echo urlencode($search); ?>&sort=<?php echo urlencode($sort); ?>">
                                                 Next
                                             </a>
                                         </li>
